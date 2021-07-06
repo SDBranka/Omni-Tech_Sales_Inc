@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Edit Users</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/edit_user.css' %}">
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <h1>Welcome, {{ logged_user.first_name }}</h1>
+            <div id="links">
+                <a href="/admin_access">Admin Home</a>  |  
+                <a href="/">Back to Store</a>  |  
+                <a href="/signon/logout">Logout</a>
+            </div>      <!--end links-->
+        </div>      <!--end header-->
+        <div id="content">
+            <div id="display_users">
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Security Level</th>
+                        <th>Email</th>
+                        <th># of Orders</th>
+                        <th># of Reviews</th>
+                        <th>Date Joined</th>
+                        <th>Actions</th>
+                    </tr>
+                    {% for user in all_users %}
+                        <tr>
+                            <td>{{ user.last_name }}, {{ user.first_name }}</td>
+                            <td>{{ user.security_level }}</td>
+                            <td>{{ user.email }}</td>
+                            <td></td>
+                            <td></td>
+                            <td>{{ user.created_at }}</td>
+                            <td id="actions">
+                                <p><a href="/admin_access/edit_user_security/{{ user.id }}">Edit User Security</a></p>
+                                <p><a href="/admin_access/delete_user/{{ user.id }}">Delete User</a></p>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>      <!--end display_users-->
+        </div>      <!--end content-->
+    </div>      <!--end wrapper-->
+</body>
+
+</html>

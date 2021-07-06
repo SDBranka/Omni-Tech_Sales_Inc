@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Admin Home</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/admin_index.css' %}">
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <h1>Welcome, {{ logged_user.first_name }}</h1>
+            <div id="links">
+                <a href="/">Back to Store</a>  |  
+                <a href="/signon/logout">Logout</a>
+            </div>      <!--end links-->            
+        </div>      <!--end header-->
+        <div id="content">
+            <h2>What action do you wish to take?</h2>
+            <p>Quotes</p>
+            <p>Orders</p>
+            <p><a href="/admin_access/select_product">Edit Product</a></p>
+            <p><a href="/admin_access/edit_user">Edit User</a></p>
+            <p><a href="/admin_access/administrative">Administrative</a></p>
+            
+
+        </div>      <!--end content-->
+    </div>      <!--end wrapper-->
+</body>
+
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Select Product To Edit</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/select_product.css' %}">
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <h1>Welcome, {{ logged_user.first_name }}</h1>
+            <div id="links">
+                <a href="/admin_access">Admin Home</a>  |  
+                <a href="/">Back to Store</a>  |  
+                <a href="/signon/logout">Logout</a>
+            </div>      <!--end links-->
+        </div>      <!--end header-->
+        <div id="errors">
+        <div id="content">
+            <div id="display_products">
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Part #</th>
+                        <th>Price</th>
+                        <th>Picture</th>
+                        <th>Quantity in Stock</th>
+                        <!-- <th>Product Rating</th>
+                        <th>Number of Reviews</th> -->
+                        <th>Actions</th>
+                    </tr>
+                    {% for product in all_products %}
+                        <tr>
+                            <td>{{ product.name }}</td>
+                            <td>{{ product.part_number }}</td>
+                            <td>{{ product.price }}</td>
+                            <td class="prod_img">
+                                <img src="{{ product.product_photos.first.img.url }}" alt="{{ product.img_alt }}">
+                            </td>
+                            <td>{{ product.quantity_in_stock }}</td>
+                            <!-- <td></td>
+                            <td></td> -->
+                            <td id="actions">
+                                <p><a href="/admin_access/edit_product/{{ product.id }}">Edit Product</a></p>
+                                <p><a href="/admin_access/edit_product_img/{{ product.id }}">Edit Images</a></p>
+                                <p><a href="/admin_access/edit_product_category/{{ product.id }}">Edit Categories</a></p>
+                                <p><a href="/admin_access/delete_product/{{ product.id }}">Delete Product</a></p>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>      <!--end display_products-->
+        </div>      <!--end content-->
+    </div>      <!--end wrapper-->
+</body>
+
+</html>

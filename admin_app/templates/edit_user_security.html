@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Edit User Security</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/create_product.css' %}">
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <h1>Welcome, {{ logged_user.first_name }}</h1>
+            <div id="links">
+                <a href="/admin_access/edit_user">Back</a>
+                <a href="/admin_access">Admin Home</a>
+                <a href="/">Back to Store</a>
+                <a href="/signon/logout">Logout</a>
+            </div>      <!--end links-->
+        </div>      <!--end header-->
+        <div id="content">
+            <form action="/admin_access/process_edit_security/{{ user_to_edit.id }}" method="POST">
+                {% csrf_token %}
+                <p>Rating:
+                    <select name="security_level">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                    </select>
+                </p>
+                <button type="submit">Edit Security Level</button>
+            </form>
+        </div>      <!--end content-->
+    </div>      <!--end wrapper-->
+</body>
+
+</html>

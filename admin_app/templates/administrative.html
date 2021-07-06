@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Administrative</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/administrative.css' %}">
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <h1>Welcome, {{ logged_user.first_name }}</h1>
+            <div id="links">
+                <a href="/admin_access">Admin Home</a>  |  
+                <a href="/">Back to Store</a>  |  
+                <a href="/sigon/logout">Logout</a>
+            </div>      <!--end links-->
+        </div>      <!--end header-->
+        <div id="errors">
+            {% if messages %}
+            <ul>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>      <!--end errors-->
+        <div id="content">
+            <div id="row_1">
+                <div id="add_product">
+                    <h2>Add a Product to the Catalog:</h2>
+                    <form action="/admin_access/process_create_product" method="POST">
+                        {% csrf_token %}
+                        <p>Product Name: <input id="product_name_input" type="text" name="name"></p>
+                        <p>Product Part Number: <input id="part_number_input" type="text" name="part_number"></p>
+                        <p>Product Manufacturer: <input id="manufacturer_input" type="text" name="manufacturer"></p>
+                        <p>Product Price: <input id="price_input" type="text" name="price"></p>
+                        <p>Product Quantity in Stock: <input type="text" name="quantity_in_stock"></p>
+                        <div id="description">
+                            <p>Descrtiption:</p>
+                            <textarea id="desc_input" name="desc"></textarea>
+                        </div>      <!--end description-->
+                        <button type="submit">Add Product</button>
+                    </form>
+                </div>      <!--end add_product-->
+                <div id="add_category">
+                    <h2>Add a Category:</h2>
+                    <form action="/admin_access/process_add_category" method="POST">
+                        {% csrf_token %}
+                        <p>Category Name: <input type="text" name="name"></p>
+                        <button type="submit">Add Category</button>
+                    </form>
+                </div>      <!--end add_category-->
+            </div>      <!--end row_1-->
+        </div>      <!--end content-->
+    </div>      <!--end wrapper-->
+</body>
+
+</html>
+

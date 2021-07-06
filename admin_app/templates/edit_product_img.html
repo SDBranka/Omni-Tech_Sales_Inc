@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Edit Product Images</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/edit_product_img.css' %}">
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <h1>Welcome, {{ logged_user.first_name }}</h1>
+            <div id="links">
+                <a id="back_link" href="/admin_access/select_product">Back</a>  |  
+                <a href="/admin_access">Admin Home</a>  |  
+                <a href="/">Back to Store</a>  |  
+                <a href="/signon/logout">Logout</a>
+            </div>      <!--end links-->
+        </div>      <!--end header-->
+        <div id="errors">
+            {% if messages %}
+            <ul>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>      <!--end errors-->
+        <div id="content">
+            <div id="product_info">
+                <h2>Product Information</h2>
+                <p>Product Name: {{ product.name }}</p>
+                <p>Product Part Number: {{ product.part_number }}</p>
+                <p>Product Price: {{ product.price }}</p>
+                <p>Product Quantity in Stock: {{ product.quantity_in_stock }}</p>
+                <div id="prod_cats">
+                    <p>Product Categories:</p>
+                    <p id="p_cats">
+                        {% for category in product.categories.all %}
+                            <span>{{ category.name }}  </span>
+                        {% endfor %}
+                    </p>
+                </div>      <!--end prod_cats-->
+                <div id="prod_desc">
+                    <p>Product Description:</p>
+                    <p id="p_desc">{{ product.desc }}</p>
+                </div>      <!--end prod_desc-->
+            </div>      <!--end product_info-->
+            <h2>Product Images</h2>
+            <div id="photo_display">
+                {% for photo in product.product_photos.all %}
+                    <div class="prod_photo_pod">
+                        <img class="product_photo" src="{{ photo.img.url }}" alt="{{ photo.img_alt }}">
+                        <div class="photo_actions">
+                            <!-- <a href="/admin_access/edit_photo/{{ photo.id }}">Edit</a> -->
+                            <a href="/admin_access/delete_photo/{{ photo.id }}">Delete</a>
+                        </div>      <!--end photo_actions-->
+                    </div>      <!--end prod_photo_pod-->
+                {% endfor %}
+            </div>          <!--end photo_display-->
+            <div id="add_photo">
+                <h2>Add an Image to This Product:</h2>
+                <form enctype="multipart/form-data" action="/admin_access/process_add_prod_photo" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="product_id" value="{{ product.id }}"> 
+                    <p>Select Image File To Add: <input type="file" name="img" accept="image/*"></p>
+                    <p>Image Alt Text: <input type="text" name="img_alt"></p>
+                    <button type="submit">Add Image To This Product</button>
+                </form>
+            </div>      <!--end add_photo-->
+        </div>      <!--end content-->
+    </div>      <!--end wrapper-->
+</body>
+
+</html>
+

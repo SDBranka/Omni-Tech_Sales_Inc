@@ -1,0 +1,302 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#banner {
+    width: 100%;
+    height: 180px;
+}
+
+#header {
+    display: flex;
+    margin-bottom: 20px;
+    background-image: linear-gradient(#b2b2b6, #66617e, #b2b2b6);
+    color: white;
+    padding: 3px 9px;
+}
+
+#header h1 {
+    flex: 7;
+}
+
+#links {
+    text-align: right;
+    padding-top: 10px;
+}
+
+#links a {
+    text-decoration: none;
+    color: white;
+    margin-bottom: 5px;
+}
+
+#content {
+    display: flex;
+}
+
+#l_sidebar {
+    flex: 2;
+    background-image: radial-gradient(#d8ceff, #372588);
+    padding: 7px;
+    margin-right: 7px;
+}
+
+#l_sidebar h3 {
+    background-image: linear-gradient(#b2b2b6, #66617e, #b2b2b6);
+    color: white;
+    padding: 3px;
+    border-radius: 3px;
+    margin-bottom: 12px;
+}
+
+#menu,
+#contact_us {
+    background-color: white;
+    border-radius: 9px;
+    border: 2px solid black;
+    box-shadow: 3px 3px 5px rgb(51, 47, 47);
+    margin-right: 5px;
+}
+
+#menu {
+    margin-top: 25px;
+}
+
+#menu a {
+    display: block;
+    padding: 9px;
+}
+
+#contact_us {
+    margin-top: 306px;
+}
+
+#contact_us p {
+    margin-bottom: 9px;
+    padding: 0px 3px;
+}
+
+#break {
+    border-top: 3px dotted #372588;
+    margin: 4px 0px 10px 0px;
+}
+
+#badges {
+    text-align: center;
+}
+
+#iso_badge {
+    height: 150px;
+    margin-top: 45px;
+}
+
+#wbenc_badge {
+    width: 207px;
+    margin-top: 45px;
+}
+
+#main {
+    flex: 10;
+    background-image: radial-gradient(#d8ceff, #372588);
+    padding: 18px;
+}
+
+#add_item,
+#view_quote {
+    display: flex;
+    background-color: #F7F7F7;
+    border-radius: 9px;
+    border: 3px solid black;
+    box-shadow: 5px 5px 5px rgb(51, 47, 47);
+    padding: 9px;
+}
+
+#instructions {
+    flex: 5;
+    margin-right: 9px;
+    text-align: center;
+    padding-top: 50px;
+}
+
+#instructions p {
+    margin-bottom: 18px;
+}
+
+#add_item_form {
+    flex: 7;
+}
+
+#add_item_form h2 {
+    margin-bottom: 12px;
+}
+
+#add_item_form p {
+    margin-bottom: 9px;
+}
+
+#item_name_input {
+    margin-left: 112px;
+    width: 50%;
+}
+
+#item_number_input {
+    margin-left: 68px;
+    width: 50%;
+}
+
+#manufacturer_input{
+    margin-left: 63px;
+    width: 50%;
+}
+
+#price_input {
+    margin-left: 118px;
+    width: 50%;
+}
+
+#quantity_input {
+    margin-left: 150px;
+    width: 50%;
+
+}
+
+#notes {
+    display: flex;
+    margin-bottom: 9px;
+}
+
+#notes textarea {
+    margin-left: 9px;
+    width: 50%;
+    height: 200px;
+}
+
+button {
+    padding: 3px;
+    border-radius: 3px;
+}
+
+#button {
+    text-align: right;
+    padding-right: 33px;
+}
+
+#view_quote {
+    display: block;
+}
+
+#view_quote h2{
+    margin-bottom: 18px;
+}
+
+#quote_head{
+    display: flex;
+}
+
+#quote_head p {
+    flex: 1;
+}
+
+#total {
+    text-align: right;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 25px;
+}
+
+table, th, td {
+    border: 2px solid rgb(77, 77, 201)
+}
+
+th, td {
+    padding: 5px;
+}
+
+th {
+    text-align: center;
+}
+
+.prod_quant {
+    display: flex;
+}
+
+.prod_quant p {
+    margin: auto;
+}
+
+.quant_btns button {
+    display: block;
+}
+
+.actions {
+    text-align: center;
+}
+
+.no_quote {
+    padding: 33px 0px;
+    text-align: center;
+}
+
+#spec_inst {
+    margin-bottom: 18px;
+}
+
+#spec_inst h3 {
+    margin-bottom: 9px;
+}
+
+#spec_inst textarea {
+    /* display: block; */
+    width: 80%;
+    /* margin-bottom: 7px; */
+}
+
+#spec_inst button {
+    margin-bottom: 14px;
+}
+
+
+#page_break {
+    border-top: 3px groove #372588;
+}
+
+
+
+#handle_quote {
+    display: flex;
+    text-align: center;
+}
+
+#delete_quote,
+#submit_quote {
+    flex: 1;
+    text-align: center;
+}
+
+#delete_quote {
+    text-align: right;
+    padding-right: 5px;
+}
+
+#delete_quote button {
+    margin-right: 27px;
+    background-color: red;
+    color: white;
+}
+
+#submit_quote {
+    text-align: left;
+    padding-left: 5px;
+}
+
+#submit_quote button {
+    margin-left: 27px;
+    background-color: #372588;
+    color: white;
+}
+
+

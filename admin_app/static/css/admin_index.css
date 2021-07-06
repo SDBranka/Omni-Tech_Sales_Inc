@@ -1,0 +1,39 @@
+* {
+    margin: 0;
+    padding: 0;
+    /* border: 1px solid red; */
+}
+
+#wrapper {
+    width: 900px;
+    margin: 100px auto;
+    border: 3px solid rgb(23, 73, 211);
+    padding: 10px;
+    background-color: #F7F7F7;
+}
+
+#header {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+#header h1 {
+    flex: 7;
+}
+
+#links {
+    padding-top: 10px;
+}
+
+#errors {
+    color: red;
+    text-align: center;
+}
+
+#content h2 {
+    margin-bottom: 9px;
+}
+
+#content p {
+    margin-bottom: 5px;
+}

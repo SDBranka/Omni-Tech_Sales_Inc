@@ -1,0 +1,88 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#wrapper {
+    width: 900px;
+    margin: 100px auto;
+    border: 3px solid rgb(23, 73, 211);
+    padding: 10px;
+    background-color: #F7F7F7;
+}
+
+#errors {
+    color: red;
+    text-align: center;
+}
+
+#content {
+    display: flex;
+}
+
+#registration_form {
+    width: 100%;
+    flex: 1;
+}
+
+#login_form {
+    width: 100%;
+    flex: 1;
+}
+
+h2 {
+    margin-bottom: 15px;
+}
+
+p {
+    margin-bottom: 9px;
+}
+
+input {
+    width: 270px;
+}
+
+button {
+    padding: 3px;
+    border-radius: 7px;
+}
+
+#fname_input {
+    margin-left: 19px;
+}
+
+#lname_input {
+    margin-left: 21px;
+}
+
+#email_input {
+    margin-left: 52px;
+}
+
+#bd_input {
+    margin-left: 32px;
+}
+
+#pw_input {
+    margin-left: 29px;
+}
+
+#confirm_input {
+    margin-left: 9px;
+}
+
+#reg_but {
+    margin-left: 72px;
+}
+
+#lemail_input {
+    margin-left: 30px;
+}
+
+#lpw_input {
+    margin-left: 7px;
+}
+
+#log_but {
+    margin-left: 54px;
+}

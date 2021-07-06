@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Login and Registration</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- <link rel="stylesheet" href="../static/css/style.css" -->
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="errors">
+                {% if messages %}
+                <ul>    
+                    {% for message in messages %}    
+                        <li>{{ message }}</li>    
+                    {% endfor %}
+                </ul>
+                {% endif %}
+        </div>      <!--end errors-->
+        <div id="content">
+            <div id="registration_form">
+                <h2>Registration</h2>    
+                <form action = "/signon/register" method = "POST">
+                    {% csrf_token %}
+                    <p>First Name: <input id="fname_input" type="text" name="first_name" required></p>
+                    <p>Last Name: <input id="lname_input" type="text" name="last_name" required></p>
+                    <p>Email: <input id="email_input" type="email" name="email" required></p>
+                    <p>Password: <input id="pw_input" type="password" name="password" required></p>
+                    <p>Confirm PW: <input id="confirm_input" type="password" name="confirm_pw" required></p>                
+                    <button id="reg_but" type="submit">Register</button>
+                </form>
+            </div>      <!--end registration_form-->
+            <div id="login_form">
+                <h2>Login</h2>
+                <form action = "/signon/login" method = "POST">
+                    {% csrf_token %}
+                    <p>Email: <input id="lemail_input" type="email" name="lemail" required></p>
+                    <p>Password: <input id="lpw_input" type="password" name="lpassword" required></p>
+                    <button id="log_but" type="submit">Log In</button>
+                </form>
+            </div>      <!--end login_form-->
+        </div>      <!--end content-->
+        
+    </div>      <!--end wrapper-->
+
+</body>
+
+</html>

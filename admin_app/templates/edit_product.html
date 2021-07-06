@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Exam</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/edit_product.css' %}">
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <h1>Welcome, {{ logged_user.first_name }}</h1>
+            <div id="links">
+                <a href="/admin_access/select_product">Back</a>  |  
+                <a href="/admin_access">Admin Home</a>  |  
+                <a href="/">Back to Store</a>  |  
+                <a href="/sigon/logout">Logout</a>
+            </div>      <!--end links-->
+        </div>      <!--end header-->
+        <div id="errors">
+            {% if messages %}
+            <ul>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>      <!--end errors-->
+        <div id="content">
+            <form action="/admin_access/process_product_edit/{{ product_to_edit.id }}" method="POST">
+                {% csrf_token %}
+                <p>Product Name: <input id="product_name_input" type="text" name="name" value="{{ product_to_edit.name }}"></p>
+                <p>Product Part Number: <input id="part_number_input" type="text" name="part_number" value="{{ product_to_edit.part_number }}"></p>
+                <p>Product Manufacturer: <input id="manufacturer_input" type="text" name="manufacturer"></p>
+                <p>Product Price: <input id="price_input" type="text" name="price" value="{{ product_to_edit.price }}"></p>
+                <p>Product Quantity in Stock: <input type="text" name="quantity_in_stock" value="{{ product_to_edit.quantity_in_stock }}"></p>
+                <div id="description">
+                    <p>Descrtiption:</p>
+                    <textarea id="desc_input" name="desc">{{ product_to_edit.desc }}</textarea>
+                </div>      <!--end description-->
+                <button type="submit">Edit Product</button>
+            </form>
+        </div>      <!--end content-->
+    </div>      <!--end wrapper-->
+</body>
+
+</html>

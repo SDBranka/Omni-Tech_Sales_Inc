@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Omni-Tech Sales Inc.</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/store_index.css' %}">
+    <script type="text/javascript" src="{% static 'js/cart.js' %}" defer></script>
+</head>
+
+<body>
+        <img id="banner" src="{% static 'img/site/OmnitechBannerT.png' %}">     <!--this works-->
+        <div id="header">
+            <h1>Welcome {% if logged_user %}{{ logged_user.first_name }}{% endif %}</h1>
+            <div id="links">
+                {% if logged_user.security_level > 4 %}
+                    <a href="/admin_access">Go to Admin</a>  |  
+                {% endif %}
+                {% if logged_user %}
+                    <a href="/signon/logout">Logout</a>
+                {% else %}
+                    <a href="/signon">Log In/Register</a>
+                {% endif %}                  
+            </div>      <!--end links-->
+        </div>      <!--end header-->
+        <div id="content">
+            <div id="l_sidebar">
+                <div id="menu">
+                    <h3>Menu</h3>
+                    <a href="/product_lines">Product Lines</a>
+                    <!-- <a href="/PRODUCTS">Products</a> -->
+                    <a href="/services/1">Services</a>
+                    <a href="/request_quote">Request a Quote</a>
+                    <a href="/INDUSTRIES">Industries</a>
+                    <a href="/ABOUTUS">About Us</a>
+                    <a href="/CONTACTUS">Contact Us</a>
+                    {% if logged_user %}
+                        <a href="/user_account">My Account</a>
+                    {% endif %}
+                </div>      <!--end menu-->
+                <div id="contact_us">
+                    <h3>Contact Us</h3>
+                    <p>31189 Schoolcraft Road</p>
+                    <p>Livonia, MI 48150</p>
+                    <div id="break"></div>
+                    <p>Phone: 734-425-5730</p>
+                    <p>Fax: 734-261-6337</p>
+                    <p>Email:</p>
+                    <p>omnitech_sales@ameritech.net</p>
+                </div>      <!--end contact_us-->
+                <div id="badges">
+                    <img id="iso_badge" src="{% static 'img/site/iso17025_badge.png' %}">
+                    <img id="wbenc_badge" src="{% static 'img/site/wbenc_badge.png' %}">
+                </div>      <!--end wbenc-->
+            </div>      <!--end l_sidebar-->
+            <div id="main">
+                <div id="stock_photos">
+                    <img src="{% static 'img/site/index/img_1.jpg' %}">
+                    <img src="{% static 'img/site/index/img_2.jpg' %}">
+                    <img src="{% static 'img/site/index/img_3.jpg' %}">
+                    <img src="{% static 'img/site/index/img_4.jpg' %}">
+                    <img src="{% static 'img/site/index/img_5.jpg' %}">
+                </div>      <!--end stock_photos-->
+                <div id="main_content">
+                    <div id="sect_1">
+                        <div id="about_us">
+                            <h2>Welcome</h2>
+                            <p>
+                                We are distributors of leading dimensional and visual 
+                                inspection products, representing the best manufacturers 
+                                in the industry. With over 23 years of experience, we 
+                                offer a solid standard of excellence in our products, our 
+                                knowledge, and our service.
+                            </p>
+                            <p>
+                                At Omni-Tech Sales, Inc., you can rely on us for leadership 
+                                in selecting the most efficient and productive solutions for 
+                                your measurement needs.
+                            </p>
+                            <p>
+                                Omni-Tech Sales, Inc.™... working with industry to accurately 
+                                measure, collect, process and control.
+                            </p>
+                            
+                        </div>      <!--end about_us-->
+                    </div>      <!--end sect_1-->
+                    <div id="r_sidebar">
+                        <div class="r_bar_link">
+                            <a href="/INDUSTRIES">
+                                <img src="{% static 'img/site/index/img_6.jpg' %}">
+                                Industries Served
+                            </a>
+                        </div>      <!--end r_bar_link-->
+                        <div class="r_bar_link">
+                            <a href="/OURSERVICES">
+                                <img src="{% static 'img/site/index/img_7.jpg' %}">
+                                Our Services
+                            </a>
+                        </div>      <!--end r_bar_link-->
+                        <img id="r_bar_link_new" src="{% static 'img/site/index/img_8.jpg' %}">
+                    </div>      <!--end r_sidebar-->
+                </div>      <!--end main_content-->
+            </div>      <!--end main-->
+        </div>      <!--end content-->
+</body>
+
+</html>

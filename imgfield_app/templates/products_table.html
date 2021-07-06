@@ -1,0 +1,24 @@
+<div id="display_products">
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Picture</th>
+            <th>Product Rating</th>
+            <th>Number of Reviews</th>
+            <th>Actions</th>
+        </tr>
+        {% for product in all_products %}
+            <tr>
+                <td>{{product.name}}</td>
+                <td>{{product.price}}</td>
+                <td>
+                    <img src="{{ product.product_photos.first.img.url }}" alt="{{product.img_alt}}">
+                </td>
+                <td></td>
+                <td id="actions"></td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>      <!--end display_products-->
+

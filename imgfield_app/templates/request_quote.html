@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Omni-Tech Sales Inc.</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/request_quote.css' %}">
+    <script type="text/javascript" src="{% static 'js/cart.js' %}" defer></script>
+</head>
+
+<body>
+        <img id="banner" src="{% static 'img/site/OmnitechBannerT.png' %}">     <!--this works-->
+        <div id="header">
+            <h1>Welcome {% if logged_user %}{{ logged_user.first_name }}{% endif %}</h1>
+            <div id="links">
+                {% if logged_user.security_level > 4 %}
+                    <a href="/admin_access">Go to Admin</a>  |  
+                {% endif %}
+                {% if logged_user %}
+                    <a href="/signon/logout">Logout</a>
+                {% else %}
+                    <a href="/signon">Log In/Register</a>
+                {% endif %}                  
+            </div>      <!--end links-->
+        </div>      <!--end header-->
+        <div id="content">
+            <div id="l_sidebar">
+                <div id="menu">
+                    <h3>Menu</h3>
+                    <a href="/">Home</a>
+                    <a href="/product_lines">Product Lines</a>
+                    <!-- <a href="/PRODUCTS">Products</a> -->
+                    <a href="/services/1">Services</a>
+                    <a href="/INDUSTRIES">Industries</a>
+                    <a href="/ABOUTUS">About Us</a>
+                    <a href="/CONTACTUS">Contact Us</a>
+                    {% if logged_user %}
+                        <a href="/user_account">My Account</a>
+                    {% endif %}
+                </div>      <!--end menu-->
+                <div id="contact_us">
+                    <h3>Contact Us</h3>
+                    <p>31189 Schoolcraft Road</p>
+                    <p>Livonia, MI 48150</p>
+                    <div id="break"></div>
+                    <p>Phone: 734-425-5730</p>
+                    <p>Fax: 734-261-6337</p>
+                    <p>Email:</p>
+                    <p>omnitech_sales@ameritech.net</p>
+                </div>      <!--end contact_us-->
+                <div id="badges">
+                    <img id="iso_badge" src="{% static 'img/site/iso17025_badge.png' %}">
+                    <img id="wbenc_badge" src="{% static 'img/site/wbenc_badge.png' %}">
+                </div>      <!--end wbenc-->
+            </div>      <!--end l_sidebar-->
+            <div id="main">
+                <div id="add_item">
+                    <div id="instructions">
+                        <p>Please view our <a href="/product_lines">Product Lines</a> page and select any 
+                            product you wish to recieve a quote for. Enter the product information here and 
+                            click the button to add the product to your quote. 
+                        </p>
+                        <p>You may view, edit, or submit your current quote below</p>
+                    </div>      <!--end instructions-->
+                    <div id="add_item_form">
+                        <h2>Add an item to your quote</h2>
+                        <form action="/process_add_item_to_quote" method="POST">
+                            {% csrf_token%}
+                            <p>Product Manufacturer: <input id="manufacturer_input" type="text" name="manufacturer"></p>
+                            <p>Product Part Number: <input id="item_number_input" type="text" name="part_number"></p>
+                            <p>Product Name: <input id="item_name_input" type="text" name="name"></p>
+                            <p>Product Price: <input id="price_input" type="text" name="price"></p>
+                            <p>Quantity: <input id="quantity_input" type="text" name="quantity"></p>
+                            <div id="notes">
+                                <p>Additional Details or questions:</p>
+                                <textarea name="notes"></textarea>
+                            </div>      <!--end notes-->
+                            <div id="button">
+                                <button type="submit">Add Product</button>
+                            </div>      <!--end button-->    
+                        </form> 
+                    </div>      <!--end add_item_form-->
+                </div>      <!--end add_item-->
+                <div id="view_quote">
+                    {% if logged_user %}   
+                        <h2>Current Quote</h2>
+                        {% if open_quote %}
+                            <div id="display_products">
+                                <div id="quote_head">
+                                    <p>Quote Reference Number: {{ open_quote.ref_number }} </p>
+                                    <p id="total">Total: $########</p>
+                                </div>      <!--end quote_head-->
+                                <table>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Combined Price</th>
+                                        <!-- <th>#</th> -->
+                                        <th>Actions</th>
+                                    </tr>
+                                    {% for product in products %}
+                                        <tr>
+                                            <td>{{ product.product_on_quote.name }}</td>
+                                            <td>${{ product.product_on_quote.price }}</td>
+                                            <td>
+                                                <div class="prod_quant">
+                                                    <p>{{ product.quantity }}</p>
+                                                    <div class="quant_btns">
+                                                        <form action="/increase_product_quantity" method="POST">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="product_id" value="{{ product.id }}">
+                                                            <button class="add_btn">&#9650;</button>                                                            
+                                                        </form>
+                                                        {% if product.quantity > 1 %}
+                                                            <form action="/decrease_product_quantity" method="POST">
+                                                                {% csrf_token %}
+                                                                <input type="hidden" name="product_id" value="{{ product.id }}">
+                                                                <button class="subt_btn">&#9660;</button>
+                                                            </form>                                                        
+                                                        {% endif %}
+                                                        </div>      <!--end quant_btns-->    
+                                                </div>      <!--end prod_quant-->
+                                            </td>
+                                            <td>???????</td>
+                                            <!-- <td>#</td> -->
+                                            <td id="actions">
+                                                <form action="/remove_product_from_quote" method="POST">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="product_id" value="{{ product.id }}">
+                                                    <button>Remove</button>
+                                                </form>                                                        
+                                            </td>
+                                        </tr>
+                                    {% endfor %}        <!--#end for product in products-->
+                                    {% for item in items %}
+                                        <tr>
+                                            <td>{{ item.item_on_quote.name }}</td>
+                                            <td>${{ item.item_on_quote.price }}</td>
+                                            <td>
+                                                <div class="prod_quant">
+                                                    <p>{{ item.quantity }}</p>
+                                                    <div class="quant_btns">
+                                                        <div class="quant_btns">
+                                                            <form action="/increase_item_quantity" method="POST">
+                                                                {% csrf_token %}
+                                                                <input type="hidden" name="item_id" value="{{ item.id }}">
+                                                                <button class="add_btn">&#9650;</button>                                                            
+                                                            </form>
+                                                            {% if item.quantity > 1 %}
+                                                                <form action="/decrease_item_quantity" method="POST">
+                                                                    {% csrf_token %}
+                                                                    <input type="hidden" name="item_id" value="{{ item.id }}">
+                                                                    <button class="subt_btn">&#9660;</button>
+                                                                </form>                                                        
+                                                            {% endif %}
+                                                        </div>      <!--end quant_btns-->    
+                                                    </div>      <!--end quant_btns-->    
+                                                </div>      <!--end prod_quant-->
+                                            </td>
+                                            <td>???????</td>
+                                            <!-- <td>#</td> -->
+                                            <td id="actions">
+                                                <form action="/remove_item_from_quote" method="POST">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="item_id" value="{{ item.id }}">
+                                                    <button>Remove</button>
+                                                </form>                                                        
+                                            </td>
+                                        </tr>
+                                    {% endfor %}        <!--#end for item in items#-->
+                                </table>
+                                <div id="spec_inst">
+                                    {% if not open_quote.special_instructions %}
+                                        <h3>Add Special Instructions or Further Questions About Your Order</h3>
+                                        <form action="/add_spec_inst" method="POST">
+                                            {% csrf_token %}
+                                            <textarea name="special_instructions"></textarea>
+                                            <button type="submit">Submit</button>
+                                        </form>
+                                    {% else %}
+                                        <h3>Edit Your Special Instructions or Further Questions About Your Order</h3>
+                                        <form action="/esit_spec_inst" method="POST">
+                                            {% csrf_token %}
+                                            <textarea name="special_instructions">{{ open_quote.special_instructions }}</textarea>
+                                            <button type="submit">Submit</button>
+                                        </form>   
+                                    {% endif %}         <!--#end if not open_quote.special_instructions#-->
+                                </div>      <!--end spec_inst-->
+                                <div id="page_break"></div>
+                                <div id="handle_quote">
+                                    <div id="delete_quote">
+                                        <h3>Delete This Quote</h3>
+                                        <form action="/delete_quote" method="POST">
+                                            {% csrf_token %}
+                                            <button type="delete">Delete Quote</button>
+                                        </form>
+                                    </div>      <!--end delete_quote-->
+                                    <div id="submit_quote">
+                                        <h3>Submit This Quote</h3>
+                                        <form action="/submit_quote" method="POST">
+                                            {% csrf_token %}
+                                            <button type="submit">Submit Quote</button>
+                                        </form>
+                                    </div>      <!--end submit_quote-->
+                                </div>      <!--end handle_quote-->        
+                            </div>      <!--end display_products-->
+                        {% else %}
+                            <div class="no_quote">
+                                <p>No Quote Currently Open</p>
+                                <p>Request a quote on an item above or from our <a href="/services">Services</a> page</p>
+                            </div>      <!--end no_quote-->
+                        {% endif %}     <!--#end if open_quote-->
+                    {% else %}      
+                        <div class="no_quote">
+                            <p>Please <a href="/signon">Login or Register</a> in order to request a quote.</p>
+                        </div>      <!--end no_quote-->
+                    {% endif %}     <!--#end if logged_user-->
+                </div>      <!--end view_quote-->
+            </div>      <!--end main-->
+        </div>      <!--end content-->
+</body>
+
+</html>

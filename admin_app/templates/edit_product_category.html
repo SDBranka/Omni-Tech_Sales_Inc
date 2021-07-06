@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Edit Product Category</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/edit_product_category.css' %}">
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <h1>Welcome, {{ logged_user.first_name }}</h1>
+            <div id="links">
+                <a href="/admin_access/select_product">Back</a>  |  
+                <a href="/admin_access">Admin Home</a>  |  
+                <a href="/">Back to Store</a>  |  
+                <a href="/sigon/logout">Logout</a>
+            </div>      <!--end links-->
+        </div>      <!--end header-->
+        <div id="content">
+            <div id="product_info">
+                <h2>Product Information</h2>
+                <p>Product Name: {{ product.name }}</p>
+                <p>Product Part Number: {{ product.part_number }}</p>
+                <p>Product Price: {{ product.price }}</p>
+                <p>Product Quantity in Stock: {{ product.quantity_in_stock }}</p>
+                <div id="prod_cats">
+                    <p>Product Categories:</p>
+                    <p id="p_cats">
+                        {% for category in product.categories.all %}
+                            <span>{{ category.name }}  </span>
+                        {% endfor %}
+                    </p>
+                </div>      <!--end prod_cats-->
+                <div id="prod_desc">
+                    <p>Product Description:</p>
+                    <p id="p_desc">{{ product.desc }}</p>
+                </div>      <!--end prod_desc-->
+            </div>      <!--end product_info-->
+            <div id="add_remove_category">
+                <div id="add_category">
+                    <h2>Add Product to a Category:</h2>
+                    <form action="/admin_access/process_add_product_to_category" method="POST">
+                        {% csrf_token %}
+                        <p>Categories:
+                            <select name="category_id">
+                                {% for category in all_categories %}
+                                    <option value="{{ category.id }}">{{ category.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </p>
+                        <input type="hidden" name="product_id" value="{{ product.id }}"> 
+                        <button type="submit">Add Product to This Category</button>
+                    </form>
+                </div>      <!--end add_category-->
+                <div id="remove_category">
+                    <h2>Remove Product from a Category:</h2>
+                    <form action="/admin_access/process_remove_product_to_category" method="POST">
+                        {% csrf_token %}
+                        <p>Categories:
+                            <select name="category_id">
+                                {% for category in all_product_categories %}
+                                    <option value="{{ category.id }}">{{ category.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </p>
+                        <input type="hidden" name="product_id" value="{{ product.id }}"> 
+                        <button type="submit">Add Product to This Category</button>
+                    </form>
+                </div>      <!--end remove_category-->
+            </div>      <!--end add_remove_category-->
+        </div>      <!--end content-->
+    </div>      <!--end wrapper-->
+</body>
+
+</html>
+
