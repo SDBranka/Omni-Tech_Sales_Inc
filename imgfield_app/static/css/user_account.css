@@ -157,9 +157,10 @@ h2 {
     list-style-type: none;
 }
 
-#add_new_contact,
 #contact_display,
-#edit_info {
+#edit_info,
+#quotes,
+#orders {
     background-color: #F7F7F7;
     border-radius: 9px;
     border: 3px solid black;

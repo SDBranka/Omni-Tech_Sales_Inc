@@ -291,7 +291,6 @@ def select_contact_info(request):
 def add_new_contact(request):
     if 'user_id' in request.session:
         orderer = User.objects.get(id=request.session['user_id'])
-        # if 'open_quote' in request.session: 
         if request.method == "POST":
             new_contact = ContactInfo.objects.create(
                 address_1 = request.POST['address_1'],

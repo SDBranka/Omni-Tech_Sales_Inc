@@ -62,45 +62,53 @@
                 <div id="quote_display" class="display_box">
                     <h2>Most Recent Quotes:</h2>
                     <div id="quotes">
-                        <!--status choices = {open, pending, in process, completed. archived }-->
-                        {% for quote in most_recent_quotes %}
-                            <div class="quote">
-                                <p>Ref #: {{ quote.ref_number }}</p>
-                                <p>Last Processed: {{ quote.updated_at.date }}</p>
-                                <!-- <p>Products:</p> -->
-                                {% for product in quote.quote_product.all %}
+                        {% if most_recent_quotes %}
+                            <!--status choices = {open, pending, in process, completed. archived }-->
+                            {% for quote in most_recent_quotes %}
+                                <div class="quote">
+                                    <p>Ref #: {{ quote.ref_number }}</p>
+                                    <p>Last Processed: {{ quote.updated_at.date }}</p>
+                                    <!-- <p>Products:</p> -->
+                                    {% for product in quote.quote_product.all %}
+                                        <!-- <ul>
+                                            <li>
+                                                <p>Product Name: {{ product.product_on_quote.name }}</p>
+                                                <p>Quantity: {{ product.quantity }}</p>
+                                            </li>   
+                                        </ul> -->
+                                    {% endfor %}
+                                    <!-- <p>Items:</p> -->
+                                    {% for item in quote.quote_item.all %}
                                     <!-- <ul>
                                         <li>
-                                            <p>Product Name: {{ product.product_on_quote.name }}</p>
-                                            <p>Quantity: {{ product.quantity }}</p>
+                                            <p>Item Name: {{ item.item_on_quote.name }}</p>
+                                            <p>Quantity: {{ item.quantity }}</p>
                                         </li>   
                                     </ul> -->
-                                {% endfor %}
-                                <!-- <p>Items:</p> -->
-                                {% for item in quote.quote_item.all %}
-                                <!-- <ul>
-                                    <li>
-                                        <p>Item Name: {{ item.item_on_quote.name }}</p>
-                                        <p>Quantity: {{ item.quantity }}</p>
-                                    </li>   
-                                </ul> -->
-                                {% endfor %}
-                                <p>Status: {{ quote.status }}</p>  
-                            </div>      <!--end quote-->
-                        {% endfor %}                      
+                                    {% endfor %}
+                                    <p>Status: {{ quote.status }}</p>  
+                                </div>      <!--end quote-->
+                            {% endfor %}                      
+                        {% else %}
+                            <p>You have no quotes in your user history</p>
+                        {% endif %}
                     </div>      <!--end quotes-->
                 </div>      <!--end quote_display-->
                 <div id="order_display" class="display_box">
                     <h2>Most Recent Orders:</h2>
                     <div id="orders">
-                        <!--status choices = {open, pending, in process, completed. archived }-->
-                        {% for order in most_recent_orders %}
-                            <div class="order">
-                                <p>Ref #: {{ order.ref_number }}</p>
-                                <p>Last Processed: {{ order.updated_at.date }}</p>
-                                <p>Status: {{ order.status }}</p>  
-                            </div>      <!--end order-->
-                        {% endfor %}                      
+                        {% if most_recent_orders %}
+                            <!--status choices = {open, pending, in process, completed. archived }-->
+                            {% for order in most_recent_orders %}
+                                <div class="order">
+                                    <p>Ref #: {{ order.ref_number }}</p>
+                                    <p>Last Processed: {{ order.updated_at.date }}</p>
+                                    <p>Status: {{ order.status }}</p>  
+                                </div>      <!--end order-->
+                            {% endfor %}
+                        {% else %}
+                            <p>You have no quotes in your user history</p>
+                        {% endif %}
                     </div>      <!--end orders-->
                 </div>      <!--end order_display-->
                 <div id="user_display" class="display_box">
