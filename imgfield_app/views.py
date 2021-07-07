@@ -1,5 +1,6 @@
+from re import U
 from django.shortcuts import render, redirect
-from .models import User, Product, EnteredItem, Photo, Category, Order, OrderProduct, OrderItem, Quote, QuoteProduct, QuoteItem, Review
+from .models import User, Product, EnteredItem, Photo, Category, Order, Quote, QuoteProduct, QuoteItem, ContactInfo, Review
 from django.contrib import messages
 from django.core.paginator import Paginator
 import uuid
@@ -26,7 +27,6 @@ def product_lines(request):
 
 
 def services(request, page_num):
-
     service_cat = Category.objects.get(name="Services")
     products_in_service = service_cat.product_in_category.all()
 
@@ -54,7 +54,6 @@ def services(request, page_num):
 
 
 def view_product(request, product_id):
-
     product = Product.objects.get(id=product_id)
     if 'user_id' in request.session:    
         logged_user = User.objects.get(id=request.session['user_id'])
@@ -110,17 +109,20 @@ def process_add_service_to_quote(request):
 
 
 def user_account(request):
-    if not 'user_id' in request.session:    
-        return redirect("/")
+    if 'user_id' in request.session:    
+        logged_user = User.objects.get(id=request.session['user_id'])
 
-    logged_user = User.objects.get(id=request.session['user_id'])
-
-    context = {
-        'logged_user': logged_user,
-        'user_quotes': Quote.objects.filter(quoted_by = logged_user)    
-    }
-    return render(request, "user_account.html", context)
-
+        # most_recent_quotes = Quote.objects.exclude(status="open")[:5]
+        # recent_review = Review.objects.order_by('-created_at')[:3]
+        context = {
+            'logged_user': logged_user,
+            'most_recent_quotes': Quote.objects.exclude(status="open")[:6],
+            'most_recent_orders': Order.objects.all()[:6],
+            'my_contacts': ContactInfo.objects.filter(user=logged_user)
+        }
+        return render(request, "user_account.html", context)
+    return render(request, "user_account.html")
+    
 
 def request_quote(request):
     if 'user_id' in request.session:
@@ -259,18 +261,55 @@ def add_spec_inst(request):
 
 
 def delete_quote(request):
-    if not 'user_id' in request.session:    
-        return redirect("/")
-
     if request.method == "POST":        
-        if 'open_quote' in request.session:
+        if 'user_id' in request.session:    
             orderer = User.objects.get(id=request.session['user_id'])
-            quote = Quote.objects.get(id=request.session['open_quote'])
-            quote.delete()
-            request.session.flush()
-            request.session['user_id'] = orderer.id
+            if 'open_quote' in request.session:
+                quote = Quote.objects.get(id=request.session['open_quote'])
+                if 'open_quote' in request.session:
+                    quote = Quote.objects.get(id=request.session['open_quote'])
+                    quote.delete()
+                    request.session.flush()
+                    request.session['user_id'] = orderer.id
     return redirect("/request_quote")
 
+
+def select_contact_info(request):
+    if 'user_id' in request.session:
+        print("#!#!#!#! IN select_contact_info")
+        if 'open_quote' in request.session:
+            orderer = User.objects.get(id=request.session['user_id'])
+            user_contacts = ContactInfo.objects.filter(user = orderer)
+            
+            context = {
+                'logged_user': orderer,
+                'user_contacts': user_contacts,
+            }
+        return render(request, "select_contact_info.html", context)
+    return redirect("/")
+
+def add_new_contact(request):
+    if 'user_id' in request.session:
+        orderer = User.objects.get(id=request.session['user_id'])
+        # if 'open_quote' in request.session: 
+        if request.method == "POST":
+            new_contact = ContactInfo.objects.create(
+                address_1 = request.POST['address_1'],
+                address_2 = request.POST['address_2'],
+                city = request.POST['city'],
+                zip_code = request.POST['zip_code'],
+                state = request.POST['state'],
+                country = request.POST['country'],
+                phone = request.POST['phone'],
+            )
+
+            confirm_quote = request.POST["confirm_quote"]  
+            if confirm_quote:
+                new_contact.user.add(orderer)
+                request.session['check_passed'] = new_contact.id
+                return redirect("/submit_quote")
+            return redirect("/user_account")    
+    return redirect("/")
 
 def submit_quote(request):
     if 'user_id' in request.session:
@@ -278,25 +317,94 @@ def submit_quote(request):
         if 'open_quote' in request.session: 
             quote = Quote.objects.get(id=request.session['open_quote'])
             if request.method == "POST": 
+                contact = ContactInfo.objects.get(id=request.POST['contact_id'])
+                contact.quote = quote
+                contact.save()
+                
                 quote.status = "pending"
                 quote.save()
                 request.session.flush()
                 request.session['user_id'] = orderer.id
-        return redirect("/user_account")
+                return redirect("/user_account")
+            if 'check_passed' in request.session:
+                contact = ContactInfo.objects.get(id=request.session['check_passed'])
+                contact.quote = quote
+                contact.save()
+
+                quote.status = "pending"
+                quote.save()
+                request.session.flush()
+                request.session['user_id'] = orderer.id
+                return redirect("/user_account")
     return redirect("/request_quote")
 
+def delete_contact(request):
+    if 'user_id' in request.session:
+        if request.method == "POST":
+            redirect_to = request.POST['redirect_to']
+            contact_to_delete = ContactInfo.objects.get(id=request.POST['contact_id'])
+            contact_to_delete.delete()
+            return redirect(f"/{ redirect_to }")
+    return redirect("/")
 
+def edit_contact(request, redirect_reference, contact_id):
+    if 'user_id' in request.session:
+        logged_user = User.objects.get(id=request.session['user_id'])
+        contact_to_edit = ContactInfo.objects.get(id=contact_id)
 
+        # redirect processing
+        if redirect_reference == "sci":
+            direct_to = "select_contact_info"
+        if redirect_reference == "ua":
+            direct_to = "user_account"
 
+        context = {
+            'logged_user': logged_user,
+            'contact_to_edit': contact_to_edit,
+            'direct_to': direct_to
+        }
+        return render(request, "edit_contact.html", context)
+    return redirect("/")
 
+def process_edit_contact(request):
+    if 'user_id' in request.session:
+        direct_to = request.POST['direct_to']
+        if request.method == "POST":
+            # errors handling
+            # errors = Wish.objects.wish_validator(request.POST)
+            # if len(errors) > 0:
+            #     for error in errors.values():
+            #         messages.error(request, error)
+            #     return redirect(f"/wishes/edit_wish/{ wish_id }")
+            # else:
+            contact_to_edit = ContactInfo.objects.get(id=request.POST['contact_id'])
 
+            contact_to_edit.first_name = request.POST['first_name']
+            contact_to_edit.last_name = request.POST['last_name']
+            contact_to_edit.email = request.POST['email']
+            contact_to_edit.save()
+        return redirect(f"/{ direct_to }")
+    return redirect("/")
 
+def proces_edit_profile(request):
+    if 'user_id' in request.session:
+        if request.method == "POST":
+            # errors handling
+            # errors = Wish.objects.wish_validator(request.POST)
+            # if len(errors) > 0:
+            #     for error in errors.values():
+            #         messages.error(request, error)
+            #     return redirect(f"/wishes/edit_wish/{ wish_id }")
+            # else:
 
-
-
-
-
-
+            logged_user = User.objects.get(id=request.session['user_id'])
+            logged_user.first_name = request.POST['first_name']
+            logged_user.last_name = request.POST['last_name']
+            logged_user.email = request.POST['email']
+            logged_user.save()
+        return redirect("/user_account")
+    return redirect("/")
+    
 
 
 

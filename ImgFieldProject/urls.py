@@ -22,7 +22,7 @@ from django.conf import settings
 
 # to use admin dashboard
 from django.contrib import admin
-from imgfield_app.models import User, Product, EnteredItem, Photo, Category, Order, OrderProduct, OrderItem, Quote, QuoteProduct, QuoteItem, Review
+from imgfield_app.models import User, Product, EnteredItem, Photo, Category, Order, OrderProduct, OrderItem, Quote, QuoteProduct, QuoteItem, ContactInfo, Review
 class UserAdmin(admin.ModelAdmin):
     pass
 admin.site.register(User, UserAdmin)
@@ -55,10 +55,10 @@ class QuoteProductAdmin(admin.ModelAdmin):
 admin.site.register(QuoteProduct, QuoteProductAdmin)
 class QuoteItemAdmin(admin.ModelAdmin):
     pass
-admin.site.register(QuoteItem, QuoteItemAdmin)
-
-
-
+admin.site.register(QuoteItem, QuoteItemAdmin)  
+class ContactInfoAdmin(admin.ModelAdmin):
+    pass
+admin.site.register(ContactInfo, ContactInfoAdmin)
 class ReviewAdmin(admin.ModelAdmin):
     pass
 admin.site.register(Review, ReviewAdmin)

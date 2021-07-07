@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from imgfield_app.models import User
+from imgfield_app.models import User, Quote
 from django.contrib import messages
 import bcrypt
 
@@ -59,5 +59,8 @@ def login(request):
 
 
 def logout(request):
+    if 'open_quote' in request.session:
+        quote = Quote.objects.get(id=request.session['open_quote'])
+        quote.delete()
     request.session.flush()
     return redirect("/")

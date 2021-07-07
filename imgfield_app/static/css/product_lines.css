@@ -45,9 +45,9 @@
 #l_sidebar h3 {
     background-image: linear-gradient(#b2b2b6, #66617e, #b2b2b6);
     color: white;
-    padding: 3px;
-    border-radius: 3px;
+    padding: 6px;
     margin-bottom: 12px;
+    border-radius: 9px 9px 0px 0px;
 }
 
 #menu,
@@ -65,8 +65,16 @@
 
 #menu a {
     display: block;
-    padding: 9px;
+    margin: 0px 9px 9px 9px;
+    padding: 6px;
+    border-radius: 3px;
 }
+
+#active {
+    background-color: #5440af;
+    color: white;
+}
+
 
 #contact_us {
     margin-top: 306px;

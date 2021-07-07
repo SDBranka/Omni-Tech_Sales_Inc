@@ -35,9 +35,10 @@
                     <a href="/product_lines">Product Lines</a>
                     <!-- <a href="/PRODUCTS">Products</a> -->
                     <a href="/services/1">Services</a>
-                    <a href="/INDUSTRIES">Industries</a>
-                    <a href="/ABOUTUS">About Us</a>
-                    <a href="/CONTACTUS">Contact Us</a>
+                    <a id="active" href="/request_quote">Request a Quote</a>
+                    <!-- <a href="/INDUSTRIES">Industries</a> -->
+                    <!-- <a href="/ABOUTUS">About Us</a> -->
+                    <!-- <a href="/CONTACTUS">Contact Us</a> -->
                     {% if logged_user %}
                         <a href="/user_account">My Account</a>
                     {% endif %}
@@ -128,7 +129,7 @@
                                             </td>
                                             <td>???????</td>
                                             <!-- <td>#</td> -->
-                                            <td id="actions">
+                                            <td class="actions">
                                                 <form action="/remove_product_from_quote" method="POST">
                                                     {% csrf_token %}
                                                     <input type="hidden" name="product_id" value="{{ product.id }}">
@@ -164,11 +165,11 @@
                                             </td>
                                             <td>???????</td>
                                             <!-- <td>#</td> -->
-                                            <td id="actions">
+                                            <td class="actions">
                                                 <form action="/remove_item_from_quote" method="POST">
                                                     {% csrf_token %}
                                                     <input type="hidden" name="item_id" value="{{ item.id }}">
-                                                    <button>Remove</button>
+                                                    <button id="remove_btn">Remove</button>
                                                 </form>                                                        
                                             </td>
                                         </tr>
@@ -202,17 +203,14 @@
                                     </div>      <!--end delete_quote-->
                                     <div id="submit_quote">
                                         <h3>Submit This Quote</h3>
-                                        <form action="/submit_quote" method="POST">
-                                            {% csrf_token %}
-                                            <button type="submit">Submit Quote</button>
-                                        </form>
+                                        <button><a href="/select_contact_info">Submit Quote</a></button>
                                     </div>      <!--end submit_quote-->
                                 </div>      <!--end handle_quote-->        
                             </div>      <!--end display_products-->
                         {% else %}
                             <div class="no_quote">
                                 <p>No Quote Currently Open</p>
-                                <p>Request a quote on an item above or from our <a href="/services">Services</a> page</p>
+                                <p>Request a quote on an item above or from our <a href="/services/1">Services</a> page</p>
                             </div>      <!--end no_quote-->
                         {% endif %}     <!--#end if open_quote-->
                     {% else %}      
