@@ -13,170 +13,170 @@
 </head>
 
 <body>
-        <img id="banner" src="{% static 'img/site/OmnitechBannerT.png' %}">     <!--this works-->
-        <div id="header">
-            <h1>Welcome {% if logged_user %}{{ logged_user.first_name }}{% endif %}</h1>
-            <div id="links">
-                {% if logged_user.security_level > 4 %}
-                    <a href="/admin_access">Go to Admin</a>  |  
-                {% endif %}
+    <img id="banner" src="{% static 'img/site/OmnitechBannerT.png' %}">     <!--this works-->
+    <div id="header">
+        <h1>Welcome {% if logged_user %}{{ logged_user.first_name }}{% endif %}</h1>
+        <div id="links">
+            {% if logged_user.security_level > 4 %}
+                <a href="/admin_access">Go to Admin</a>  |  
+            {% endif %}
+            {% if logged_user %}
+                <a href="/signon/logout">Logout</a>
+            {% else %}
+                <a href="/signon">Log In/Register</a>
+            {% endif %}                  
+        </div>      <!--end links-->
+    </div>      <!--end header-->
+    <div id="content">
+        <div id="l_sidebar">
+            <div id="menu">
+                <h3>Menu</h3>
+                <a href="/">Home</a>
+                <a href="/product_lines">Product Lines</a>
+                <!-- <a href="/PRODUCTS">Products</a> -->
+                <a href="/services/1">Services</a>
+                <a href="/request_quote">Request a Quote</a>
+                <!-- <a href="/INDUSTRIES">Industries</a> -->
+                <!-- <a href="/ABOUTUS">About Us</a> -->
+                <!-- <a href="/CONTACTUS">Contact Us</a> -->
                 {% if logged_user %}
-                    <a href="/signon/logout">Logout</a>
-                {% else %}
-                    <a href="/signon">Log In/Register</a>
-                {% endif %}                  
-            </div>      <!--end links-->
-        </div>      <!--end header-->
-        <div id="content">
-            <div id="l_sidebar">
-                <div id="menu">
-                    <h3>Menu</h3>
-                    <a href="/">Home</a>
-                    <a href="/product_lines">Product Lines</a>
-                    <!-- <a href="/PRODUCTS">Products</a> -->
-                    <a href="/services/1">Services</a>
-                    <a href="/request_quote">Request a Quote</a>
-                    <!-- <a href="/INDUSTRIES">Industries</a> -->
-                    <!-- <a href="/ABOUTUS">About Us</a> -->
-                    <!-- <a href="/CONTACTUS">Contact Us</a> -->
-                    {% if logged_user %}
-                        <a href="/user_account">My Account</a>
-                    {% endif %}
-                </div>      <!--end menu-->
-                <div id="contact_us">
-                    <h3>Contact Us</h3>
-                    <p>31189 Schoolcraft Road</p>
-                    <p>Livonia, MI 48150</p>
-                    <div id="break"></div>
-                    <p>Phone: 734-425-5730</p>
-                    <p>Fax: 734-261-6337</p>
-                    <p>Email:</p>
-                    <p>omnitech_sales@ameritech.net</p>
-                </div>      <!--end contact_us-->
-                <div id="badges">
-                    <img id="iso_badge" src="{% static 'img/site/iso17025_badge.png' %}">
-                    <img id="wbenc_badge" src="{% static 'img/site/wbenc_badge.png' %}">
-                </div>      <!--end wbenc-->
-            </div>      <!--end l_sidebar-->
-            <div id="main">
-                {% if user_contacts %}
-                    <div id="contact_display">
-                        <h3>Your Contact Information:</h3>
-                            <div id="contact_pods">
-                                {% for contact in user_contacts %}
-                                    <div id="contact">
-                                        <p>{{ contact.address_1 }}
-                                            {% if contact.address_2 %}, 
-                                            {{ contact.address_2 }}
-                                            {% endif %}
-                                        </p>
-                                        <p>{{ contact.city }}, {{ contact.state }}</p>
-                                        <p>{{ contact.zip_code }}</p>
-                                        <p>{{ contact.phone_number }}</p>
-                                        <div class="contact_options">
-                                            <div class="style_box">
-                                                <button type="submit"><a href="edit_contact/sci/{{ contact.id }}">Edit</a></button>
-                                                {% if user_contacts.all.count > 1 %}
-                                                    <span> |  </span>
-                                                    <form action="/delete_contact" method="POST">
-                                                        {% csrf_token %}
-                                                        <input type="hidden" name="contact_id" value="{{ contact.id }}">
-                                                        <input type="hidden" name="redirect_to" value="select_contact_info">
-                                                        <button type="submit">Delete</button>
-                                                    </form>        
-                                                    {% endif %}
-                                            </div>      <!--end style_box-->
-                                        </div>      <!--end contact_options-->
-                                        <form action="/submit_quote" method="POST">
-                                            {% csrf_token %}
-                                            <input type="hidden" name="contact_id" value="{{ contact.id }}">
-                                            <button type="submit">Select This Addresss</button>
-                                        </form>
-                                    </div>      <!--end contact-->
-                                {% endfor %}
-                            </div>      <!--end contact_pods-->
-                    </div>      <!--end contact_display-->
-                {% endif %}     <!--end if user_contacts-->
-                <div id="add_new_contact">
-                    <h3>Add New Contact Information:</h3>
-                    <form action="/add_new_contact" method="POST">
-                        {% csrf_token %}
-                        <p>Address 1: <input id="address_1_input" type="text" name="address_1"></p>
-                        <p>Address 2: <input id="address_2_input" type="text" name="address_2"></p>
-                        <p>City: <input id="city_input" type="text" name="city"></p>
-                        <p>Zip Code: <input id="zip_code_input" type="text" name="zip_code"></p>
-                        <p>State: 
-                            <select id="state_input" name="state">
-                                <option value="">-Please Select a State-</option>
-                                <option value="AL">Alabama</option>
-                                <option value="AK">Alaska</option>
-                                <option value="AZ">Arizona</option>
-                                <option value="AR">Arkansas</option>
-                                <option value="CA">California</option>
-                                <option value="CO">Colorado</option>
-                                <option value="CT">Connecticut</option>
-                                <option value="DE">Delaware</option>
-                                <option value="DC">District Of Columbia</option>
-                                <option value="FL">Florida</option>
-                                <option value="GA">Georgia</option>
-                                <option value="HI">Hawaii</option>
-                                <option value="ID">Idaho</option>
-                                <option value="IL">Illinois</option>
-                                <option value="IN">Indiana</option>
-                                <option value="IA">Iowa</option>
-                                <option value="KS">Kansas</option>
-                                <option value="KY">Kentucky</option>
-                                <option value="LA">Louisiana</option>
-                                <option value="ME">Maine</option>
-                                <option value="MD">Maryland</option>
-                                <option value="MA">Massachusetts</option>
-                                <option value="MI">Michigan</option>
-                                <option value="MN">Minnesota</option>
-                                <option value="MS">Mississippi</option>
-                                <option value="MO">Missouri</option>
-                                <option value="MT">Montana</option>
-                                <option value="NE">Nebraska</option>
-                                <option value="NV">Nevada</option>
-                                <option value="NH">New Hampshire</option>
-                                <option value="NJ">New Jersey</option>
-                                <option value="NM">New Mexico</option>
-                                <option value="NY">New York</option>
-                                <option value="NC">North Carolina</option>
-                                <option value="ND">North Dakota</option>
-                                <option value="OH">Ohio</option>
-                                <option value="OK">Oklahoma</option>
-                                <option value="OR">Oregon</option>
-                                <option value="PA">Pennsylvania</option>
-                                <option value="RI">Rhode Island</option>
-                                <option value="SC">South Carolina</option>
-                                <option value="SD">South Dakota</option>
-                                <option value="TN">Tennessee</option>
-                                <option value="TX">Texas</option>
-                                <option value="UT">Utah</option>
-                                <option value="VT">Vermont</option>
-                                <option value="VA">Virginia</option>
-                                <option value="WA">Washington</option>
-                                <option value="WV">West Virginia</option>
-                                <option value="WI">Wisconsin</option>
-                                <option value="WY">Wyoming</option>
-                            </select>	
-                        <p>Country: 
-                            <select id="country_input" name="country">
-                                <option value="">-Please Select a Country-</option>
-                                <option value="United States">United States</option>
-                                <option value="Canada">Canada</option>
-                                <option value="Mexicon">Mexico</option>
-                                <option value="Germany">Germany</option>
-                                <option value="Poland">Poland</option>
-                            </select>
-                        </p>
-                        <p>Phone: <input id="phone_input" type="text" name="phone"></p>
-                        <input type="hidden" name="confirm_quote" value="True">
-                        <button type="submit">Add and Select This Addresss</button>
-                    </form>
-                </div>      <!--end add_new_contact-->
-            </div>      <!--end main-->
-        </div>      <!--end content-->
+                    <a href="/user_account">My Account</a>
+                {% endif %}
+            </div>      <!--end menu-->
+            <div id="contact_us">
+                <h3>Contact Us</h3>
+                <p>31189 Schoolcraft Road</p>
+                <p>Livonia, MI 48150</p>
+                <div id="break"></div>
+                <p>Phone: 734-425-5730</p>
+                <p>Fax: 734-261-6337</p>
+                <p>Email:</p>
+                <p>omnitech_sales@ameritech.net</p>
+            </div>      <!--end contact_us-->
+            <div id="badges">
+                <img id="iso_badge" src="{% static 'img/site/iso17025_badge.png' %}">
+                <img id="wbenc_badge" src="{% static 'img/site/wbenc_badge.png' %}">
+            </div>      <!--end wbenc-->
+        </div>      <!--end l_sidebar-->
+        <div id="main">
+            {% if user_contacts %}
+                <div id="contact_display">
+                    <h3>Your Contact Information:</h3>
+                        <div id="contact_pods">
+                            {% for contact in user_contacts %}
+                                <div id="contact">
+                                    <p>{{ contact.address_1 }}
+                                        {% if contact.address_2 %}, 
+                                        {{ contact.address_2 }}
+                                        {% endif %}
+                                    </p>
+                                    <p>{{ contact.city }}, {{ contact.state }}</p>
+                                    <p>{{ contact.zip_code }}</p>
+                                    <p>{{ contact.phone_number }}</p>
+                                    <div class="contact_options">
+                                        <div class="style_box">
+                                            <button type="submit"><a href="edit_contact/sci/{{ contact.id }}">Edit</a></button>
+                                            {% if user_contacts.all.count > 1 %}
+                                                <span> |  </span>
+                                                <form action="/delete_contact" method="POST">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="contact_id" value="{{ contact.id }}">
+                                                    <input type="hidden" name="redirect_to" value="select_contact_info">
+                                                    <button type="submit">Delete</button>
+                                                </form>        
+                                                {% endif %}
+                                        </div>      <!--end style_box-->
+                                    </div>      <!--end contact_options-->
+                                    <form action="/submit_quote" method="POST">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="contact_id" value="{{ contact.id }}">
+                                        <button type="submit">Select This Addresss</button>
+                                    </form>
+                                </div>      <!--end contact-->
+                            {% endfor %}
+                        </div>      <!--end contact_pods-->
+                </div>      <!--end contact_display-->
+            {% endif %}     <!--end if user_contacts-->
+            <div id="add_new_contact">
+                <h3>Add New Contact Information:</h3>
+                <form action="/add_new_contact" method="POST">
+                    {% csrf_token %}
+                    <p>Address 1: <input id="address_1_input" type="text" name="address_1"></p>
+                    <p>Address 2: <input id="address_2_input" type="text" name="address_2"></p>
+                    <p>City: <input id="city_input" type="text" name="city"></p>
+                    <p>Zip Code: <input id="zip_code_input" type="text" name="zip_code"></p>
+                    <p>State: 
+                        <select id="state_input" name="state">
+                            <option value="">-Please Select a State-</option>
+                            <option value="AL">Alabama</option>
+                            <option value="AK">Alaska</option>
+                            <option value="AZ">Arizona</option>
+                            <option value="AR">Arkansas</option>
+                            <option value="CA">California</option>
+                            <option value="CO">Colorado</option>
+                            <option value="CT">Connecticut</option>
+                            <option value="DE">Delaware</option>
+                            <option value="DC">District Of Columbia</option>
+                            <option value="FL">Florida</option>
+                            <option value="GA">Georgia</option>
+                            <option value="HI">Hawaii</option>
+                            <option value="ID">Idaho</option>
+                            <option value="IL">Illinois</option>
+                            <option value="IN">Indiana</option>
+                            <option value="IA">Iowa</option>
+                            <option value="KS">Kansas</option>
+                            <option value="KY">Kentucky</option>
+                            <option value="LA">Louisiana</option>
+                            <option value="ME">Maine</option>
+                            <option value="MD">Maryland</option>
+                            <option value="MA">Massachusetts</option>
+                            <option value="MI">Michigan</option>
+                            <option value="MN">Minnesota</option>
+                            <option value="MS">Mississippi</option>
+                            <option value="MO">Missouri</option>
+                            <option value="MT">Montana</option>
+                            <option value="NE">Nebraska</option>
+                            <option value="NV">Nevada</option>
+                            <option value="NH">New Hampshire</option>
+                            <option value="NJ">New Jersey</option>
+                            <option value="NM">New Mexico</option>
+                            <option value="NY">New York</option>
+                            <option value="NC">North Carolina</option>
+                            <option value="ND">North Dakota</option>
+                            <option value="OH">Ohio</option>
+                            <option value="OK">Oklahoma</option>
+                            <option value="OR">Oregon</option>
+                            <option value="PA">Pennsylvania</option>
+                            <option value="RI">Rhode Island</option>
+                            <option value="SC">South Carolina</option>
+                            <option value="SD">South Dakota</option>
+                            <option value="TN">Tennessee</option>
+                            <option value="TX">Texas</option>
+                            <option value="UT">Utah</option>
+                            <option value="VT">Vermont</option>
+                            <option value="VA">Virginia</option>
+                            <option value="WA">Washington</option>
+                            <option value="WV">West Virginia</option>
+                            <option value="WI">Wisconsin</option>
+                            <option value="WY">Wyoming</option>
+                        </select>	
+                    <p>Country: 
+                        <select id="country_input" name="country">
+                            <option value="">-Please Select a Country-</option>
+                            <option value="United States">United States</option>
+                            <option value="Canada">Canada</option>
+                            <option value="Mexicon">Mexico</option>
+                            <option value="Germany">Germany</option>
+                            <option value="Poland">Poland</option>
+                        </select>
+                    </p>
+                    <p>Phone: <input id="phone_input" type="text" name="phone"></p>
+                    <input type="hidden" name="confirm_quote" value="True">
+                    <button type="submit">Add and Select This Addresss</button>
+                </form>
+            </div>      <!--end add_new_contact-->
+        </div>      <!--end main-->
+    </div>      <!--end content-->
 </body>
 
 </html>
