@@ -146,20 +146,18 @@
                                             <div class="prod_quant">
                                                 <p>{{ item.quantity }}</p>
                                                 <div class="quant_btns">
-                                                    <div class="quant_btns">
-                                                        <form action="/increase_item_quantity" method="POST">
+                                                    <form action="/increase_item_quantity" method="POST">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="item_id" value="{{ item.id }}">
+                                                        <button class="add_btn">&#9650;</button>                                                            
+                                                    </form>
+                                                    {% if item.quantity > 1 %}
+                                                        <form action="/decrease_item_quantity" method="POST">
                                                             {% csrf_token %}
                                                             <input type="hidden" name="item_id" value="{{ item.id }}">
-                                                            <button class="add_btn">&#9650;</button>                                                            
-                                                        </form>
-                                                        {% if item.quantity > 1 %}
-                                                            <form action="/decrease_item_quantity" method="POST">
-                                                                {% csrf_token %}
-                                                                <input type="hidden" name="item_id" value="{{ item.id }}">
-                                                                <button class="subt_btn">&#9660;</button>
-                                                            </form>                                                        
-                                                        {% endif %}
-                                                    </div>      <!--end quant_btns-->    
+                                                            <button class="subt_btn">&#9660;</button>
+                                                        </form>                                                        
+                                                    {% endif %}
                                                 </div>      <!--end quant_btns-->    
                                             </div>      <!--end prod_quant-->
                                         </td>

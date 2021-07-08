@@ -1,3 +1,4 @@
+from django.db.models.query_utils import Q
 from django.shortcuts import render, redirect
 from imgfield_app.models import ContactInfo, User, Product, Photo, Quote, QuoteProduct, QuoteItem, Order, OrderProduct, OrderItem, Category
 from django.contrib import messages
@@ -336,3 +337,58 @@ def view_quote(request, quote_id):
             }
             return render(request, "view_quote.html", context)
     return redirect("/")
+
+
+def edit_off_notes(request):
+    if 'user_id' in request.session:
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            if request.method == "POST":
+                quote = Quote.objects.get(id=request.POST['quote_id'])
+                quote.office_notes = request.POST['office_notes']
+                quote.save()
+                return redirect(f"/admin_access/view_quote/{ quote.id }")
+    return redirect("/")
+
+
+
+
+
+
+def begin_processing_quote(request):
+    if 'user_id' in request.session:
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            if request.method == "POST":
+                quote_id = request.POST['quote_id']
+                quote = Quote.objects.get(id=quote_id)
+                quote.status = "in process"
+                quote.save()
+                return redirect(f"/admin_access/view_quote/{ quote_id }")
+        return redirect("/admin_access")
+    return redirect("/")
+
+def order_quote(request):
+    if 'user_id' in request.session:
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            if request.method == "POST":
+                quote_id = request.POST['quote_id']
+                quote = Quote.objects.get(id=quote_id)
+                quote.status = "completed"
+                quote.save()
+
+                Order.objects.create(
+                    ordered_by = quote.ordered_by,
+                    contact_info = quote.contact_info,
+                    ref_number = quote.ref_number,
+                    total_price = quote.total_price,
+                    status = "open",
+                    special_instructions = quote.special_instructions,
+                    office_notes = quote.office_notes,
+                )
+######Consider different redirect after changing quote to order
+                return redirect("/admin_access/")
+        return redirect("/admin_access")
+    return redirect("/")
+

@@ -56,11 +56,25 @@ th {
     margin-bottom: 18px;
 }
 
+#office_notes {
+    margin-bottom: 18px;
+}
+
 #office_notes textarea {
     width: 81%;
     height: 234px;
 }
 
+#process_quote {
+    text-align: center;
+}
+
+#begin_proc_btn{
+    margin: 9px 0px;
+    background-color: green;
+    color: white;
+    padding: 12px;
+}
 
 
 

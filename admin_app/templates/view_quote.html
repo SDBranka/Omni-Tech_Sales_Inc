@@ -42,7 +42,9 @@
                     <th>Quantity</th>
                     <th>Combined Price</th>
                     <!-- <th>#</th> -->
-                    <th>Actions</th>
+                    {% if quote.status == "in process" %}
+                        <th>Actions</th>
+                    {% endif %}
                 </tr>
                 {% for product in products %}
                     <tr>
@@ -51,31 +53,35 @@
                         <td>
                             <div class="prod_quant">
                                 <p>{{ product.quantity }}</p>
-                                <div class="quant_btns">
-                                    <form action="/increase_product_quantity" method="POST">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="product_id" value="{{ product.id }}">
-                                        <button class="add_btn">&#9650;</button>                                                            
-                                    </form>
-                                    {% if product.quantity > 1 %}
-                                        <form action="/decrease_product_quantity" method="POST">
+                                {% if quote.status == "in process" %}
+                                    <div class="quant_btns">
+                                        <form action="/increase_product_quantity" method="POST">
                                             {% csrf_token %}
                                             <input type="hidden" name="product_id" value="{{ product.id }}">
-                                            <button class="subt_btn">&#9660;</button>
-                                        </form>                                                        
-                                    {% endif %}
+                                            <button class="add_btn">&#9650;</button>                                                            
+                                        </form>
+                                        {% if product.quantity > 1 %}
+                                            <form action="/decrease_product_quantity" method="POST">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="product_id" value="{{ product.id }}">
+                                                <button class="subt_btn">&#9660;</button>
+                                            </form>                                                        
+                                        {% endif %}
                                     </div>      <!--end quant_btns-->    
+                                {% endif %}                                                            
                             </div>      <!--end prod_quant-->
                         </td>
                         <td>{{ product.combined_price }}</td>
                         <!-- <td>#</td> -->
-                        <td class="actions">
-                            <form action="/remove_product_from_quote" method="POST">
-                                {% csrf_token %}
-                                <input type="hidden" name="product_id" value="{{ product.id }}">
-                                <button>Remove</button>
-                            </form>                                                        
-                        </td>
+                        {% if quote.status == "in process" %}
+                            <td class="actions">
+                                <form action="/remove_product_from_quote" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="product_id" value="{{ product.id }}">
+                                    <button>Remove</button>
+                                </form>                                                        
+                            </td>
+                        {% endif %}
                     </tr>
                 {% endfor %}        <!--#end for product in products-->
                 {% for item in items %}
@@ -85,7 +91,7 @@
                         <td>
                             <div class="prod_quant">
                                 <p>{{ item.quantity }}</p>
-                                <div class="quant_btns">
+                                {% if quote.status == "in process" %}
                                     <div class="quant_btns">
                                         <form action="/increase_item_quantity" method="POST">
                                             {% csrf_token %}
@@ -100,18 +106,20 @@
                                             </form>                                                        
                                         {% endif %}
                                     </div>      <!--end quant_btns-->    
-                                </div>      <!--end quant_btns-->    
+                                {% endif %}
                             </div>      <!--end prod_quant-->
                         </td>
                         <td>{{ item.combined_price }}</td>
                         <!-- <td>#</td> -->
-                        <td class="actions">
-                            <form action="/remove_item_from_quote" method="POST">
-                                {% csrf_token %}
-                                <input type="hidden" name="item_id" value="{{ item.id }}">
-                                <button id="remove_btn">Remove</button>
-                            </form>                                                        
-                        </td>
+                        {% if quote.status == "in process" %}
+                            <td class="actions">
+                                <form action="/remove_item_from_quote" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="item_id" value="{{ item.id }}">
+                                    <button id="remove_btn">Remove</button>
+                                </form>                                                        
+                            </td>
+                        {% endif %}                  
                     </tr>
                 {% endfor %}        <!--#end for item in items#-->
             </table>
@@ -124,26 +132,31 @@
                     <form action="/admin_access/edit_off_notes" method="POST">
                         {% csrf_token %}
                         <textarea name="office_notes">{{ quote.office_notes }}</textarea>
+                        <input type="hidden" name="quote_id" value="{{ quote.id }}">                               
                         <button type="submit">Edit</button>
                     </form>
             </div>      <!--end office_notes-->
+            <div id="process_quote">
+                {% if quote.status == "pending" %}
+                    <h4>Do You Wish To Begin Working On This Quote?</h4>
+                    <form action="/admin_access/begin_processing_quote" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="quote_id" value="{{ quote.id }}">                               
+                        <button id="begin_proc_btn" type="submit">Begin Processing</button>
+                    </form>
+                {% else %}
+                    <h4>Do You Wish To Order This Quote?</h4>
+                    <form action="/admin_access/order_quote" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="quote_id" value="{{ quote.id }}">                               
+                        <button id="begin_proc_btn" type="submit">Begin Processing</button>
+                    </form>
 
 
-
-
-
-
-
-
-
-
-
-            <!--
-            # status choices = {open, pending, in process, completed, archived }
-            office_notes = models.TextField(null=True, blank=True)
-            created_at = models.DateTimeField(auto_now_add=True)
-            updated_at = models.DateTimeField(auto_now=True) -->
-        
+                {% endif %}
+            </div>      <!--end process_quote-->
+            <!-- # status choices = {open, pending, in process, completed, archived } -->
+    
 
 
 
