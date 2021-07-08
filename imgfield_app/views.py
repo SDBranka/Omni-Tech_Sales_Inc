@@ -4,6 +4,7 @@ from .models import User, Product, EnteredItem, Photo, Category, Order, Quote, Q
 from django.contrib import messages
 from django.core.paginator import Paginator
 import uuid
+from datetime import datetime
 
 
 def index(request):
@@ -86,6 +87,7 @@ def process_add_service_to_quote(request):
             ref_number = uuid.uuid4().hex[:9],
             total_price = combined_price,
             status = "open",
+            placed_at = datetime.now()
             )
             QuoteProduct.objects.create(
                 product_on_quote = product,
@@ -181,6 +183,7 @@ def process_add_item_to_quote(request):
             ref_number = uuid.uuid4().hex[:9],
             total_price = combined_price,
             status = "open",
+            placed_at = datetime.now()
             )
 
             QuoteItem.objects.create(
@@ -364,6 +367,7 @@ def submit_quote(request):
                 contact = ContactInfo.objects.get(id=request.POST['contact_id'])
                 contact.quotes.add(quote)  
 
+                quote.placed_at = datetime.now()
                 quote.status = "pending"
                 quote.save()
                 request.session.flush()
@@ -373,6 +377,7 @@ def submit_quote(request):
                 contact = ContactInfo.objects.get(id=request.session['check_passed'])
                 contact.quotes.add(quote)
 
+                quote.placed_at = datetime.now()
                 quote.status = "pending"
                 quote.save()
                 request.session.flush()

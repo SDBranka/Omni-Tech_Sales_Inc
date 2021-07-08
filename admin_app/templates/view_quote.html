@@ -28,6 +28,7 @@
                 <h3 id="total">Total: ${{ quote.total_price }}</h3>
             </div>      <!--end quote_head-->
             <div id="order_info">
+                <p>Date Placed: {{quote.placed_at }}</p>
                 <p>Placed By: {{ quote.quoted_by.last_name }}, {{ quote.quoted_by.first_name }}</p>
                 <p>Email: {{ quote.quoted_by.email }}     ||     Phone: {{ quote.contact_info.phone }}</p>
                 <p>Address: {{ quote.contact_info.address_1 }}</p>

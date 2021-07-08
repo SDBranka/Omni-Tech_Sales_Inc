@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Admin Quotes Display</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/admin_main.css' %}">
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <h1>Welcome, {{ logged_user.first_name }}</h1>
+            <div id="links">
+                <a href="/">Back to Store</a>  |  
+                <a href="/signon/logout">Logout</a>
+            </div>      <!--end links-->            
+        </div>      <!--end header-->
+        <div id="content">
+            <h2>Quotes</h2>
+            <div id="quotes">
+                {% for quote in all_quotes %}
+                    <div class="quote_pod">
+                        <div class="quote_info">
+                            <h3>Ref #:<a href="/admin_acces/view_quote/{{ quote.id }}">{{ quote.name }}</a></h3>
+                            <p>Date Placed: {{ quote.placed_at }}</p>
+                            <p>List Price: {{quote.total_price }}</p>
+                            <p>Name: {{ quote.quoted_by.last_name }}, {{ quote.quoted_by.first_name }}</p>
+                            <p>Last Updated: {{ quote.updated_at }}</p>                            
+                        </div>                    <!--end .quote_info-->
+                        <div class="quote_status">
+                            <h3 class="status">{{ quote.status }}</h3>
+                        </div>      <!--end .quote_status-->                
+                    </div>      <!--end .quote_pod-->
+                {% endfor%}
+            </div>      <!--end quotes-->
+        </div>      <!--end content-->
+    </div>      <!--end wrapper-->
+</body>
+
+</html>

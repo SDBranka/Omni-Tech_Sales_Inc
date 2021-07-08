@@ -409,3 +409,45 @@ def order_quote(request):
         return redirect("/admin_access")
     return redirect("/")
 
+def quotes_display(request):
+    if 'user_id' in request.session:
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+        # status choices = {open, pending, in process, completed, archived }
+            all_active_quotes= Quote.objects.exclude(status = "archived")
+
+            context = {
+                'logged_user': logged_user,
+                'all_active_quotes': all_active_quotes
+            }
+        return render(request, "quotes_display.html", context)
+    return redirect("/")
+
+
+def orders_display(request):
+    if 'user_id' in request.session:
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+        # status choices = {open, pending, in process, completed, archived }
+            all_active_orders= Order.objects.exclude(status = "archived")
+            # all_active_orders = Order.objects.all()
+
+            # quote = Quote.objects.all()
+            # print(f"ContactInfo_id: {quote.contact_info.id}")
+            order = Order.objects.get(id=1)
+            # print(f"##### { quote}")
+            # print(f"#### {quote.contact_info}")
+            print(f"#### {order.contact_info.user.first_name}")
+
+            # order = Order.objects.all()
+            # print(f"ContactInfo_id: {order.contact_info.id}")
+            # print(f"##### { order}")
+
+
+            context = {
+                'logged_user': logged_user,
+                'all_active_orders': all_active_orders
+                # 'test': 
+            }
+        return render(request, "orders_display.html", context)
+    return redirect("/")

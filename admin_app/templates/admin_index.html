@@ -24,8 +24,8 @@
             <div id="navigation">
                 <h3>Navigation</h3>
                 <div id="nav_links">
-                    <p>Quotes</p>
-                    <p>Orders</p>
+                    <a href="/admin_access/quotes_display">View Quotes</a>
+                    <a href="/admin_access/orders_display">View Orders</a>
                     <a href="/admin_access/select_product">Edit Product</a>
                     <a href="/admin_access/edit_user">Edit User</a>
                     <a href="/admin_access/administrative">Administrative</a>
@@ -44,7 +44,7 @@
                                         <p>Ref #: <a href="/admin_access/view_quote/{{ quote.id }}">{{ quote.ref_number }}</a></p>
                                         <p>Name: {{ quote.quoted_by.last_name }}, {{ quote.quoted_by.first_name }}</p>
                                         <p>List Price: {{quote.total_price }}</p>
-                                        <p>Date Placed: {{ quote.updated_at }}</p>
+                                        <p>Date Placed: {{ quote.placed_at }}</p>
                                     {% endfor %}        <!--end for quote in new_quotes-->
                                 </div>      <!--end .pod-->
                             </div>      <!--end new_quote_display-->
