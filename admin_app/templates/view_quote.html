@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Admin Home</title>
+    <title>Admin View Quote</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% load static %}
@@ -17,9 +17,10 @@
         <div id="header">
             <h1>Welcome, {{ logged_user.first_name }}</h1>
             <div id="links">
+                <a href="/admin_access">Admin Home</a>  |  
                 <a href="/">Back to Store</a>  |  
-                <a href="/signon/logout">Logout</a>
-            </div>      <!--end links-->            
+                <a href="/sigon/logout">Logout</a>
+            </div>      <!--end links-->
         </div>      <!--end header-->
         <div id="content">
             <div id="quote_head">
@@ -144,15 +145,15 @@
                         <input type="hidden" name="quote_id" value="{{ quote.id }}">                               
                         <button id="begin_proc_btn" type="submit">Begin Processing</button>
                     </form>
-                {% else %}
+                {% elif quote.status == "in process" %}
                     <h4>Do You Wish To Order This Quote?</h4>
                     <form action="/admin_access/order_quote" method="POST">
                         {% csrf_token %}
                         <input type="hidden" name="quote_id" value="{{ quote.id }}">                               
-                        <button id="begin_proc_btn" type="submit">Begin Processing</button>
+                        <button id="begin_proc_btn" type="submit">Open An Order</button>
                     </form>
-
-
+                {% else %}
+                    <h2>Quote Status: {{ quote.status }}</h2>
                 {% endif %}
             </div>      <!--end process_quote-->
             <!-- # status choices = {open, pending, in process, completed, archived } -->

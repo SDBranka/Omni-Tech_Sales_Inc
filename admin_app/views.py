@@ -20,6 +20,7 @@ def index(request):
         'all_products': Product.objects.all(),
         'new_quotes': Quote.objects.filter(status="pending"),
         'q_in_process_count': Quote.objects.filter(status="in process").count(),
+        'o_open_count': Order.objects.filter(status="open").count(),
         'o_pending_count': Order.objects.filter(status="pending").count(),
         'o_in_process_count': Order.objects.filter(status="in process").count(),
     }
@@ -350,16 +351,14 @@ def edit_off_notes(request):
                 return redirect(f"/admin_access/view_quote/{ quote.id }")
     return redirect("/")
 
-
-
-
-
-
 def begin_processing_quote(request):
     if 'user_id' in request.session:
+        print("###begin_processing_quote1")
         logged_user = User.objects.get(id=request.session['user_id'])
         if logged_user.security_level > 4:
+            print("###begin_processing_quote2")
             if request.method == "POST":
+                print("###begin_processing_quote3")
                 quote_id = request.POST['quote_id']
                 quote = Quote.objects.get(id=quote_id)
                 quote.status = "in process"
@@ -373,20 +372,38 @@ def order_quote(request):
         logged_user = User.objects.get(id=request.session['user_id'])
         if logged_user.security_level > 4:
             if request.method == "POST":
-                quote_id = request.POST['quote_id']
-                quote = Quote.objects.get(id=quote_id)
+                quote = Quote.objects.get(id=request.POST['quote_id'])
                 quote.status = "completed"
                 quote.save()
 
-                Order.objects.create(
-                    ordered_by = quote.ordered_by,
+                new_order = Order.objects.create(
+                    ordered_by = quote.quoted_by,
                     contact_info = quote.contact_info,
                     ref_number = quote.ref_number,
-                    total_price = quote.total_price,
+                    total_price = 0,
                     status = "open",
                     special_instructions = quote.special_instructions,
                     office_notes = quote.office_notes,
                 )
+
+                for product in quote.quote_product.all():
+                    new_orderproduct = OrderProduct.objects.create(
+                        product_on_order = product.product_on_quote,
+                        order = new_order,
+                        quantity = product.quantity,
+                        combined_price = product.combined_price                        
+                    )
+                    new_order.total_price += new_orderproduct.combined_price
+                    new_order.save()
+                for item in quote.quote_item.all():
+                    new_orderitem = OrderItem.objects.create(
+                        item_on_order = item.item_on_quote,
+                        order = new_order,
+                        quantity = item.quantity,
+                        combined_price = item.combined_price                        
+                    )
+                    new_order.total_price += new_orderitem.combined_price
+                    new_order.save()
 ######Consider different redirect after changing quote to order
                 return redirect("/admin_access/")
         return redirect("/admin_access")
