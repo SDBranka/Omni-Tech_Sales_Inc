@@ -34,3 +34,7 @@ h2 {
     margin-bottom: 9px;
 }
 
+button {
+    padding: 3px;
+    border-radius: 3px;
+}

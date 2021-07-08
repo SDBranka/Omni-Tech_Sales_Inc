@@ -149,7 +149,6 @@ def request_quote(request):
                 'open_quote': open_quote,
                 'products': all_quoteproducts,
                 'items': all_quoteitems,
-                # 'user_quotes': Quote.objects.filter(quoted_by = logged_user)    
             }
         return render(request, "request_quote.html", context)
     return render(request, "request_quote.html")
@@ -363,9 +362,8 @@ def submit_quote(request):
             quote = Quote.objects.get(id=request.session['open_quote'])
             if request.method == "POST": 
                 contact = ContactInfo.objects.get(id=request.POST['contact_id'])
-                contact.quote = quote
-                contact.save()
-                
+                contact.quotes.add(quote)  
+
                 quote.status = "pending"
                 quote.save()
                 request.session.flush()
@@ -373,8 +371,7 @@ def submit_quote(request):
                 return redirect("/user_account")
             if 'check_passed' in request.session:
                 contact = ContactInfo.objects.get(id=request.session['check_passed'])
-                contact.quote = quote
-                contact.save()
+                contact.quotes.add(quote)
 
                 quote.status = "pending"
                 quote.save()

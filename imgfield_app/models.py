@@ -62,6 +62,24 @@ class User(models.Model):
     objects = UserManager()
 
 
+class ContactInfo(models.Model):
+    # orders
+    # quotes
+    user = models.ManyToManyField(
+        User,
+        related_name="user_contact_infos"
+    )
+    address_1 = models.CharField(max_length=54)
+    address_2 = models.CharField(max_length=54, null=True, blank=True)
+    city = models.CharField(max_length=54)
+    zip_code = models.IntegerField()
+    state = models.CharField(max_length=54)
+    country = models.CharField(max_length=54)
+    phone = models.CharField(max_length=14)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
 class ProductManager(models.Manager):
     def new_product_validator(self, postData):
         errors = {}
@@ -164,6 +182,12 @@ class Order(models.Model):
         related_name="user_orders",
         on_delete=models.CASCADE
     )
+    contact_info =  models.ForeignKey(
+        ContactInfo, 
+        related_name="orders",
+        on_delete = models.CASCADE,
+        null=True, blank=True,
+    )
     ref_number = models.CharField(max_length=10)
     total_price = models.DecimalField(decimal_places=2, max_digits=5, null=True, blank=True)
     status = models.CharField(max_length=27)
@@ -211,11 +235,16 @@ class OrderItem(models.Model):
 class Quote(models.Model):
     # quote_product
     # quote_item
-    # quote_contact_info
     quoted_by = models.ForeignKey(
         User, 
         related_name="user_quotes",
         on_delete=models.CASCADE
+    )
+    contact_info =  models.ForeignKey(
+        ContactInfo, 
+        related_name="quotes",
+        on_delete = models.CASCADE,
+        null=True, blank=True,
     )
     ref_number = models.CharField(max_length=10)
     total_price = models.DecimalField(decimal_places=2, max_digits=5, null=True, blank=True)
@@ -257,34 +286,6 @@ class QuoteItem(models.Model):
     )
     quantity = models.IntegerField()
     combined_price = models.DecimalField(decimal_places=2, max_digits=5, null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-
-class ContactInfo(models.Model):
-    user = models.ManyToManyField(
-        User,
-        related_name="user_contact_infos"
-    )
-    order =  models.ForeignKey(
-        Order, 
-        related_name="order_contact_info",
-        on_delete = models.CASCADE,
-        null=True, blank=True,
-    )
-    quote =  models.ForeignKey(
-        Quote, 
-        related_name="quote_contact_info",
-        on_delete = models.CASCADE,
-        null=True, blank=True,
-    )
-    address_1 = models.CharField(max_length=54)
-    address_2 = models.CharField(max_length=54, null=True, blank=True)
-    city = models.CharField(max_length=54)
-    zip_code = models.IntegerField()
-    state = models.CharField(max_length=54)
-    country = models.CharField(max_length=54)
-    phone = models.CharField(max_length=14)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

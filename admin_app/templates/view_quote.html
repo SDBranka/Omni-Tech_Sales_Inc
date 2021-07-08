@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Admin Home</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/admin_main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/view_quote.css' %}">
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <h1>Welcome, {{ logged_user.first_name }}</h1>
+            <div id="links">
+                <a href="/">Back to Store</a>  |  
+                <a href="/signon/logout">Logout</a>
+            </div>      <!--end links-->            
+        </div>      <!--end header-->
+        <div id="content">
+            <div id="quote_head">
+                <h3>Quote Reference Number: {{ quote.ref_number }} </h3>
+                <h3 id="total">Total: ${{ quote.total_price }}</h3>
+            </div>      <!--end quote_head-->
+            <div id="order_info">
+                <p>Placed By: {{ quote.quoted_by.last_name }}, {{ quote.quoted_by.first_name }}</p>
+                <p>Email: {{ quote.quoted_by.email }}     ||     Phone: {{ quote.contact_info.phone }}</p>
+                <p>Address: {{ quote.contact_info.address_1 }}</p>
+                <p id="line2">{{ quote.contact_info.address_2 }}</p>
+                <p id="line3">{{ quote.contact_info.city }}, {{ quote.contact_info.state }}</p>
+                <p id="line4">{{ quote.contact_info.zip_code }}</p>
+                <p id="line5">{{ quote.contact_info.country }}</p>
+            </div>  <!--end order_info-->
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Combined Price</th>
+                    <!-- <th>#</th> -->
+                    <th>Actions</th>
+                </tr>
+                {% for product in products %}
+                    <tr>
+                        <td>{{ product.product_on_quote.name }}</td>
+                        <td>${{ product.product_on_quote.price }}</td>
+                        <td>
+                            <div class="prod_quant">
+                                <p>{{ product.quantity }}</p>
+                                <div class="quant_btns">
+                                    <form action="/increase_product_quantity" method="POST">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="product_id" value="{{ product.id }}">
+                                        <button class="add_btn">&#9650;</button>                                                            
+                                    </form>
+                                    {% if product.quantity > 1 %}
+                                        <form action="/decrease_product_quantity" method="POST">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="product_id" value="{{ product.id }}">
+                                            <button class="subt_btn">&#9660;</button>
+                                        </form>                                                        
+                                    {% endif %}
+                                    </div>      <!--end quant_btns-->    
+                            </div>      <!--end prod_quant-->
+                        </td>
+                        <td>{{ product.combined_price }}</td>
+                        <!-- <td>#</td> -->
+                        <td class="actions">
+                            <form action="/remove_product_from_quote" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_id" value="{{ product.id }}">
+                                <button>Remove</button>
+                            </form>                                                        
+                        </td>
+                    </tr>
+                {% endfor %}        <!--#end for product in products-->
+                {% for item in items %}
+                    <tr>
+                        <td>{{ item.item_on_quote.name }}</td>
+                        <td>${{ item.item_on_quote.price }}</td>
+                        <td>
+                            <div class="prod_quant">
+                                <p>{{ item.quantity }}</p>
+                                <div class="quant_btns">
+                                    <div class="quant_btns">
+                                        <form action="/increase_item_quantity" method="POST">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="item_id" value="{{ item.id }}">
+                                            <button class="add_btn">&#9650;</button>                                                            
+                                        </form>
+                                        {% if item.quantity > 1 %}
+                                            <form action="/decrease_item_quantity" method="POST">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="item_id" value="{{ item.id }}">
+                                                <button class="subt_btn">&#9660;</button>
+                                            </form>                                                        
+                                        {% endif %}
+                                    </div>      <!--end quant_btns-->    
+                                </div>      <!--end quant_btns-->    
+                            </div>      <!--end prod_quant-->
+                        </td>
+                        <td>{{ item.combined_price }}</td>
+                        <!-- <td>#</td> -->
+                        <td class="actions">
+                            <form action="/remove_item_from_quote" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="item_id" value="{{ item.id }}">
+                                <button id="remove_btn">Remove</button>
+                            </form>                                                        
+                        </td>
+                    </tr>
+                {% endfor %}        <!--#end for item in items#-->
+            </table>
+            <div id="special_instructions">
+                <h4>Special Instructions: </h4>
+                <p>{{ quote.special_instructions }}</p>
+            </div>      <!--end special_instructions-->
+            <div id="office_notes">
+                <h4>Office Notes: </h4>
+                    <form action="/admin_access/edit_off_notes" method="POST">
+                        {% csrf_token %}
+                        <textarea name="office_notes">{{ quote.office_notes }}</textarea>
+                        <button type="submit">Edit</button>
+                    </form>
+            </div>      <!--end office_notes-->
+
+
+
+
+
+
+
+
+
+
+
+            <!--
+            # status choices = {open, pending, in process, completed, archived }
+            office_notes = models.TextField(null=True, blank=True)
+            created_at = models.DateTimeField(auto_now_add=True)
+            updated_at = models.DateTimeField(auto_now=True) -->
+        
+
+
+
+
+
+                
+        </div>      <!--end content-->
+    </div>      <!--end wrapper-->
+</body>
+
+</html>

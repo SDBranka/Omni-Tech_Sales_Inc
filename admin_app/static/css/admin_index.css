@@ -34,11 +34,74 @@ h2 {
     margin-bottom: 9px;
 }
 
+/* end main display */
+
+.green {
+    color: green;
+}
+
+
+#content {
+    display: flex;
+}
+
+#navigation {
+    border: 1px solid rgb(23, 73, 211);
+    margin-right: 25px;
+    background-color: white;
+}
+
+#navigation h3,
+#dashboard h2 {
+    background-color: rgb(115, 115, 175);
+    padding: 5px;
+    color: white;
+}
+
+#nav_links {
+    padding: 9px;
+}
+
 #navigation a {
-    margin-bottom: 5px;
+    margin-bottom: 7px;
     display: block;
 }
 
 #dashboard {
     background-color: white;
+    border: 1px solid rgb(23, 73, 211);
+    width: 100%;
 }
+
+#dashboard h2 {
+    padding-left: 9px;
+}
+
+#quote_display {
+    padding: 9px;
+    border-bottom: 3px dashed rgb(23, 73, 211);;
+}
+
+#quote_display h3, 
+#order_display h3 {
+    margin-bottom: 9px;
+}
+
+#quote_display h4 {
+    margin-bottom: 5px;
+}
+
+#new_quote_display {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+#quote_stats {
+    margin-top: 9px;
+}
+
+#order_display {
+    padding: 9px;
+}
+

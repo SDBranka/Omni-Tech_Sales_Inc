@@ -220,16 +220,13 @@ button {
     border-radius: 3px;
 }
 
+#page_nav button {
+    width: 40px;
+}
+
 #page_nav button a {
     text-decoration: none;
     color: #372588;
     font-size: 20px;
 }
 
-
-
-/* 
-#page_nav>button.active>a {
-    background: purple;
-    color: #fff;
-} */

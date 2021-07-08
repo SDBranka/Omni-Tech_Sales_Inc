@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from imgfield_app.models import User, Product, Photo, Review, Category
+from imgfield_app.models import ContactInfo, User, Product, Photo, Quote, QuoteProduct, QuoteItem, Order, OrderProduct, OrderItem, Category
 from django.contrib import messages
 
 
@@ -11,10 +11,16 @@ def index(request):
     
     if logged_user.security_level != 5:
         return redirect("/store")
-    
+
+# status choices = {open, pending, in process, completed, archived }
+
     context = {
         'logged_user' : logged_user,
         'all_products': Product.objects.all(),
+        'new_quotes': Quote.objects.filter(status="pending"),
+        'q_in_process_count': Quote.objects.filter(status="in process").count(),
+        'o_pending_count': Order.objects.filter(status="pending").count(),
+        'o_in_process_count': Order.objects.filter(status="in process").count(),
     }
     return render(request, "admin_index.html", context)
 
@@ -313,3 +319,20 @@ def process_remove_product_to_category(request):
         category = Category.objects.get(id=request.POST['category_id'])
         category.product_in_category.remove(product)
     return redirect(f"/admin_access/edit_product_category/{ product.id }")
+
+def view_quote(request, quote_id):
+    if 'user_id' in request.session:
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            quote = Quote.objects.get(id=quote_id)
+            all_quoteproducts = QuoteProduct.objects.filter(quote=quote)
+            all_quoteitems = QuoteItem.objects.filter(quote=quote)
+            
+            context = {
+                'logged_user': logged_user,
+                'quote': quote,
+                'products': all_quoteproducts,
+                'items': all_quoteitems,
+            }
+            return render(request, "view_quote.html", context)
+    return redirect("/")
