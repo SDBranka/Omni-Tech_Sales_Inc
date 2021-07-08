@@ -120,13 +120,13 @@
                             {% for contact in my_contacts %}
                                 <div id="contact">
                                     <p>{{ contact.address_1 }}
-                                        {% if contact.address_2 %}, 
+                                        {% if contact.address_2 %},  
                                         {{ contact.address_2 }}
                                         {% endif %}
                                     </p>
                                     <p>{{ contact.city }}, {{ contact.state }}</p>
                                     <p>{{ contact.zip_code }}</p>
-                                    <p>{{ contact.phone_number }}</p>
+                                    <p>{{ contact.phone }}</p>
                                     <div class="contact_options">
                                         <div class="style_box">
                                             <button type="submit"><a href="edit_contact/ua/{{ contact.id }}">Edit</a></button>

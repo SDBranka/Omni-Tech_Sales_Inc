@@ -53,18 +53,19 @@ def services(request, page_num):
     return render(request, "services.html", context)
 
 
-def view_product(request, product_id):
-    product = Product.objects.get(id=product_id)
-    if 'user_id' in request.session:    
-        logged_user = User.objects.get(id=request.session['user_id'])
-        context = {
-            'logged_user' : logged_user,
-            'product': product
-        }
-    context = {
-        'product': product
-    }
-    return render(request, "services.html", context)
+# Build to display individual product pages
+# def view_product(request, product_id):
+#     product = Product.objects.get(id=product_id)
+#     if 'user_id' in request.session:    
+#         logged_user = User.objects.get(id=request.session['user_id'])
+#         context = {
+#             'logged_user' : logged_user,
+#             'product': product
+#         }
+#     context = {
+#         'product': product
+#     }
+#     return render(request, "services.html", context)
 
 
 def process_add_service_to_quote(request):
@@ -77,19 +78,23 @@ def process_add_service_to_quote(request):
         page_num = request.POST['page_num']
         quantity = int(request.POST['quantity'])
 
+        combined_price = product.price * quantity
+
         if not 'open_quote' in request.session:
-            quote = Quote.objects.create(
+            new_quote = Quote.objects.create(
             quoted_by = orderer,
             ref_number = uuid.uuid4().hex[:9],
+            total_price = combined_price,
             status = "open",
             )
             QuoteProduct.objects.create(
                 product_on_quote = product,
-                quote = quote,
-                quantity = quantity
+                quote = new_quote,
+                quantity = quantity,
+                combined_price = combined_price
             )
 
-            request.session['open_quote'] = quote.id
+            request.session['open_quote'] = new_quote.id
         else:
             quote = Quote.objects.get(id=request.session['open_quote'])
 
@@ -97,13 +102,18 @@ def process_add_service_to_quote(request):
             if is_on_quote:
                 this_quote = is_on_quote[0]
                 this_quote.quantity += quantity
-                this_quote.save()
+                print(f"#### {this_quote.combined_price }")
+                this_quote.combined_price += combined_price
+                this_quote.save() 
             else:
                 QuoteProduct.objects.create(
                     product_on_quote = product,
                     quote = quote,
-                    quantity = quantity
+                    quantity = quantity,
+                    combined_price = combined_price
                 )
+            quote.total_price += combined_price
+            quote.save()
         return redirect(f"/services/{ page_num }")
     return redirect("/services/1")
 
@@ -112,8 +122,6 @@ def user_account(request):
     if 'user_id' in request.session:    
         logged_user = User.objects.get(id=request.session['user_id'])
 
-        # most_recent_quotes = Quote.objects.exclude(status="open")[:5]
-        # recent_review = Review.objects.order_by('-created_at')[:3]
         context = {
             'logged_user': logged_user,
             'most_recent_quotes': Quote.objects.exclude(status="open")[:6],
@@ -130,7 +138,6 @@ def request_quote(request):
         if not 'open_quote' in request.session:
             context = {
             'logged_user': logged_user,
-            # 'user_quotes': Quote.objects.filter(quoted_by = logged_user)    
         }
         else:
             open_quote = Quote.objects.get(id=request.session['open_quote'])
@@ -155,9 +162,11 @@ def process_add_item_to_quote(request):
             manufacturer = request.POST['manufacturer']
             part_number = request.POST['part_number']
             name = request.POST['name']
-            price = request.POST['price']
-            quantity = request.POST['quantity']
+            price = float(request.POST['price'])
+            quantity = int(request.POST['quantity'])
             notes = request.POST['notes']
+
+            combined_price = price * quantity
 
             new_item = EnteredItem.objects.create(
                 name = name,
@@ -168,27 +177,32 @@ def process_add_item_to_quote(request):
             )
 
         if not 'open_quote' in request.session:
-            quote = Quote.objects.create(
+            new_quote = Quote.objects.create(
             quoted_by = orderer,
             ref_number = uuid.uuid4().hex[:9],
+            total_price = combined_price,
             status = "open",
             )
 
             QuoteItem.objects.create(
                 item_on_quote = new_item,
-                quote = quote,
-                quantity = quantity
+                quote = new_quote,
+                quantity = quantity,
+                combined_price = combined_price
             )
 
-            request.session['open_quote'] = quote.id
+            request.session['open_quote'] = new_quote.id
         else:
             quote = Quote.objects.get(id=request.session['open_quote'])
 
             QuoteItem.objects.create(
                 item_on_quote = new_item,
                 quote = quote,
-                quantity = quantity
+                quantity = quantity,
+                combined_price = combined_price
             )
+            quote.total_price += combined_price
+            quote.save()
     return redirect("/request_quote")
 
 
@@ -196,8 +210,13 @@ def increase_product_quantity(request):
     if 'user_id' in request.session:    
         if 'open_quote' in request.session:
             product_to_increase = QuoteProduct.objects.get(id=request.POST['product_id'])
-            product_to_increase.quantity += 1   
+            product_to_increase.quantity += 1 
+            product_to_increase.combined_price += product_to_increase.product_on_quote.price
             product_to_increase.save() 
+
+            quote = Quote.objects.get(id=request.session['open_quote'])
+            quote.total_price += product_to_increase.product_on_quote.price
+            quote.save()
     return redirect("/request_quote")
 
 
@@ -206,7 +225,12 @@ def increase_item_quantity(request):
         if 'open_quote' in request.session:
             item_to_increase = QuoteItem.objects.get(id=request.POST['item_id'])
             item_to_increase.quantity += 1   
+            item_to_increase.combined_price += item_to_increase.item_on_quote.price
             item_to_increase.save() 
+
+            quote = Quote.objects.get(id=request.session['open_quote'])
+            quote.total_price += item_to_increase.item_on_quote.price
+            quote.save()
     return redirect("/request_quote")
 
 
@@ -215,8 +239,13 @@ def decrease_product_quantity(request):
         if 'open_quote' in request.session:
             product_to_decrease = QuoteProduct.objects.get(id=request.POST['product_id'])
             if product_to_decrease.quantity > 1:
-                product_to_decrease.quantity -= 1   
+                product_to_decrease.quantity -= 1
+                product_to_decrease.combined_price -= product_to_decrease.product_on_quote.price
                 product_to_decrease.save() 
+
+                quote = Quote.objects.get(id=request.session['open_quote'])
+                quote.total_price -= product_to_decrease.product_on_quote.price
+                quote.save()
     return redirect("/request_quote")
 
 
@@ -225,8 +254,13 @@ def decrease_item_quantity(request):
         if 'open_quote' in request.session:
             item_to_decrease = QuoteItem.objects.get(id=request.POST['item_id'])
             if item_to_decrease.quantity > 1:
-                item_to_decrease.quantity -= 1   
-                item_to_decrease.save() 
+                item_to_decrease.quantity -= 1  
+                item_to_decrease.combined_price -= item_to_decrease.item_on_quote.price
+                item_to_decrease.save()
+
+                quote = Quote.objects.get(id=request.session['open_quote'])
+                quote.total_price += item_to_increase.item_on_quote.price
+                quote.save()
     return redirect("/request_quote")
 
 
@@ -234,6 +268,11 @@ def remove_product_from_quote(request):
     if 'user_id' in request.session:    
         if 'open_quote' in request.session:
             product_to_remove = QuoteProduct.objects.get(id=request.POST['product_id'])
+            quote = Quote.objects.get(id=request.session['open_quote'])
+
+            quote.total_price -+ product_to_remove.combined_price
+            quote.save()
+            
             product_to_remove.delete() 
     return redirect("/request_quote")
 
@@ -242,6 +281,11 @@ def remove_item_from_quote(request):
     if 'user_id' in request.session:    
         if 'open_quote' in request.session:
             item_to_remove = QuoteItem.objects.get(id=request.POST['item_id'])
+            quote = Quote.objects.get(id=request.session['open_quote'])
+
+            quote.total_price -+ item_to_remove.combined_price
+            quote.save()
+
             item_to_remove.delete() 
     return redirect("/request_quote")
 
@@ -288,6 +332,7 @@ def select_contact_info(request):
         return render(request, "select_contact_info.html", context)
     return redirect("/")
 
+
 def add_new_contact(request):
     if 'user_id' in request.session:
         orderer = User.objects.get(id=request.session['user_id'])
@@ -309,6 +354,7 @@ def add_new_contact(request):
                 return redirect("/submit_quote")
             return redirect("/user_account")    
     return redirect("/")
+
 
 def submit_quote(request):
     if 'user_id' in request.session:
@@ -337,6 +383,7 @@ def submit_quote(request):
                 return redirect("/user_account")
     return redirect("/request_quote")
 
+
 def delete_contact(request):
     if 'user_id' in request.session:
         if request.method == "POST":
@@ -345,6 +392,7 @@ def delete_contact(request):
             contact_to_delete.delete()
             return redirect(f"/{ redirect_to }")
     return redirect("/")
+
 
 def edit_contact(request, redirect_reference, contact_id):
     if 'user_id' in request.session:
@@ -365,9 +413,9 @@ def edit_contact(request, redirect_reference, contact_id):
         return render(request, "edit_contact.html", context)
     return redirect("/")
 
+
 def process_edit_contact(request):
     if 'user_id' in request.session:
-        direct_to = request.POST['direct_to']
         if request.method == "POST":
             # errors handling
             # errors = Wish.objects.wish_validator(request.POST)
@@ -376,14 +424,21 @@ def process_edit_contact(request):
             #         messages.error(request, error)
             #     return redirect(f"/wishes/edit_wish/{ wish_id }")
             # else:
+            direct_to = request.POST['direct_to']
+
             contact_to_edit = ContactInfo.objects.get(id=request.POST['contact_id'])
 
-            contact_to_edit.first_name = request.POST['first_name']
-            contact_to_edit.last_name = request.POST['last_name']
-            contact_to_edit.email = request.POST['email']
+            contact_to_edit.address_1 = request.POST['address_1']
+            contact_to_edit.address_2 = request.POST['address_2']
+            contact_to_edit.city = request.POST['city']
+            contact_to_edit.zip_code = request.POST['zip_code']
+            contact_to_edit.state = request.POST['state']
+            contact_to_edit.country = request.POST['country']
+            contact_to_edit.phone = request.POST['phone']
             contact_to_edit.save()
-        return redirect(f"/{ direct_to }")
+            return redirect(f"/{ direct_to }")
     return redirect("/")
+
 
 def proces_edit_profile(request):
     if 'user_id' in request.session:
@@ -409,7 +464,18 @@ def proces_edit_profile(request):
 
 
 
+def trial(request):
+    product = Product.objects.get(id=2)
+    two = product.price * 2
 
+    context={
+
+        'product': product,
+        'two': two
+
+    }
+
+    return render(request, "Trial.html", context)
 
 
 

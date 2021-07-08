@@ -8,6 +8,12 @@
             <th>Number of Reviews</th>
             <th>Actions</th>
         </tr>
+
+            <p>Price: {{ product.price.get_internal_type }}</p>
+            <p>Two: {{ two }}</p>
+
+
+
         {% for product in all_products %}
             <tr>
                 <td>{{product.name}}</td>

@@ -30,7 +30,21 @@
                 <a href="/admin_access/administrative">Administrative</a>
             </div>      <!--end navigation-->
             <div id="dashboard">
+                <div id="new_info">
+                    {% if new_quotes %}
+                    <p>You have: {{ new_quotes.count }} pending quotes!</p>
+                    <div id="new_quote_display">
+                        {% for quote in new_quotes %}
+                        <p>{{ quote.ref_number }}</p>
+                        <p>{{ quote.quoted_by.</p>
 
+                        {% endfor %}        <!--end for quote in new_quotes-->
+                    </div><!--end new_quote_display-->
+
+                    {%  endif %}        <!--end if new_quotes-->
+
+                </div>      <!--end new_info-->
+                <h3>Quotes</h3>
 
 
 

@@ -38,3 +38,7 @@ h2 {
     margin-bottom: 5px;
     display: block;
 }
+
+#dashboard {
+    background-color: white;
+}

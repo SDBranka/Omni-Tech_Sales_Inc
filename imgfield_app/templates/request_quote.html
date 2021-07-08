@@ -93,7 +93,7 @@
                         <div id="display_products">
                             <div id="quote_head">
                                 <p>Quote Reference Number: {{ open_quote.ref_number }} </p>
-                                <p id="total">Total: $########</p>
+                                <p id="total">Total: ${{ open_quote.total_price }}</p>
                             </div>      <!--end quote_head-->
                             <table>
                                 <tr>
@@ -127,7 +127,7 @@
                                                     </div>      <!--end quant_btns-->    
                                             </div>      <!--end prod_quant-->
                                         </td>
-                                        <td>???????</td>
+                                        <td>{{ product.combined_price }}</td>
                                         <!-- <td>#</td> -->
                                         <td class="actions">
                                             <form action="/remove_product_from_quote" method="POST">
@@ -163,7 +163,7 @@
                                                 </div>      <!--end quant_btns-->    
                                             </div>      <!--end prod_quant-->
                                         </td>
-                                        <td>???????</td>
+                                        <td>{{ item.combined_price }}</td>
                                         <!-- <td>#</td> -->
                                         <td class="actions">
                                             <form action="/remove_item_from_quote" method="POST">

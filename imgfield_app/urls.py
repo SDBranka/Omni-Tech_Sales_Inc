@@ -5,7 +5,7 @@ urlpatterns = [
     path('', views.index),
     path('product_lines', views.product_lines),
     path('services/<int:page_num>', views.services),
-    path('view_product/<int:product_id>', views.view_product),
+    # path('view_product/<int:product_id>', views.view_product),
     path('process_add_service_to_quote', views.process_add_service_to_quote),
     path('user_account', views.user_account),
     path('request_quote', views.request_quote),
@@ -42,8 +42,6 @@ urlpatterns = [
     # path('logout', views.logout),
     # path('logout', views.logout),
     # path('logout', views.logout),
-    # path('logout', views.logout),
-
-
+    path('trial', views.trial),
 
 ]

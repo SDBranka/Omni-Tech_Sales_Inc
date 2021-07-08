@@ -5,6 +5,8 @@ import bcrypt
 
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 NAME_REGEX = re.compile(r'^[a-zA-Z]+$')
+# Handles: 123-456-7890, (123) 456-7890, 123 456 7890, 123.456.7890, +91 (123) 456-7890
+# (Doesn't Work---> PHONE_REGEX = re.compile(r'^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$)') 
 
 
 class UserManager(models.Manager):
@@ -163,8 +165,9 @@ class Order(models.Model):
         on_delete=models.CASCADE
     )
     ref_number = models.CharField(max_length=10)
+    total_price = models.DecimalField(decimal_places=2, max_digits=5, null=True, blank=True)
     status = models.CharField(max_length=27)
-    # status choices = {open, pending, in process, completed. archived }
+    # status choices = {open, pending, in process, completed, archived }
     special_instructions = models.TextField(null=True, blank=True)
     office_notes = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -183,6 +186,7 @@ class OrderProduct(models.Model):
         on_delete=models.CASCADE
     )
     quantity = models.IntegerField()
+    combined_price = models.DecimalField(decimal_places=2, max_digits=5, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -199,6 +203,7 @@ class OrderItem(models.Model):
         on_delete=models.CASCADE
     )
     quantity = models.IntegerField()
+    combined_price = models.DecimalField(decimal_places=2, max_digits=5, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -213,8 +218,9 @@ class Quote(models.Model):
         on_delete=models.CASCADE
     )
     ref_number = models.CharField(max_length=10)
+    total_price = models.DecimalField(decimal_places=2, max_digits=5, null=True, blank=True)
     status = models.CharField(max_length=27)
-    # status choices = {open, pending, in process, completed. archived }
+    # status choices = {open, pending, in process, completed, archived }
     special_instructions = models.TextField(null=True, blank=True)
     office_notes = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -233,6 +239,7 @@ class QuoteProduct(models.Model):
         on_delete=models.CASCADE
     )
     quantity = models.IntegerField()
+    combined_price = models.DecimalField(decimal_places=2, max_digits=5, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -249,6 +256,7 @@ class QuoteItem(models.Model):
         on_delete=models.CASCADE
     )
     quantity = models.IntegerField()
+    combined_price = models.DecimalField(decimal_places=2, max_digits=5, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -296,11 +304,4 @@ class Review(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-
-
-
-
-
-
 
