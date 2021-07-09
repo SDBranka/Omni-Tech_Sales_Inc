@@ -7,6 +7,7 @@
     width: 900px;
     margin: 100px auto;
     border: 3px solid rgb(23, 73, 211);
+    border-radius: 9px;
     padding: 10px;
     background-color: #F7F7F7;
 }

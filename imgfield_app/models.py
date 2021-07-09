@@ -76,10 +76,14 @@ class ContactInfoManager(models.Manager):
             errors['address_1'] = "Address 1 must be longer than 5 characters"
         if len(postData['city']) < 2:
             errors['city'] = "City name must be longer than 2 characters"
-        if len(postData['zip_code']) < 4  or not NUMSWDASH_REGEX.match(postData['zip_code']):
+        if len(postData['zip_code']) < 5 or not NUMSWDASH_REGEX.match(postData['zip_code']):
             errors["zip_code"] = "Please enter a valid zip_code"
-        if len(postData['phone']) < 4  or not PHONENUM_REGEX.match(postData['phone']):
-            errors["phone"] = "Please enter a valid phone "
+        if len(postData['state']) < 1:
+            errors['state'] = "Please select your state"
+        if len(postData['country']) < 1:
+            errors['country'] = "Please select your country"
+        if len(postData['phone']) < 10  or not PHONENUM_REGEX.match(postData['phone']):
+            errors["phone"] = "Please enter a valid phone in the format ###-###-####"
         return errors
 
 

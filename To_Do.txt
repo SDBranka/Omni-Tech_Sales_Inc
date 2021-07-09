@@ -1,5 +1,5 @@
-*display validations from multiple classes in the 
- same check
+*display validation error messages from multiple classes in the 
+ same check-->display
    -line 166 and 171-174 Img_app views
 
 *display ordered_by and contact info in orders/quotes_display
@@ -20,8 +20,10 @@
 
 
 
-
-
+Questions:
+-Once something is deployed how can you make updates without altering your
+ database
+-The way I hid my secret key won't allow me to deploy
 
 
 
@@ -41,3 +43,4 @@ Corrected:
     -process_add_service_to_quote line 119 vs 
      process_add_item_to_quote line 231
         -see _MAIN error pic
+-style the log/reg page
