@@ -151,6 +151,10 @@ h3 {
     margin-top: 7px;
 }
 
+#errors {
+    color: red;
+}
+
 #add_new_contact form {
     margin-left: 27px;
 }

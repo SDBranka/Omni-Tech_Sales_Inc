@@ -113,6 +113,15 @@
             </div>      <!--end order_display-->
             <div id="user_display" class="display_box">
                 <h2>My Acount Information:</h2>
+                <div id="errors">
+                    {% if messages %}
+                    <ul>    
+                        {% for message in messages %}    
+                            <li>{{ message }}</li>    
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>      <!--end errors-->
                 <div id="contact_display">
                     {% if my_contacts %}
                         <h3>My Stored Contact Information:</h3>

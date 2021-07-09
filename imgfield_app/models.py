@@ -1,13 +1,18 @@
 from django.db import models
 import re
 import bcrypt
-from datetime import datetime
 
 
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 NAME_REGEX = re.compile(r'^[a-zA-Z]+$')
 # Handles: 123-456-7890, (123) 456-7890, 123 456 7890, 123.456.7890, +91 (123) 456-7890
 # (Doesn't Work---> PHONE_REGEX = re.compile(r'^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$)') 
+NUMSWDASH_REGEX = re.compile(r'^[0-9-]+$')
+PHONENUM_REGEX = re.compile(r'^[0-9-()+]+$')
+PRICE_REGEX = re.compile(r'^[0-9]+\.[0-9]+$')
+NUMBER_REGEX = re.compile(r'^[0-9]+$')
+
+
 
 
 class UserManager(models.Manager):
@@ -63,6 +68,21 @@ class User(models.Model):
     objects = UserManager()
 
 
+class ContactInfoManager(models.Manager):
+    def new_contact_validator(self, postData):
+        errors = {}
+
+        if len(postData['address_1']) < 5:
+            errors['address_1'] = "Address 1 must be longer than 5 characters"
+        if len(postData['city']) < 2:
+            errors['city'] = "City name must be longer than 2 characters"
+        if len(postData['zip_code']) < 4  or not NUMSWDASH_REGEX.match(postData['zip_code']):
+            errors["zip_code"] = "Please enter a valid zip_code"
+        if len(postData['phone']) < 4  or not PHONENUM_REGEX.match(postData['phone']):
+            errors["phone"] = "Please enter a valid phone "
+        return errors
+
+
 class ContactInfo(models.Model):
     # orders
     # quotes
@@ -76,9 +96,10 @@ class ContactInfo(models.Model):
     zip_code = models.IntegerField()
     state = models.CharField(max_length=54)
     country = models.CharField(max_length=54)
-    phone = models.CharField(max_length=14)
+    phone = models.CharField(max_length=15)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    objects = ContactInfoManager()
 
 
 class ProductManager(models.Manager):
@@ -130,12 +151,12 @@ class EnteredItemManager(models.Manager):
 
         if len(postData['name']) < 5:
             errors['name'] = "Please enter a valid product name"
-        if len(postData['part_number']) > 0 and len(postData['part_number']) < 4:
+        if len(postData['part_number']) > 0 and len(postData['part_number']) < 3:
             errors['part_number'] = "Please enter a valid product part number"        
-        if len(postData['manufacturer']) > 0 and len(postData['manufacturer']) < 2:
+        if len(postData['manufacturer']) > 0 and len(postData['manufacturer']) < 3:
             errors['manufacturer'] = "Please enter a valid product"      
-        if len(postData['price']) > 0 and len(postData['price']) < 2:
-            errors['price'] = "Please enter a valid price"
+        if len(postData['price']) < 2 or not PRICE_REGEX.match(postData['price']):
+            errors['price'] = "Please enter a valid price in ###.## format"
         return errors
         
         
@@ -253,7 +274,7 @@ class Quote(models.Model):
     # status choices = {open, pending, in process, completed, archived }
     special_instructions = models.TextField(null=True, blank=True)
     office_notes = models.TextField(null=True, blank=True)
-    placed_at = models.DateTimeField(default= datetime.now())
+    placed_at = models.DateTimeField(auto_now_add=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -275,6 +296,15 @@ class QuoteProduct(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
+class QuoteItemManager(models.Manager):
+    def quoteitem_validator(self, postData):
+        errors = {}
+
+        if len(postData['quantity']) < 1 or not NUMBER_REGEX.match(postData['quantity']):
+            errors['quantity'] = "Please enter a valid first name"
+        return errors
+
+
 class QuoteItem(models.Model):
     item_on_quote = models.ForeignKey(
         EnteredItem,
@@ -290,7 +320,7 @@ class QuoteItem(models.Model):
     combined_price = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    objects = QuoteItemManager()
 
 class Review(models.Model):
     product_reviewed = models.ForeignKey(

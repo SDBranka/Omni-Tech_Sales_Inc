@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 import uuid
 from datetime import datetime
+from decimal import Decimal
 
 
 def index(request):
@@ -15,9 +16,6 @@ def index(request):
         'logged_user' : logged_user,
     }
     return render(request, "store_index.html", context)
-
-
-
 
 
 def product_lines(request):
@@ -165,10 +163,16 @@ def process_add_item_to_quote(request):
         if request.method == "POST":
             # errors handling
             errors = EnteredItem.objects.item_validator(request.POST)
+            # qerrors = QuoteItem.objects.quoteitem_validator(request.POST)
             if len(errors) > 0:
                 for error in errors.values():
                     messages.error(request, error)
                 return redirect("/request_quote")
+            # if len(qerrors) > 0:
+            #     for error in errors.values():
+            #         messages.error(request, error)
+            #     return redirect("/request_quote")
+
             else:
                 orderer = User.objects.get(id=request.session['user_id'])
                 
@@ -176,7 +180,7 @@ def process_add_item_to_quote(request):
                 name = request.POST['name']
                 part_number = request.POST['part_number']
                 manufacturer = request.POST['manufacturer']
-                price = float(request.POST['price'])
+                price = Decimal(request.POST['price'])
                 notes = request.POST['notes']
                 new_item = EnteredItem.objects.create(
                     name = name,
@@ -186,7 +190,10 @@ def process_add_item_to_quote(request):
                     notes = notes,
                 )
 
-                quantity = int(request.POST['quantity'])
+                if len(request.POST['quantity']):
+                    quantity = int(request.POST['quantity'])
+                else:
+                    quantity = 1
                 combined_price = new_item.price * quantity
 
                 if not 'open_quote' in request.session:
@@ -356,29 +363,33 @@ def add_new_contact(request):
     if 'user_id' in request.session:
         orderer = User.objects.get(id=request.session['user_id'])
         if request.method == "POST":
-            # errors handling
-            # errors = Wish.objects.wish_validator(request.POST)
-            # if len(errors) > 0:
-            #     for error in errors.values():
-            #         messages.error(request, error)
-            #     return redirect(f"/wishes/edit_wish/{ wish_id }")
-            # else:
-            new_contact = ContactInfo.objects.create(
-                address_1 = request.POST['address_1'],
-                address_2 = request.POST['address_2'],
-                city = request.POST['city'],
-                zip_code = request.POST['zip_code'],
-                state = request.POST['state'],
-                country = request.POST['country'],
-                phone = request.POST['phone'],
-            )
-
+            #checks to see if accessed from user_account or submit_quote
             confirm_quote = request.POST["confirm_quote"]  
-            if confirm_quote:
-                new_contact.user.add(orderer)
-                request.session['check_passed'] = new_contact.id
-                return redirect("/submit_quote")
-            return redirect("/user_account")    
+            # errors handling
+            errors = ContactInfo.objects.new_contact_validator(request.POST)
+            if len(errors) > 0:
+                for error in errors.values():
+                    messages.error(request, error)
+                if confirm_quote:
+                    return redirect("/select_contact_info")
+                return redirect("/user_account")    
+            else:
+                new_contact = ContactInfo.objects.create(
+                    address_1 = request.POST['address_1'],
+                    address_2 = request.POST['address_2'],
+                    city = request.POST['city'],
+                    zip_code = request.POST['zip_code'],
+                    state = request.POST['state'],
+                    country = request.POST['country'],
+                    phone = request.POST['phone'],
+                )
+
+                # based on 'check_passed' value determines route  
+                if confirm_quote:
+                    new_contact.user.add(orderer)
+                    request.session['check_passed'] = new_contact.id
+                    return redirect("/submit_quote")
+                return redirect("/user_account")    
     return redirect("/")
 
 

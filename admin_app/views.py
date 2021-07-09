@@ -1,7 +1,9 @@
+from decimal import Decimal
 from django.db.models.query_utils import Q
 from django.shortcuts import render, redirect
 from imgfield_app.models import ContactInfo, User, Product, Photo, Quote, QuoteProduct, QuoteItem, Order, OrderProduct, OrderItem, Category
 from django.contrib import messages
+from decimal import Decimal
 
 
 def index(request):
@@ -36,7 +38,7 @@ def process_create_product(request):
                 new_prod = Product.objects.create(
                     name = request.POST['name'],
                     part_number = request.POST['part_number'],
-                    price = float(request.POST['price']),
+                    price = Decimal(request.POST['price']),
                     desc = request.POST['desc'],
                     quantity_in_stock = int(request.POST['quantity_in_stock'])
                 )
@@ -87,7 +89,7 @@ def process_product_edit(request, product_id):
 
                 product_to_edit.name = request.POST['name']
                 product_to_edit.part_number = request.POST['part_number']
-                product_to_edit.price = float(request.POST['price'])
+                product_to_edit.price = Decimal(request.POST['price'])
                 product_to_edit.desc = request.POST['desc']
                 product_to_edit.quantity_in_stock = int(request.POST['quantity_in_stock'])        
                 product_to_edit.save()

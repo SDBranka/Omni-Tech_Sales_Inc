@@ -1,13 +1,13 @@
-*It is making EnteredItems, but not creating QuoteItems if there 
- is already an open quote
-    -process_add_service_to_quote line 119 vs 
-     process_add_item_to_quote line 231
-        -see _MAIN error pic
+*display validations from multiple classes in the 
+ same check
+   -line 166 and 171-174 Img_app views
+
+*display ordered_by and contact info in orders/quotes_display
+
 
 
 
 -build edit quotes in view_quotes:admin
--display ordered_by and contact info in orders/quotes_display
 -Admin can delete any Quote that is not status "archived"
 -Add manufacturer to new/edit product creation in admin
 -Add exp_desc to new/edit product creation
@@ -36,3 +36,8 @@
 Corrected:
 -Decimal field error on process_add_item_to_quote
 -Img_app views line 132 & 133 order_by not working
+*It is making EnteredItems, but not creating QuoteItems if there 
+ is already an open quote
+    -process_add_service_to_quote line 119 vs 
+     process_add_item_to_quote line 231
+        -see _MAIN error pic

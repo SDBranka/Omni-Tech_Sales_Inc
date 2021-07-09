@@ -99,6 +99,15 @@
             {% endif %}     <!--end if user_contacts-->
             <div id="add_new_contact">
                 <h3>Add New Contact Information:</h3>
+                <div id="errors">
+                    {% if messages %}
+                    <ul>    
+                        {% for message in messages %}    
+                            <li>{{ message }}</li>    
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>      <!--end errors-->
                 <form action="/add_new_contact" method="POST">
                     {% csrf_token %}
                     <p>Address 1: <input id="address_1_input" type="text" name="address_1"></p>
