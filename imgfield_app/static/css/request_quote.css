@@ -135,6 +135,10 @@
     flex: 7;
 }
 
+#errors {
+    color: red;
+}
+
 #add_item_form h2 {
     margin-bottom: 12px;
 }

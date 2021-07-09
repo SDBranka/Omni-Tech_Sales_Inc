@@ -69,6 +69,15 @@
                 </div>      <!--end instructions-->
                 <div id="add_item_form">
                     <h2>Add an item to your quote</h2>
+                    <div id="errors">
+                        {% if messages %}
+                        <ul>    
+                            {% for message in messages %}    
+                                <li>{{ message }}</li>    
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>      <!--end errors-->
                     <form action="/process_add_item_to_quote" method="POST">
                         {% csrf_token%}
                         <p>Product Manufacturer: <input id="manufacturer_input" type="text" name="manufacturer"></p>

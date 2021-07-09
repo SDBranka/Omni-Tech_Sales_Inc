@@ -77,10 +77,10 @@ def process_add_service_to_quote(request):
         if request.method == "POST":
             orderer = User.objects.get(id=request.session['user_id'])
             page_num = request.POST['page_num']
-            quantity = int(request.POST['quantity'])
 
             product = Product.objects.get(id=request.POST['product_id'])
 
+            quantity = int(request.POST['quantity'])
             combined_price = product.price * quantity
 
             if not 'open_quote' in request.session:
@@ -171,13 +171,13 @@ def process_add_item_to_quote(request):
                 return redirect("/request_quote")
             else:
                 orderer = User.objects.get(id=request.session['user_id'])
-                manufacturer = request.POST['manufacturer']
-                part_number = request.POST['part_number']
+                
+                #creates EnteredItems - works
                 name = request.POST['name']
+                part_number = request.POST['part_number']
+                manufacturer = request.POST['manufacturer']
                 price = float(request.POST['price'])
-                quantity = int(request.POST['quantity'])
                 notes = request.POST['notes']
-
                 new_item = EnteredItem.objects.create(
                     name = name,
                     part_number = part_number,
@@ -186,11 +186,11 @@ def process_add_item_to_quote(request):
                     notes = notes,
                 )
 
+                quantity = int(request.POST['quantity'])
                 combined_price = new_item.price * quantity
 
                 if not 'open_quote' in request.session:
-                    # works for $2.00, $25, $399.19, $5,004.45, $34,299.00
-                    # $600,300.00, $7,200,900.00
+                    # works for $2.00, $25, $399.19, $5,004.45, $34,299.00, $600,300.00, $7,200,900.00
                     new_quote = Quote.objects.create(
                     quoted_by = orderer,
                     ref_number = uuid.uuid4().hex[:9],
@@ -212,19 +212,23 @@ def process_add_item_to_quote(request):
                     # $5,004.45, $399.19, $25.00, $2.00
                     quote = Quote.objects.get(id=request.session['open_quote'])
 
-                    q_item = QuoteItem.objects.create(
+                    print(f"######Quote: { quote }")
+
+                    qt_item = QuoteItem.objects.create(
                         item_on_quote = new_item,
                         quote = quote,
                         quantity = quantity,
                         combined_price = combined_price
                         )
 
-                
+                    print(f"#####QuoteItem")
+                    print(f"#####QuoteItem: { qt_item }")
+                    print(f"Combined Price: { combined_price }")
+                    print(qt_item.combined_price)
 
-                    quote.total_price += q_item.combined_price
+                    quote.total_price += qt_item.combined_price
                     quote.save()
-
-            return redirect("/request_quote")
+        return redirect("/request_quote")
     return redirect("/")
 
 def increase_product_quantity(request):

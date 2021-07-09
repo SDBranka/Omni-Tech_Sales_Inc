@@ -1,5 +1,9 @@
-*It is making EnteredItems, but not creating QuoteItems
-    -Img_app views line 151 works why?
+*It is making EnteredItems, but not creating QuoteItems if there 
+ is already an open quote
+    -process_add_service_to_quote line 119 vs 
+     process_add_item_to_quote line 231
+        -see _MAIN error pic
+
 
 
 -build edit quotes in view_quotes:admin
