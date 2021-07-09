@@ -1,0 +1,34 @@
+*It is making EnteredItems, but not creating QuoteItems
+    -Img_app views line 151 works why?
+
+
+-build edit quotes in view_quotes:admin
+-display ordered_by and contact info in orders/quotes_display
+-Admin can delete any Quote that is not status "archived"
+-Add manufacturer to new/edit product creation in admin
+-Add exp_desc to new/edit product creation
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Corrected:
+-Decimal field error on process_add_item_to_quote
+-Img_app views line 132 & 133 order_by not working

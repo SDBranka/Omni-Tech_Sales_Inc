@@ -107,18 +107,18 @@ class ProductManager(models.Manager):
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=45)
-    part_number = models.CharField(max_length=27)
-    manufacturer = models.CharField(max_length=45, null=True, blank= True)
-    price = models.DecimalField(decimal_places=2, max_digits=5)
-    desc = models.CharField(max_length=189)
-    exp_desc = models.TextField(null=True, blank=True )
-    quantity_in_stock = models.IntegerField()
     # product_photos
     # product_reviews
     # categories
     # order_of_product
     # quote_of_product
+    name = models.CharField(max_length=108)
+    part_number = models.CharField(max_length=27)
+    manufacturer = models.CharField(max_length=45, null=True, blank= True)
+    price = models.DecimalField(decimal_places=2, max_digits=5)
+    desc = models.CharField(max_length=189)
+    exp_desc = models.TextField(null=True, blank=True)
+    quantity_in_stock = models.IntegerField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = ProductManager()
@@ -140,13 +140,13 @@ class EnteredItemManager(models.Manager):
         
         
 class EnteredItem(models.Model):
-    name = models.CharField(max_length=100)
-    part_number = models.CharField(max_length=27, null=True, blank= True)
-    manufacturer = models.CharField(max_length=45, null=True, blank= True)
-    price = models.DecimalField(decimal_places=2, max_digits=5, null=True, blank=True)
-    notes = models.TextField(null=True, blank= True)
     # order_of_items
     # quote_of_items
+    name = models.CharField(max_length=108)
+    part_number = models.CharField(max_length=27, null=True, blank= True)
+    manufacturer = models.CharField(max_length=45, null=True, blank= True)
+    price = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
+    notes = models.TextField(null=True, blank= True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = EnteredItemManager()
@@ -190,7 +190,7 @@ class Order(models.Model):
         null=True, blank=True,
     )
     ref_number = models.CharField(max_length=10)
-    total_price = models.DecimalField(decimal_places=2, max_digits=5, null=True, blank=True)
+    total_price = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
     status = models.CharField(max_length=27)
     # status choices = {open, pending, in process, completed, archived }
     special_instructions = models.TextField(null=True, blank=True)
@@ -211,7 +211,7 @@ class OrderProduct(models.Model):
         on_delete=models.CASCADE
     )
     quantity = models.IntegerField()
-    combined_price = models.DecimalField(decimal_places=2, max_digits=5, null=True, blank=True)
+    combined_price = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -228,7 +228,7 @@ class OrderItem(models.Model):
         on_delete=models.CASCADE
     )
     quantity = models.IntegerField()
-    combined_price = models.DecimalField(decimal_places=2, max_digits=5, null=True, blank=True)
+    combined_price = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -248,7 +248,7 @@ class Quote(models.Model):
         null=True, blank=True,
     )
     ref_number = models.CharField(max_length=10)
-    total_price = models.DecimalField(decimal_places=2, max_digits=5, null=True, blank=True)
+    total_price = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
     status = models.CharField(max_length=27)
     # status choices = {open, pending, in process, completed, archived }
     special_instructions = models.TextField(null=True, blank=True)
@@ -270,7 +270,7 @@ class QuoteProduct(models.Model):
         on_delete=models.CASCADE
     )
     quantity = models.IntegerField()
-    combined_price = models.DecimalField(decimal_places=2, max_digits=5, null=True, blank=True)
+    combined_price = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -287,7 +287,7 @@ class QuoteItem(models.Model):
         on_delete=models.CASCADE
     )
     quantity = models.IntegerField()
-    combined_price = models.DecimalField(decimal_places=2, max_digits=5, null=True, blank=True)
+    combined_price = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

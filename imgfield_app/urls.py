@@ -42,6 +42,6 @@ urlpatterns = [
     # path('logout', views.logout),
     # path('logout', views.logout),
     # path('logout', views.logout),
-    path('trial', views.trial),
+    # path('trial', views.trial),
 
 ]

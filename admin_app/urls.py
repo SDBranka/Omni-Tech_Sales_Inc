@@ -26,7 +26,7 @@ urlpatterns = [
     path('edit_off_notes', views.edit_off_notes),
     path('quotes_display', views.quotes_display),
     path('orders_display', views.orders_display),
-    # path('logout', views.logout),
+    path('view_order/<int:order_id>', views.view_order),
     # path('logout', views.logout),
     # path('logout', views.logout),
     # path('logout', views.logout),
