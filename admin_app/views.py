@@ -15,10 +15,10 @@ def index(request):
                 'logged_user' : logged_user,
                 'all_products': Product.objects.all(),
                 'new_quotes': Quote.objects.filter(status="pending"),
-                'q_in_process_count': Quote.objects.filter(status="in process").count(),
-                'o_open_count': Order.objects.filter(status="open").count(),
-                'o_pending_count': Order.objects.filter(status="pending").count(),
-                'o_in_process_count': Order.objects.filter(status="in process").count(),
+                'quote_in_process_count': Quote.objects.filter(status="in process").count(),
+                'order_open_count': Order.objects.filter(status="open").count(),
+                'order_pending_count': Order.objects.filter(status="pending").count(),
+                'order_in_process_count': Order.objects.filter(status="in process").count(),
             }
             return render(request, "admin_index.html", context)
     return redirect("/")

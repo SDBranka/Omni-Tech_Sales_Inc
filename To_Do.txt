@@ -4,10 +4,10 @@
 
 *display ordered_by and contact info in orders/quotes_display
 
+*build edit quotes in view_quotes:admin
 
 
 
--build edit quotes in view_quotes:admin
 -Admin can delete any Quote that is not status "archived"
 -Add manufacturer to new/edit product creation in admin
 -Add exp_desc to new/edit product creation

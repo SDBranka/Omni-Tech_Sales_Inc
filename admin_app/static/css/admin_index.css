@@ -25,11 +25,6 @@
     padding-top: 10px;
 }
 
-#errors {
-    color: red;
-    text-align: center;
-}
-
 h2 {
     margin-bottom: 9px;
 }
@@ -39,7 +34,6 @@ h2 {
 .green {
     color: green;
 }
-
 
 #content {
     display: flex;
@@ -94,14 +88,25 @@ h2 {
 #new_quote_display {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    justify-content: space-around;
+}
+
+.pod {
+    margin: 9px; 
 }
 
 #quote_stats {
-    margin-top: 9px;
+    margin: 9px 0px;
+
+}
+
+#quote_stats p,
+#order_display p {
+    margin-left: 27px;
 }
 
 #order_display {
+    margin-top: 9px;
     padding: 9px;
 }
 
