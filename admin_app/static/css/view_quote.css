@@ -60,6 +60,10 @@ th {
     margin-bottom: 18px;
 }
 
+#special_instructions p {
+    margin: 9px 0px 0px 27px;
+}
+
 #office_notes {
     margin-bottom: 18px;
 }
@@ -80,9 +84,14 @@ th {
     padding: 12px;
 }
 
+#dlt_quote_btn {
+    text-align: center;
+}
 
-
-
+#dlt_quote_btn a {
+    text-decoration: none;
+    color: black;
+}
 
 
 

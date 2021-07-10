@@ -35,8 +35,16 @@
     display: flex;
 }
 
+h2 {
+    margin-bottom: 18px;
+}
+
 #add_product {
     margin-right: 10px;
+}
+
+#add_product form p {
+    margin-bottom: px;
 }
 
 #product_name_input {
@@ -47,17 +55,36 @@
     margin-left: 31px;
 }
 
+#manufacturer_input {
+    margin-left: 26px;
+}
+
 #price_input {
     margin-left: 80px;
 }
 
-#description {
+#description,
+#exp_description {
     display: flex;
 }
 
-#desc_input {
-    margin-left: 90px;
+#description textarea {
+    margin: 0px 9px 9px 91px;
+    width: 370px;
+
 }
+
+#exp_description textarea {
+    margin: 0px 9px 9px 23px;
+    width: 370px;
+    height: 350px;
+}
+
+#add_product form button {
+    margin-left: 470px;
+}
+
+
 
 #add_category h2 {
     margin-bottom: 9px;

@@ -191,6 +191,8 @@ h2 {
 
 #errors {
     color: red;
+    text-align: center;
+    margin-bottom: 9px;
 }
 
 #add_new_contact form {

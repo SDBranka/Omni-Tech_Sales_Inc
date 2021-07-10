@@ -127,8 +127,8 @@ def user_account(request):
 
         context = {
             'logged_user': logged_user,
-            'most_recent_quotes': Quote.objects.exclude(status="open").order_by("-created_at")[:6],
-            'most_recent_orders': Order.objects.all().order_by("-created_at")[:6],
+            'most_recent_quotes': Quote.objects.filter(quoted_by=logged_user).exclude(status="open").order_by("-created_at")[:6],
+            'most_recent_orders': Order.objects.filter(ordered_by=logged_user).order_by("-created_at")[:6],
             'my_contacts': ContactInfo.objects.filter(user=logged_user)
         }
         return render(request, "user_account.html", context)
@@ -197,7 +197,6 @@ def process_add_item_to_quote(request):
                 combined_price = new_item.price * quantity
 
                 if not 'open_quote' in request.session:
-                    # works for $2.00, $25, $399.19, $5,004.45, $34,299.00, $600,300.00, $7,200,900.00
                     new_quote = Quote.objects.create(
                     quoted_by = orderer,
                     ref_number = uuid.uuid4().hex[:9],
@@ -215,11 +214,7 @@ def process_add_item_to_quote(request):
 
                     request.session['open_quote'] = new_quote.id
                 else:
-                    # breaks at $7,200,900.00, $600300.00, $34,299.00, 
-                    # $5,004.45, $399.19, $25.00, $2.00
                     quote = Quote.objects.get(id=request.session['open_quote'])
-
-                    print(f"######Quote: { quote }")
 
                     qt_item = QuoteItem.objects.create(
                         item_on_quote = new_item,
@@ -227,12 +222,6 @@ def process_add_item_to_quote(request):
                         quantity = quantity,
                         combined_price = combined_price
                         )
-
-                    print(f"#####QuoteItem")
-                    print(f"#####QuoteItem: { qt_item }")
-                    print(f"Combined Price: { combined_price }")
-                    print(qt_item.combined_price)
-
                     quote.total_price += qt_item.combined_price
                     quote.save()
         return redirect("/request_quote")
@@ -399,13 +388,6 @@ def submit_quote(request):
         if 'open_quote' in request.session: 
             quote = Quote.objects.get(id=request.session['open_quote'])
             if request.method == "POST": 
-                # errors handling
-                # errors = Wish.objects.wish_validator(request.POST)
-                # if len(errors) > 0:
-                #     for error in errors.values():
-                #         messages.error(request, error)
-                #     return redirect(f"/wishes/edit_wish/{ wish_id }")
-                # else:
                 contact = ContactInfo.objects.get(id=request.POST['contact_id'])
                 contact.quotes.add(quote)  
 
@@ -504,10 +486,6 @@ def proces_edit_profile(request):
             logged_user.save()
         return redirect("/user_account")
     return redirect("/")
-    
-
-
-
 
 
 # def trial(request):

@@ -14,7 +14,6 @@ NUMBER_REGEX = re.compile(r'^[0-9]+$')
 
 
 
-
 class UserManager(models.Manager):
     def register_validator(self, postData):
         errors = {}
@@ -130,6 +129,23 @@ class ProductManager(models.Manager):
             errors["quantity_in_stock"] = "Please enter a valid quantity"
         return errors
 
+    def edit_product_validator(self, postData):
+        errors = {}
+
+        if len(postData['name']) < 2:
+            errors['name'] = "Please enter a valid product name"
+        if len(postData['part_number']) < 2:
+            errors['part_number'] = "Please enter a valid product part number"        
+        if len(postData['manufacturer']) < 2:
+            errors['manufacturer'] = "Please enter a valid product"      
+        if len(postData['price']) < 2 or not PRICE_REGEX.match(postData['price']):
+            errors['price'] = "Please enter a valid price in ###.## format"
+        if len(postData['desc']) < 10:
+            errors["desc"] = "Please enter a valid description"
+        if len(postData['quantity_in_stock']) < 1 or postData['quantity_in_stock'] <1:
+            errors["quantity_in_stock"] = "Please enter a valid quantity"
+        return errors
+        
 
 class Product(models.Model):
     # product_photos
@@ -161,9 +177,11 @@ class EnteredItemManager(models.Manager):
             errors['manufacturer'] = "Please enter a valid product"      
         if len(postData['price']) < 2 or not PRICE_REGEX.match(postData['price']):
             errors['price'] = "Please enter a valid price in ###.## format"
+        if len(postData['quantity']) < 1 or not NUMBER_REGEX.match(postData['quantity']):
+            errors['quantity'] = "Please enter a valid quantity"
         return errors
-        
-        
+
+
 class EnteredItem(models.Model):
     # order_of_items
     # quote_of_items
@@ -300,15 +318,6 @@ class QuoteProduct(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
-class QuoteItemManager(models.Manager):
-    def quoteitem_validator(self, postData):
-        errors = {}
-
-        if len(postData['quantity']) < 1 or not NUMBER_REGEX.match(postData['quantity']):
-            errors['quantity'] = "Please enter a valid first name"
-        return errors
-
-
 class QuoteItem(models.Model):
     item_on_quote = models.ForeignKey(
         EnteredItem,
@@ -324,7 +333,7 @@ class QuoteItem(models.Model):
     combined_price = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    objects = QuoteItemManager()
+
 
 class Review(models.Model):
     product_reviewed = models.ForeignKey(

@@ -38,8 +38,10 @@ def process_create_product(request):
                 new_prod = Product.objects.create(
                     name = request.POST['name'],
                     part_number = request.POST['part_number'],
+                    manufacturer = request.POST['manufacturer'],
                     price = Decimal(request.POST['price']),
                     desc = request.POST['desc'],
+                    exp_desc = request.POST['exp_desc'],
                     quantity_in_stock = int(request.POST['quantity_in_stock'])
                 )
                 Photo.objects.create(
@@ -80,19 +82,19 @@ def process_product_edit(request, product_id):
             product_to_edit = Product.objects.get(id=product_id)
             if request.method == "POST":
                 # errors handling
-                # errors = Wish.objects.wish_validator(request.POST)
-                # if len(errors) > 0:
-                #     for error in errors.values():
-                #         messages.error(request, error)
-                #     return redirect(f"/wishes/edit_wish/{ wish_id }")
-                # else:
-
-                product_to_edit.name = request.POST['name']
-                product_to_edit.part_number = request.POST['part_number']
-                product_to_edit.price = Decimal(request.POST['price'])
-                product_to_edit.desc = request.POST['desc']
-                product_to_edit.quantity_in_stock = int(request.POST['quantity_in_stock'])        
-                product_to_edit.save()
+                errors = Product.objects.edit_product_validator(request.POST)
+                if len(errors) > 0:
+                    for error in errors.values():
+                        messages.error(request, error)
+                else:
+                    product_to_edit.name = request.POST['name']
+                    product_to_edit.part_number = request.POST['part_number']
+                    product_to_edit.manufacturer = request.POST['manufacturer']
+                    product_to_edit.price = Decimal(request.POST['price'])
+                    product_to_edit.desc = request.POST['desc']
+                    product_to_edit.exp_desc = request.POST['exp_desc']                
+                    product_to_edit.quantity_in_stock = int(request.POST['quantity_in_stock'])        
+                    product_to_edit.save()
             return redirect(f"/admin_access/edit_product/{ product_id }")
     return redirect("/")
 
@@ -413,6 +415,9 @@ def orders_display(request):
             all_active_orders= Order.objects.exclude(status = "archived").order_by('-created_at')
             # all_active_orders = Order.objects.all()
 
+
+
+
             # quote = Quote.objects.all()
             # print(f"ContactInfo_id: {quote.contact_info.id}")
             order = Order.objects.get(id=1)
@@ -420,13 +425,10 @@ def orders_display(request):
             # print(f"#### {quote.contact_info}")
             # print(f"#### {order.contact_info.user.first_name}")<---no attrib
 
-            
-
             # quote = Quote.objects.get(id = 2)
             # print(f"#### { quote.total_price }")
             
             # ClassName.objects.first()
-
 
             quote = Quote.objects.first()
             q_item = QuoteItem.objects.first()
@@ -434,11 +436,6 @@ def orders_display(request):
             print("#############")
             # print(quote.total_price + q_item.combined_price)
 
-
-            
-            
-            
-            
             # order = Order.objects.all()
             # print(f"ContactInfo_id: {order.contact_info.id}")
             # print(f"##### { order}")
@@ -453,4 +450,24 @@ def orders_display(request):
     return redirect("/")
 
 
+def confirm_delete_quote(request, quote_id):
+    if 'user_id' in request.session:
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            context = {
+                'logged_user': logged_user,
+                'quote': Quote.objects.get(id=quote_id),
+            }
+            return render(request, "confirm_delete_quote.html", context)
+    return redirect("/")
 
+
+def delete_quote(request):
+    if 'user_id' in request.session:
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            if request.method == "POST":
+                quote = Quote.objects.get(id=request.POST['quote_id'])
+                quote.delete()
+        return redirect("/admin_access")        
+    return redirect("/")

@@ -36,13 +36,17 @@
                 {% csrf_token %}
                 <p>Product Name: <input id="product_name_input" type="text" name="name" value="{{ product_to_edit.name }}"></p>
                 <p>Product Part Number: <input id="part_number_input" type="text" name="part_number" value="{{ product_to_edit.part_number }}"></p>
-                <p>Product Manufacturer: <input id="manufacturer_input" type="text" name="manufacturer"></p>
+                <p>Product Manufacturer: <input id="manufacturer_input" type="text" name="manufacturer" value="{{ product_to_edit.manufacturer }}"></p>
                 <p>Product Price: <input id="price_input" type="text" name="price" value="{{ product_to_edit.price }}"></p>
                 <p>Product Quantity in Stock: <input type="text" name="quantity_in_stock" value="{{ product_to_edit.quantity_in_stock }}"></p>
                 <div id="description">
                     <p>Descrtiption:</p>
                     <textarea id="desc_input" name="desc">{{ product_to_edit.desc }}</textarea>
                 </div>      <!--end description-->
+                <div id="exp_description">
+                    <p>Expanded Descrtiption:</p>
+                    <textarea id="exp_desc_input" name="exp_desc">{{ product_to_edit.exp_desc }}</textarea>
+                </div>      <!--end exp_description-->
                 <button type="submit">Edit Product</button>
             </form>
         </div>      <!--end content-->

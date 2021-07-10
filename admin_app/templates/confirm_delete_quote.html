@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Admin Home</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/admin_main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/confirm_delete_quote.css' %}">
+
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <h1>Welcome, {{ logged_user.first_name }}</h1>
+            <div id="links">
+                <a href="/">Back to Store</a> |
+                <a href="/signon/logout">Logout</a>
+            </div>      <!--end links-->
+        </div>      <!--end header-->
+        <div id="content">
+            <h2>Are you sure you want to delete the following Quote?</h2>
+            <div id="quote_head">
+                <h3>Quote Reference Number: {{ quote.ref_number }} </h3>
+                <h3 id="total">Total: ${{ quote.total_price }}</h3>
+            </div>      <!--end quote_head-->
+            <div id="order_info">
+                <p>Date Placed: {{quote.placed_at }}</p>
+                <p>Placed By: {{ quote.quoted_by.last_name }}, {{ quote.quoted_by.first_name }}</p>
+                <p>Email: {{ quote.quoted_by.email }} || Phone: {{ quote.contact_info.phone }}</p>
+                <p>Address: {{ quote.contact_info.address_1 }}</p>
+                <p id="line2">{{ quote.contact_info.address_2 }}</p>
+                <p id="line3">{{ quote.contact_info.city }}, {{ quote.contact_info.state }}</p>
+                <p id="line4">{{ quote.contact_info.zip_code }}</p>
+                <p id="line5">{{ quote.contact_info.country }}</p>
+            </div>      <!--end order_info-->
+            <div id="buttons">
+                <button id="no"><a href="/admin_access/view_quote/{{ quote.id }}">Go Back</a></button>
+                <form action="/admin_access/delete_quote" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="quote_id" value="{{ quote.id }}">
+                    <button id="destroy">Delete Quote</button>
+                </form>
+            </div>      <!--end buttons-->
+        </div>      <!--end content-->
+    </div>      <!--end wrapper-->
+</body>
+
+</html>
