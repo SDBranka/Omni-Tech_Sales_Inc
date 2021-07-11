@@ -291,7 +291,7 @@ def remove_product_from_quote(request):
             product_to_remove = QuoteProduct.objects.get(id=request.POST['product_id'])
             quote = Quote.objects.get(id=request.session['open_quote'])
 
-            quote.total_price -+ product_to_remove.combined_price
+            quote.total_price -= product_to_remove.combined_price
             quote.save()
             
             product_to_remove.delete() 
@@ -304,7 +304,7 @@ def remove_item_from_quote(request):
             item_to_remove = QuoteItem.objects.get(id=request.POST['item_id'])
             quote = Quote.objects.get(id=request.session['open_quote'])
 
-            quote.total_price -+ item_to_remove.combined_price
+            quote.total_price -= item_to_remove.combined_price
             quote.save()
 
             item_to_remove.delete() 
