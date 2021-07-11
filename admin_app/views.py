@@ -299,7 +299,7 @@ def view_quote(request, quote_id):
                 'products': all_quoteproducts,
                 'items': all_quoteitems,
             }
-            return render(request, "view_quote.html", context)
+            return render(request, "admin_view_quote.html", context)
     return redirect("/")
 
 
@@ -317,7 +317,7 @@ def view_order(request, order_id):
                 'products': all_orderproducts,
                 'items': all_orderitems,
             }
-            return render(request, "view_order.html", context)
+            return render(request, "admin_view_order.html", context)
     return redirect("/")
 
 
@@ -363,7 +363,7 @@ def order_quote(request):
                     contact_info = quote.contact_info,
                     ref_number = quote.ref_number,
                     total_price = 0,
-                    status = "open",
+                    status = "pending",
                     special_instructions = quote.special_instructions,
                     office_notes = quote.office_notes,
                 )
@@ -411,40 +411,11 @@ def orders_display(request):
     if 'user_id' in request.session:
         logged_user = User.objects.get(id=request.session['user_id'])
         if logged_user.security_level > 4:
-        # status choices = {open, pending, in process, completed, archived }
+        # status choices = {pending, in process, completed, archived }
             all_active_orders= Order.objects.exclude(status = "archived").order_by('-created_at')
-            # all_active_orders = Order.objects.all()
-
-
-
-
-            # quote = Quote.objects.all()
-            # print(f"ContactInfo_id: {quote.contact_info.id}")
-            order = Order.objects.get(id=1)
-            # print(f"##### { quote}")
-            # print(f"#### {quote.contact_info}")
-            # print(f"#### {order.contact_info.user.first_name}")<---no attrib
-
-            # quote = Quote.objects.get(id = 2)
-            # print(f"#### { quote.total_price }")
-            
-            # ClassName.objects.first()
-
-            quote = Quote.objects.first()
-            q_item = QuoteItem.objects.first()
-            
-            print("#############")
-            # print(quote.total_price + q_item.combined_price)
-
-            # order = Order.objects.all()
-            # print(f"ContactInfo_id: {order.contact_info.id}")
-            # print(f"##### { order}")
-
-
             context = {
                 'logged_user': logged_user,
                 'all_active_orders': all_active_orders
-                # 'test': 
             }
         return render(request, "orders_display.html", context)
     return redirect("/")
@@ -479,7 +450,24 @@ def find_quote(request):
         if logged_user.security_level > 4:
             if request.method == "POST":
                 quote_ref_num = request.POST['quote_ref_num']
+#add validation here in case ref number doesn't exist
+
                 quote = Quote.objects.get(ref_number=quote_ref_num)
                 return redirect(f"/admin_access/view_quote/{ quote.id }")
             return redirect("/admin_access")        
     return redirect("/")
+
+def find_order(request):
+    if 'user_id' in request.session:
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            if request.method == "POST":
+                order_ref_num = request.POST['order_ref_num']
+#add validation here in case ref number doesn't exist
+
+
+                order = Order.objects.get(ref_number=order_ref_num)
+                return redirect(f"/admin_access/view_order/{ order.id }")
+            return redirect("/admin_access")        
+    return redirect("/")
+

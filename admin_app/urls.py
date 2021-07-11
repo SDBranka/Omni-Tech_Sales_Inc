@@ -30,6 +30,7 @@ urlpatterns = [
     path('confirm_delete_quote/<int:quote_id>', views.confirm_delete_quote),
     path('delete_quote', views.delete_quote),
     path('find_quote', views.find_quote),
+    path('find_order', views.find_order),
     # path('logout', views.logout),
     # path('logout', views.logout),
     # path('logout', views.logout),

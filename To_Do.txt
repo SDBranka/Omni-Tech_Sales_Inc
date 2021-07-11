@@ -1,6 +1,5 @@
 *build edit quotes in view_quotes:admin
 *add enter shipping as an EnteredItem to quote processing:admin
-*build individual view page for quote/order:store
 
 
 
@@ -42,3 +41,4 @@ Corrected:
    -line 166 and 171-174 Img_app views
 *display ordered_by and contact info in orders/quotes_display
 * on request_quote:store limit add item to users
+*build individual view page for quote/order:store
