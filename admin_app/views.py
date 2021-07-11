@@ -504,4 +504,37 @@ def decrease_product_quantity(request):
             return redirect("/admin_access")
     return redirect("/")
 
+def increase_item_quantity(request):
+    if 'user_id' in request.session:
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            if request.method == "POST":  
+                item_to_increase = QuoteItem.objects.get(id=request.POST['item_id'])
+                item_to_increase.quantity += 1 
+                item_to_increase.combined_price += item_to_increase.item_on_quote.price
+                item_to_increase.save() 
 
+                quote = Quote.objects.get(id=request.POST['quote_id'])
+                quote.total_price += item_to_increase.item_on_quote.price
+                quote.save()
+                return redirect(f"/admin_access/view_quote/{ quote.id }")
+            return redirect("/admin_access")
+    return redirect("/")
+
+def decrease_item_quantity(request):
+    if 'user_id' in request.session:    
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            if request.method == "POST":  
+                item_to_decrease = QuoteItem.objects.get(id=request.POST['item_id'])
+                if item_to_decrease.quantity > 1:
+                    item_to_decrease.quantity -= 1
+                    item_to_decrease.combined_price -= item_to_decrease.item_on_quote.price
+                    item_to_decrease.save() 
+
+                    quote = Quote.objects.get(id=request.POST['quote_id'])
+                    quote.total_price -= item_to_decrease.item_on_quote.price
+                    quote.save()
+                    return redirect(f"/admin_access/view_quote/{ quote.id }")
+            return redirect("/admin_access")
+    return redirect("/")
