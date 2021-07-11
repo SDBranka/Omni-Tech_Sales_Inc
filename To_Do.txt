@@ -11,7 +11,7 @@
 -admin may create order
 -admin may create quote using EnteredItem
 -easy of use features
-
+-add part/item $ to view_quote:admin
 
 
 Questions:

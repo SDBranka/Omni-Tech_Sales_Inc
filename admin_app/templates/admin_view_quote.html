@@ -39,9 +39,9 @@
                 <h3> Status: 
             <!-- # status choices = {open, pending, in process, completed, archived } -->
                 {% if quote.status == "pending" %}
-                    <span id="red">{{ quote.status }}</span>
+                    <span class="red">{{ quote.status }}</span>
                 {% elif quote.status == "in process" %}
-                    <span id="green">{{ quote.status }}</span>
+                    <span class="green">{{ quote.status }}</span>
                 {% else %}
                 <span>{{ quote.status }}</span>
                 {% endif %}                    
@@ -144,6 +144,38 @@
                 <h4>Special Instructions: </h4>
                 <p>{{ quote.special_instructions }}</p>
             </div>      <!--end special_instructions-->
+            <div id="add_adminitem">
+                <h2>Add a Product, Service, Discount, or Shipping Cost to the Quote?</h2>
+                <form action="/admin_access/process_add_adminitem_to_quote" method="POST">
+                    {% csrf_token %}
+                    <p>Name: 
+                        <input id="name_input" type="text" name="name">
+                        <span>Part Number: 
+                            <input id="part_number_input" type="text" name="part_number" placeholder="If no part# anter 0000000">
+                        </span>
+                    </p>
+                    <!-- <small>if none enter 000000000</small> -->
+                    <p>Manufacturer: 
+                        <input id="manufacturer_input" type="text" name="manufacturer">
+                        <span>Price: 
+                            <input id="price_input" type="text" name="price">
+                        </span>                   
+                    </p>
+                    <p>Is this a discount or a charge?:
+                        <select name="is_discount">
+                            <option value="charge">Charge</option>
+                            <option value="discount">Discount</option>
+                        </select>
+                    </p>
+                    <p>Quantity: <input id="quantity_input" type="text" name="quantity"></p>
+                    <div id="notes">
+                        <p>Additional Comments:</p>
+                        <textarea id="notes_input" name="notes"></textarea>
+                    </div>      <!--end notes-->
+                    <input type="hidden" name="quote_id" value="{{ quote.id }}">
+                    <button type="submit">Add Product</button>
+                </form>
+            </div>      <!--end add_adminitem-->
             <div id="office_notes">
                 <h4>Office Notes: </h4>
                 <form action="/admin_access/edit_off_notes" method="POST">

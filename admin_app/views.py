@@ -1,7 +1,7 @@
 from decimal import Decimal
 from django.db.models.query_utils import Q
 from django.shortcuts import render, redirect
-from imgfield_app.models import ContactInfo, User, Product, Photo, Quote, QuoteProduct, QuoteItem, Order, OrderProduct, OrderItem, Category
+from imgfield_app.models import ContactInfo, User, Product, AdminItem, Photo, Quote, QuoteProduct, QuoteItem, QuoteAdminItem, Order, OrderProduct, OrderItem, Category
 from django.contrib import messages
 from decimal import Decimal
 
@@ -571,6 +571,55 @@ def remove_item_from_quote(request):
             return redirect("/admin_access")
     return redirect("/")
 
+def process_add_adminitem_to_quote(request):
+    if 'user_id' in request.session:    
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            if request.method == "POST":                  
+                # create AdminItem object
+                name = request.POST['name']
+                part_number = request.POST['part_number']
+                manufacturer = request.POST['manufacturer']
+                price = Decimal(request.POST['price'])
+                if request.POST['is_discount'] == "discount":
+                    is_discount = True
+                else:
+                    is_discount = False
+                notes = request.POST['notes']
 
+                new_adminitem = AdminItem.objects.create(
+                    name = name,
+                    part_number = part_number,
+                    manufacturer = manufacturer,
+                    price = price,
+                    is_discount = is_discount,
+                    notes = notes
+                )
 
+                if len(request.POST['quantity']):
+                    quantity = int(request.POST['quantity'])
+                else:
+                    quantity = 1
+                combined_price = new_adminitem.price * quantity
 
+                # get quote
+                quote = Quote.objects.get(id=request.POST['quote_id'])
+
+                # create QuoteAdminItem
+                qt_adminitem = QuoteAdminItem.objects.create(
+                    adminitem_on_quote = new_adminitem,
+                    quote = quote,
+                    quantity = quantity,
+                    combined_price = combined_price,
+                    is_discount = new_adminitem.is_discount
+                    )
+
+                # checks to see if discount or charge and manipulates quote.total_price
+                if qt_adminitem.is_discount:
+                    quote.total_price -= qt_adminitem.combined_price
+                else:
+                    quote.total_price += qt_adminitem.combined_price
+                quote.save()
+                return redirect(f"/admin_access/view_quote/{ quote.id }")
+            return redirect("/admin_access")
+    return redirect("/")

@@ -37,7 +37,7 @@ urlpatterns = [
     path('decrease_item_quantity', views.decrease_item_quantity),
     path('remove_product_from_quote', views.remove_product_from_quote),
     path('remove_item_from_quote', views.remove_item_from_quote),
-    # path('logout', views.logout),
+    path('process_add_adminitem_to_quote', views.process_add_adminitem_to_quote),
     # path('logout', views.logout),
     # path('logout', views.logout),
     # path('logout', views.logout),

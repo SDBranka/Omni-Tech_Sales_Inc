@@ -195,6 +195,22 @@ class EnteredItem(models.Model):
     objects = EnteredItemManager()
 
 
+class AdminItem(models.Model):
+    # order_of_adminitem
+    # quote_of_adminitem
+    name = models.CharField(max_length=108)
+    part_number = models.CharField(max_length=27, null=True, blank= True)
+    manufacturer = models.CharField(max_length=45, null=True, blank= True)
+    price = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
+    is_discount = models.BooleanField(default=False)
+    notes = models.TextField(null=True, blank= True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    # maybe tie in?
+    # objects = EnteredItemManager()
+
+
 class Photo(models.Model):
     photo_of = models.ForeignKey(
         Product, 
@@ -220,6 +236,7 @@ class Category(models.Model):
 class Order(models.Model):
     # order_product
     # order_item
+    # order_adminitem
     # order_contact_info
     ordered_by = models.ForeignKey(
         User, 
@@ -276,9 +293,28 @@ class OrderItem(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
+class OrderAdminItem(models.Model):
+    adminitem_on_order = models.ForeignKey(
+        AdminItem,
+        related_name="order_of_adminitem",
+        on_delete=models.CASCADE
+    )
+    order = models.ForeignKey(
+        Order,
+        related_name="order_adminitem",
+        on_delete=models.CASCADE
+    )
+    quantity = models.IntegerField()
+    combined_price = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
+    is_discount = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
 class Quote(models.Model):
     # quote_product
     # quote_item
+    # quote_adminitem
     quoted_by = models.ForeignKey(
         User, 
         related_name="user_quotes",
@@ -331,6 +367,24 @@ class QuoteItem(models.Model):
     )
     quantity = models.IntegerField()
     combined_price = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+class QuoteAdminItem(models.Model):
+    adminitem_on_quote = models.ForeignKey(
+        AdminItem,
+        related_name="quote_of_adminitem",
+        on_delete=models.CASCADE
+    )
+    quote = models.ForeignKey(
+        Quote,
+        related_name="quote_adminitem",
+        on_delete=models.CASCADE
+    )
+    quantity = models.IntegerField()
+    combined_price = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
+    is_discount = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
