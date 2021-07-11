@@ -471,3 +471,15 @@ def delete_quote(request):
                 quote.delete()
         return redirect("/admin_access")        
     return redirect("/")
+
+
+def find_quote(request):
+    if 'user_id' in request.session:
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            if request.method == "POST":
+                quote_ref_num = request.POST['quote_ref_num']
+                quote = Quote.objects.get(ref_number=quote_ref_num)
+                return redirect(f"/admin_access/view_quote/{ quote.id }")
+            return redirect("/admin_access")        
+    return redirect("/")

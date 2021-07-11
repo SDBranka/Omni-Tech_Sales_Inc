@@ -23,9 +23,31 @@
             </div>      <!--end links-->
         </div>      <!--end header-->
         <div id="content">
-            <h1>##########</h1>
-
             <h2>Quotes</h2>
+            <form action="/admin_access/find_quote" method="POST">
+                {% csrf_token %}
+                <p>View a Quote By Ref#: <input type="text" name="quote_ref_num"></p>
+                
+                <!-- <p>Rating:
+                    <select name="security_level">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                    </select>
+                </p> -->
+
+                
+                
+                <button type="submit">Search</button>
+            </form>
+
+
+
+
+
+
             <div id="quotes">
                 {% for quote in all_active_quotes %}
                     <div id="quote_pod">
