@@ -142,8 +142,8 @@ class ProductManager(models.Manager):
             errors['price'] = "Please enter a valid price in ###.## format"
         if len(postData['desc']) < 10:
             errors["desc"] = "Please enter a valid description"
-        if len(postData['quantity_in_stock']) < 1 or postData['quantity_in_stock'] <1:
-            errors["quantity_in_stock"] = "Please enter a valid quantity"
+        # if len(postData['quantity_in_stock']) < 1 or postData['quantity_in_stock'] <1:
+        #     errors["quantity_in_stock"] = "Please enter a valid quantity"
         return errors
         
 

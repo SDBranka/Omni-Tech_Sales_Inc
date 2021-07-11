@@ -464,8 +464,6 @@ def find_order(request):
             if request.method == "POST":
                 order_ref_num = request.POST['order_ref_num']
 #add validation here in case ref number doesn't exist
-
-
                 order = Order.objects.get(ref_number=order_ref_num)
                 return redirect(f"/admin_access/view_order/{ order.id }")
             return redirect("/admin_access")        

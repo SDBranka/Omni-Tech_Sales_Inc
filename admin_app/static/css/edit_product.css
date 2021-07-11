@@ -38,20 +38,33 @@
     margin-left: 32px;
 }
 
+#manufacturer_input {
+    margin-left: 26px;
+}
+
 #price_input {
     margin-left: 81px;
 }
 
-#description {
+#description,
+#exp_description {
     display: flex;
 }
 
-#desc_input {
-    margin-left: 92px;
+#description textarea {
+    margin: 0px 9px 9px 91px;
+    width: 370px;
+
+}
+
+#exp_description textarea {
+    margin: 0px 9px 9px 23px;
+    width: 370px;
+    height: 350px;
 }
 
 button {
     margin-top: 7px;
-    margin-left: 126px;
+    margin-left: 470px;
     padding: 3px;
 }

@@ -22,14 +22,12 @@
             </div>      <!--end links-->            
         </div>      <!--end header-->
         <div id="content">
-
-            <a id="go_back" href="/user_account">Go Back</a>
             <div id="quote_head">
                 <h3>Order Reference Number: {{ order.ref_number }} </h3>
                 <h3 id="total">Total: ${{ order.total_price }}</h3>
             </div>      <!--end quote_head-->
             <div id="order_info">
-                <p>Date Placed: {{order.placed_at }}</p>
+                <p>Date Placed: {{order.created_at }}</p>
                 <p>Placed By: {{ order.orderd_by.last_name }}, {{ order.orderd_by.first_name }}</p>
                 <p>Email: {{ order.orderd_by.email }} || Phone: {{ order.contact_info.phone }}</p>
                 <p>Address: {{ order.contact_info.address_1 }}</p>

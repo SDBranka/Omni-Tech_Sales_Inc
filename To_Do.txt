@@ -1,15 +1,14 @@
 *build edit quotes in view_quotes:admin
 *add enter shipping as an EnteredItem to quote processing:admin
+*add discounts as EnteredItem to quote processing:admin
+*view_quote:admin order_by names not displaying
 
 
-
--Admin can delete any Quote that is not status "archived"
- or "completed"
--Add manufacturer to new/edit product creation in admin
--Add exp_desc to new/edit product creation
--Admin can delete any quote not completed or archived
 -add filter by to select_product:admin
 -add product validations adminstractive:admin
+-fix edit_product:admin validations
+-admin may create order
+-admin may create quote using EnteredItem
 
 
 
@@ -42,3 +41,7 @@ Corrected:
 *display ordered_by and contact info in orders/quotes_display
 * on request_quote:store limit add item to users
 *build individual view page for quote/order:store
+-Admin can delete any Quote that is not status "archived"
+ or "completed"
+-Add exp_desc to new/edit product creation
+-Admin can delete any quote not completed or archived
