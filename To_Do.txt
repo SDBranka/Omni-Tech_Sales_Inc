@@ -4,11 +4,13 @@
 *view_quote:admin order_by names not displaying
 
 
+
 -add filter by to select_product:admin
 -add product validations adminstractive:admin
 -fix edit_product:admin validations
 -admin may create order
 -admin may create quote using EnteredItem
+-easy of use features
 
 
 
