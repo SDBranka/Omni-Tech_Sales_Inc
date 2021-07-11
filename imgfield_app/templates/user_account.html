@@ -101,7 +101,7 @@
                         <!--status choices = {open, pending, in process, completed. archived }-->
                         {% for order in most_recent_orders %}
                             <div class="order">
-                                <p>Ref #: {{ order.ref_number }}</p>
+                                <p>Ref #: <a href="/view_order/{{ order.id }}">{{ order.ref_number }}</a></p>
                                 <p>Last Processed: {{ order.updated_at.date }}</p>
                                 <p>Status: {{ order.status }}</p>  
                             </div>      <!--end order-->

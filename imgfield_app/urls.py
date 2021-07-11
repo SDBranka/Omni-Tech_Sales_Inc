@@ -26,7 +26,7 @@ urlpatterns = [
     path('process_edit_contact', views.process_edit_contact),
     path('proces_edit_profile', views.proces_edit_profile),
     path('view_quote/<int:quote_id>', views.view_quote),
-    # path('logout', views.logout),
+    path('view_order/<int:order_id>', views.view_order),
     # path('logout', views.logout),
     # path('logout', views.logout),
     # path('logout', views.logout),

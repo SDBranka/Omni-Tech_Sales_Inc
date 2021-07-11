@@ -1,6 +1,6 @@
 from re import U
 from django.shortcuts import render, redirect
-from .models import User, Product, EnteredItem, Photo, Category, Order, Quote, QuoteProduct, QuoteItem, ContactInfo, Review
+from .models import User, Product, EnteredItem, Photo, Category, Order, OrderProduct, OrderItem, Quote, QuoteProduct, QuoteItem, ContactInfo, Review
 from django.contrib import messages
 from django.core.paginator import Paginator
 import uuid
@@ -506,6 +506,24 @@ def view_quote(request, quote_id):
         return redirect("/user_account")
     return redirect("/")
 
+
+def view_order(request, order_id):
+    if 'user_id' in request.session:
+        logged_user = User.objects.get(id=request.session['user_id'])
+        order = Order.objects.get(id=order_id)
+        if order.ordered_by == logged_user:
+            all_orderproducts = OrderProduct.objects.filter(order=order)
+            all_orderitems = OrderItem.objects.filter(order=order)        
+        
+            context = {
+                'logged_user': logged_user,
+                'order': order,
+                'products': all_orderproducts,
+                'items': all_orderitems,
+            }
+            return render(request, "view_order.html", context)
+        return redirect("/user_account")
+    return redirect("/")
 
 
 
