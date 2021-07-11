@@ -66,7 +66,7 @@
                         <!--status choices = {open, pending, in process, completed. archived }-->
                         {% for quote in most_recent_quotes %}
                             <div class="quote">
-                                <p>Ref #: {{ quote.ref_number }}</p>
+                                <p>Ref #: <a href="/view_quote/{{ quote.id }}">{{ quote.ref_number }}</a></p>
                                 <p>Last Processed: {{ quote.updated_at.date }}</p>
                                 <!-- <p>Products:</p> -->
                                 {% for product in quote.quote_product.all %}
@@ -107,7 +107,7 @@
                             </div>      <!--end order-->
                         {% endfor %}
                     {% else %}
-                        <p>You have no quotes in your user history</p>
+                        <p>You have no orders in your user history</p>
                     {% endif %}
                 </div>      <!--end orders-->
             </div>      <!--end order_display-->

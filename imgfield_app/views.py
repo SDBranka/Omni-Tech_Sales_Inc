@@ -488,6 +488,45 @@ def proces_edit_profile(request):
     return redirect("/")
 
 
+def view_quote(request, quote_id):
+    if 'user_id' in request.session:
+        logged_user = User.objects.get(id=request.session['user_id'])
+        quote = Quote.objects.get(id=quote_id)
+        if quote.quoted_by == logged_user:
+            all_quoteproducts = QuoteProduct.objects.filter(quote=quote)
+            all_quoteitems = QuoteItem.objects.filter(quote=quote)        
+        
+            context = {
+                'logged_user': logged_user,
+                'quote': quote,
+                'products': all_quoteproducts,
+                'items': all_quoteitems,
+            }
+            return render(request, "view_quote.html", context)
+        return redirect("/user_account")
+    return redirect("/")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # def trial(request):
 #     product = Product.objects.get(id=2)
 #     two = product.price * 2

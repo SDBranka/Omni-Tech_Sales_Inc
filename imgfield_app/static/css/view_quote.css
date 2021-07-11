@@ -1,0 +1,101 @@
+#go_back {
+    display: block;
+    text-align: right;
+    margin-bottom: 9px;
+}
+
+
+#quote_head{
+    display: flex;
+    margin-bottom: 9px;
+}
+
+#quote_head h3 {
+    flex: 1;
+}
+
+#total {
+    text-align: right;
+}
+
+#order_info {
+    margin-bottom: 18px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 25px;
+}
+
+table, th, td {
+    border: 2px solid rgb(77, 77, 201)
+}
+
+th, td {
+    padding: 5px;
+}
+
+th {
+    text-align: center;
+}
+
+.prod_quant {
+    display: flex;
+}
+
+.prod_quant p {
+    margin: auto;
+}
+
+.quant_btns button {
+    display: block;
+}
+
+.actions {
+    text-align: center;
+}
+
+.actions button {
+    border: none;
+    text-decoration: underline;
+    color: #0000EE;
+    background-color: #F7F7F7;
+}
+
+#special_instructions {
+    margin-bottom: 18px;
+}
+
+#special_instructions p {
+    margin: 9px 0px 0px 27px;
+}
+
+#office_notes {
+    margin-bottom: 18px;
+}
+
+#office_notes textarea {
+    width: 81%;
+    height: 234px;
+}
+
+#process_quote {
+    text-align: center;
+}
+
+#begin_proc_btn{
+    margin: 9px 0px;
+    background-color: green;
+    color: white;
+    padding: 12px;
+}
+
+#dlt_quote_btn {
+    text-align: center;
+}
+
+#dlt_quote_btn a {
+    text-decoration: none;
+    color: black;
+}

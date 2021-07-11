@@ -25,7 +25,7 @@ urlpatterns = [
     path('edit_contact/<str:redirect_reference>/<int:contact_id>', views.edit_contact),
     path('process_edit_contact', views.process_edit_contact),
     path('proces_edit_profile', views.proces_edit_profile),
-    # path('logout', views.logout),
+    path('view_quote/<int:quote_id>', views.view_quote),
     # path('logout', views.logout),
     # path('logout', views.logout),
     # path('logout', views.logout),
