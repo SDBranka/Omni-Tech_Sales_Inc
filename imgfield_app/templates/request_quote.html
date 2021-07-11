@@ -59,6 +59,7 @@
             </div>      <!--end wbenc-->
         </div>      <!--end l_sidebar-->
         <div id="main">
+            {% if logged_user %}
             <div id="add_item">
                 <div id="instructions">
                     <p>Please view our <a href="/product_lines">Product Lines</a> page and select any 
@@ -95,6 +96,7 @@
                     </form> 
                 </div>      <!--end add_item_form-->
             </div>      <!--end add_item-->
+            {% endif %}
             <div id="view_quote">
                 {% if logged_user %}   
                     <h2>Current Quote</h2>

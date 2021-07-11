@@ -1,4 +1,6 @@
 *build edit quotes in view_quotes:admin
+*add enter shipping as an EnteredItem to quote processing:admin
+*build individual view page for quote/order:store
 
 
 
@@ -8,11 +10,7 @@
 -Add exp_desc to new/edit product creation
 -Admin can delete any quote not completed or archived
 -add filter by to select_product:admin
-
-
-
-
-
+-add product validations adminstractive:admin
 
 
 
@@ -22,6 +20,8 @@ Questions:
 -The way I hid my secret key won't allow me to deploy
 -Is it preferable to have more smaller files or less but large ones
 
+
+Look Into:
 _automate the boring stuff with python
 _scrape data from the web
 _wk7/8
@@ -41,3 +41,4 @@ Corrected:
  same check-->display
    -line 166 and 171-174 Img_app views
 *display ordered_by and contact info in orders/quotes_display
+* on request_quote:store limit add item to users
