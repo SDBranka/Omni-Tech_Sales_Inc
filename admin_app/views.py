@@ -538,3 +538,39 @@ def decrease_item_quantity(request):
                     return redirect(f"/admin_access/view_quote/{ quote.id }")
             return redirect("/admin_access")
     return redirect("/")
+
+def remove_product_from_quote(request):
+    if 'user_id' in request.session:    
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            if request.method == "POST":  
+                    product_to_remove = QuoteProduct.objects.get(id=request.POST['product_id'])
+                    quote = Quote.objects.get(id=request.POST['quote_id'])
+
+                    quote.total_price -= product_to_remove.combined_price
+                    quote.save()
+                    
+                    product_to_remove.delete() 
+                    return redirect(f"/admin_access/view_quote/{ quote.id }")
+            return redirect("/admin_access")
+    return redirect("/")
+
+def remove_item_from_quote(request):
+    if 'user_id' in request.session:    
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            if request.method == "POST":  
+                    item_to_remove = QuoteItem.objects.get(id=request.POST['item_id'])
+                    quote = Quote.objects.get(id=request.POST['quote_id'])
+
+                    quote.total_price -= item_to_remove.combined_price
+                    quote.save()
+                    
+                    item_to_remove.delete() 
+                    return redirect(f"/admin_access/view_quote/{ quote.id }")
+            return redirect("/admin_access")
+    return redirect("/")
+
+
+
+

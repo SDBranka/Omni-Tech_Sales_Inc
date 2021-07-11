@@ -89,8 +89,9 @@
                     <!-- <td>#</td> -->
                     {% if quote.status == "in process" %}
                     <td class="actions">
-                        <form action="/remove_product_from_quote" method="POST">
+                        <form action="/admin_access/remove_product_from_quote" method="POST">
                             {% csrf_token %}
+                            <input type="hidden" name="quote_id" value="{{ quote.id }}">
                             <input type="hidden" name="product_id" value="{{ product.id }}">
                             <button>Remove</button>
                         </form>
@@ -128,8 +129,9 @@
                     <td>{{ item.combined_price }}</td>      <!-- <td>#</td> -->
                     {% if quote.status == "in process" %}
                     <td class="actions">
-                        <form action="/remove_item_from_quote" method="POST">
+                        <form action="/admin_access/remove_item_from_quote" method="POST">
                             {% csrf_token %}
+                            <input type="hidden" name="quote_id" value="{{ quote.id }}">
                             <input type="hidden" name="item_id" value="{{ item.id }}">
                             <button id="remove_btn">Remove</button>
                         </form>

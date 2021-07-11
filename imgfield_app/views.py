@@ -287,28 +287,30 @@ def decrease_item_quantity(request):
 
 
 def remove_product_from_quote(request):
-    if 'user_id' in request.session:    
-        if 'open_quote' in request.session:
-            product_to_remove = QuoteProduct.objects.get(id=request.POST['product_id'])
-            quote = Quote.objects.get(id=request.session['open_quote'])
+    if 'user_id' in request.session:  
+        if request.method == "POST":
+            if 'open_quote' in request.session:
+                product_to_remove = QuoteProduct.objects.get(id=request.POST['product_id'])
+                quote = Quote.objects.get(id=request.session['open_quote'])
 
-            quote.total_price -= product_to_remove.combined_price
-            quote.save()
-            
-            product_to_remove.delete() 
+                quote.total_price -= product_to_remove.combined_price
+                quote.save()
+                
+                product_to_remove.delete() 
     return redirect("/request_quote")
 
 
 def remove_item_from_quote(request):
-    if 'user_id' in request.session:    
-        if 'open_quote' in request.session:
-            item_to_remove = QuoteItem.objects.get(id=request.POST['item_id'])
-            quote = Quote.objects.get(id=request.session['open_quote'])
+    if 'user_id' in request.session:  
+        if request.method == "POST":  
+            if 'open_quote' in request.session:
+                item_to_remove = QuoteItem.objects.get(id=request.POST['item_id'])
+                quote = Quote.objects.get(id=request.session['open_quote'])
 
-            quote.total_price -= item_to_remove.combined_price
-            quote.save()
+                quote.total_price -= item_to_remove.combined_price
+                quote.save()
 
-            item_to_remove.delete() 
+                item_to_remove.delete() 
     return redirect("/request_quote")
 
 
