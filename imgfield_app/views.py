@@ -228,16 +228,17 @@ def process_add_item_to_quote(request):
     return redirect("/")
 
 def increase_product_quantity(request):
-    if 'user_id' in request.session:    
-        if 'open_quote' in request.session:
-            product_to_increase = QuoteProduct.objects.get(id=request.POST['product_id'])
-            product_to_increase.quantity += 1 
-            product_to_increase.combined_price += product_to_increase.product_on_quote.price
-            product_to_increase.save() 
+    if 'user_id' in request.session:
+        if request.method == "POST":  
+            if 'open_quote' in request.session:
+                product_to_increase = QuoteProduct.objects.get(id=request.POST['product_id'])
+                product_to_increase.quantity += 1 
+                product_to_increase.combined_price += product_to_increase.product_on_quote.price
+                product_to_increase.save() 
 
-            quote = Quote.objects.get(id=request.session['open_quote'])
-            quote.total_price += product_to_increase.product_on_quote.price
-            quote.save()
+                quote = Quote.objects.get(id=request.session['open_quote'])
+                quote.total_price += product_to_increase.product_on_quote.price
+                quote.save()
     return redirect("/request_quote")
 
 

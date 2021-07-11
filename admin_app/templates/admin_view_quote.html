@@ -67,14 +67,16 @@
                             <p>{{ product.quantity }}</p>
                             {% if quote.status == "in process" %}
                             <div class="quant_btns">
-                                <form action="/increase_product_quantity" method="POST">
+                                <form action="/admin_access/increase_product_quantity" method="POST">
                                     {% csrf_token %}
+                                    <input type="hidden" name="quote_id" value="{{ quote.id }}">
                                     <input type="hidden" name="product_id" value="{{ product.id }}">
                                     <button class="add_btn">&#9650;</button>
                                 </form>
                                 {% if product.quantity > 1 %}
-                                <form action="/decrease_product_quantity" method="POST">
+                                <form action="/admin_access/decrease_product_quantity" method="POST">
                                     {% csrf_token %}
+                                    <input type="hidden" name="quote_id" value="{{ quote.id }}">
                                     <input type="hidden" name="product_id" value="{{ product.id }}">
                                     <button class="subt_btn">&#9660;</button>
                                 </form>
