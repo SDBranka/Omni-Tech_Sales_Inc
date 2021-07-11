@@ -36,6 +36,16 @@
                 <p id="line3">{{ quote.contact_info.city }}, {{ quote.contact_info.state }}</p>
                 <p id="line4">{{ quote.contact_info.zip_code }}</p>
                 <p id="line5">{{ quote.contact_info.country }}</p>
+                <h3> Status: 
+            <!-- # status choices = {open, pending, in process, completed, archived } -->
+                {% if quote.status == "pending" %}
+                    <span id="red">{{ quote.status }}</span>
+                {% elif quote.status == "in process" %}
+                    <span id="green">{{ quote.status }}</span>
+                {% else %}
+                <span>{{ quote.status }}</span>
+                {% endif %}                    
+                </h3>
             </div>      <!--end order_info-->
             <table>
                 <tr>

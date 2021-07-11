@@ -15,6 +15,18 @@
     margin-bottom: 18px;
 }
 
+#order_info  h3 {
+    margin-top: 18px;
+}
+
+#red {
+    color: red;
+}
+
+#green {
+    color: green;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
