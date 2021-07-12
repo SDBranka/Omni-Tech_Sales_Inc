@@ -1,8 +1,8 @@
-*add edit in process order functionality on view_order:admin
+*order order processing
+*in process view_quote:admin start attatched order
 *admin may create order
 *add adminitems to view_quote:store
 *add adminitems to view_order:store
-*in process view_quote:admin start attatched order
 
 
 
@@ -60,3 +60,5 @@ Corrected:
 **ADD ADMINITEMS TO ORDER ON QUOTE COMPLETION!!! 
 *add adminitems to view_order:admin
 *view_quote:admin order_by names not displaying
+*add edit in process order functionality on view_order:admin
+*office notes in process view_quote:admin

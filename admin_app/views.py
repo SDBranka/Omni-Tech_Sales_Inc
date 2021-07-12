@@ -651,7 +651,16 @@ def process_add_adminitem_to_order(request):
             return redirect("/admin_access")
     return redirect("/")
 
-
+def edit_order_off_notes(request):
+    if 'user_id' in request.session:
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            if request.method == "POST":
+                order = Order.objects.get(id=request.POST['order_id'])
+                order.office_notes = request.POST['office_notes']
+                order.save()
+                return redirect(f"/admin_access/view_order/{ order.id }")
+    return redirect("/")
 
 
 

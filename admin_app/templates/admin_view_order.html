@@ -231,13 +231,14 @@
             {% endif %}
             <div id="office_notes">
                 <h4>Office Notes: </h4>
-                <form action="/admin_access/edit_off_notes" method="POST">
+                <form action="/admin_access/edit_order_off_notes" method="POST">
                     {% csrf_token %}
                     <textarea name="office_notes">{{ order.office_notes }}</textarea>
                     <input type="hidden" name="order_id" value="{{ order.id }}">
                     <button type="submit">Edit</button>
                 </form>
             </div>      <!--end office_notes-->
+            <!-- make this a form to attatch user and connect ref# -->
             <a id="new_order" href="/admin_access/new_order">Do you wish to start a new invoice?</a>
             <div id="process_quote">
                 {% if order.status == "pending" %}

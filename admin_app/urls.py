@@ -45,7 +45,7 @@ urlpatterns = [
     path('remove_adminitem_from_order', views.remove_adminitem_from_order),
     path('begin_processing_order', views.begin_processing_order),
     path('process_add_adminitem_to_order', views.process_add_adminitem_to_order),
-    # path('logout', views.logout),
+    path('edit_order_off_notes', views.edit_order_off_notes),
     # path('logout', views.logout),
     # path('logout', views.logout),
     # path('logout', views.logout),
