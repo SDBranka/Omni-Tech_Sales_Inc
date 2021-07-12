@@ -1,6 +1,6 @@
-*build edit quotes in view_quotes:admin
-*add enter shipping as an EnteredItem to quote processing:admin
-*add discounts as EnteredItem to quote processing:admin
+*add adminitems to view_order:admin
+*add adminitems to view_quote:store
+*add adminitems to view_order:store
 *view_quote:admin order_by names not displaying
 
 
@@ -11,7 +11,6 @@
 -admin may create order
 -admin may create quote using EnteredItem
 -easy of use features
--add part/item $ to view_quote:admin
 
 
 Questions:
@@ -24,7 +23,7 @@ Questions:
 Look Into:
 _automate the boring stuff with python
 _scrape data from the web
-_wk7/8
+_wk7/8 ajax
 
 
 
@@ -47,3 +46,7 @@ Corrected:
  or "completed"
 -Add exp_desc to new/edit product creation
 -Admin can delete any quote not completed or archived
+-add part/item $ to view_quote:admin
+*build edit quotes in view_quotes:admin
+*add enter shipping as an EnteredItem to quote processing:admin
+*add discounts as EnteredItem to quote processing:admin

@@ -49,17 +49,21 @@
             </div>      <!--end order_info-->
             <table>
                 <tr>
+                    <th>Part Number</th>
                     <th>Name</th>
                     <th>Price</th>
                     <th>Quantity</th>
                     <th>Combined Price</th>
                     <!-- <th>#</th> -->
+                    <!-- <th>#</th> -->
+                    <!--<th>#</th>-->
                     {% if quote.status == "in process" %}
                     <th>Actions</th>
                     {% endif %}
                 </tr>
                 {% for product in products %}
                 <tr>
+                    <td>{{ product.product_on_quote.part_number }}</td>
                     <td>{{ product.product_on_quote.name }}</td>
                     <td>${{ product.product_on_quote.price }}</td>
                     <td>
@@ -85,7 +89,7 @@
                             {% endif %}
                         </div>      <!--end prod_quant-->
                     </td>
-                    <td>{{ product.combined_price }}</td>
+                    <td>${{ product.combined_price }}</td>
                     <!-- <td>#</td> -->
                     {% if quote.status == "in process" %}
                     <td class="actions">
@@ -101,6 +105,7 @@
                 {% endfor %}        <!--#end for product in products-->
                 {% for item in items %}
                 <tr>
+                    <td>{{ item.item_on_quote.part_number }}</td>
                     <td>{{ item.item_on_quote.name }}</td>
                     <td>${{ item.item_on_quote.price }}</td>
                     <td>
@@ -126,7 +131,7 @@
                             {% endif %}
                         </div>      <!--end prod_quant-->
                     </td>
-                    <td>{{ item.combined_price }}</td>      <!-- <td>#</td> -->
+                    <td>${{ item.combined_price }}</td>      <!-- <td>#</td> -->
                     {% if quote.status == "in process" %}
                     <td class="actions">
                         <form action="/admin_access/remove_item_from_quote" method="POST">
@@ -139,6 +144,90 @@
                     {% endif %}
                 </tr>
                 {% endfor %}        <!--#end for item in items#-->
+            
+            
+            
+            
+            
+            
+            
+            
+                {% for adminitem in adminitems %}
+                <tr>
+                    <td>{{ adminitem.adminitem_on_quote.part_number }}</td>
+                    <td>{{ adminitem.adminitem_on_quote.name }}</td>
+                    {% if adminitem.is_discount%}
+                        <td>-${{ adminitem.adminitem_on_quote.price }}</td>
+                    {%else%}
+                        <td>${{ adminitem.adminitem_on_quote.price }}</td>
+                    {% endif %}
+                    <td>
+                        <div class="prod_quant">
+                            <p>{{ adminitem.quantity }}</p>
+                            {% if quote.status == "in process" %}
+                            <div class="quant_btns">
+                                <form action="/admin_access/increase_adminitem_quantity" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="quote_id" value="{{ quote.id }}">
+                                    <input type="hidden" name="adminitem_id" value="{{ adminitem.id }}">
+                                    <button class="add_btn">&#9650;</button>
+                                </form>
+                                {% if adminitem.quantity > 1 %}
+                                <form action="/admin_access/decrease_adminitem_quantity" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="quote_id" value="{{ quote.id }}">
+                                    <input type="hidden" name="adminitem_id" value="{{ adminitem.id }}">
+                                    <button class="subt_btn">&#9660;</button>
+                                </form>
+                                {% endif %}
+                            </div>      <!--end quant_btns-->
+                            {% endif %}
+                        </div>      <!--end prod_quant-->
+                    </td>
+                    {% if adminitem.is_discount%}
+                        <td>-${{ adminitem.combined_price }}</td>
+                    {%else%}
+                        <td>${{ adminitem.combined_price }}</td>
+                    {% endif %}
+                    {% if quote.status == "in process" %}
+                    <td class="actions">
+                        <form action="/admin_access/remove_adminitem_from_quote" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="quote_id" value="{{ quote.id }}">
+                            <input type="hidden" name="adminitem_id" value="{{ adminitem.id }}">
+                            <button id="remove_btn">Remove</button>
+                        </form>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}        <!--#end for adminitem in adminitems#-->
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             </table>
             <div id="special_instructions">
                 <h4>Special Instructions: </h4>

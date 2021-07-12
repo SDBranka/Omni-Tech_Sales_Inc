@@ -292,12 +292,15 @@ def view_quote(request, quote_id):
             quote = Quote.objects.get(id=quote_id)
             all_quoteproducts = QuoteProduct.objects.filter(quote=quote)
             all_quoteitems = QuoteItem.objects.filter(quote=quote)        
-        
+            all_quote_adminitems = QuoteAdminItem.objects.filter(quote=quote)
+
+
             context = {
                 'logged_user': logged_user,
                 'quote': quote,
                 'products': all_quoteproducts,
                 'items': all_quoteitems,
+                'adminitems': all_quote_adminitems,
             }
             return render(request, "admin_view_quote.html", context)
     return redirect("/")
@@ -539,6 +542,49 @@ def decrease_item_quantity(request):
             return redirect("/admin_access")
     return redirect("/")
 
+
+def increase_adminitem_quantity(request):
+    if 'user_id' in request.session:
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            if request.method == "POST":  
+                adminitem_to_increase = QuoteAdminItem.objects.get(id=request.POST['adminitem_id'])
+                adminitem_to_increase.quantity += 1 
+                adminitem_to_increase.combined_price += adminitem_to_increase.adminitem_on_quote.price
+                adminitem_to_increase.save() 
+
+                quote = Quote.objects.get(id=request.POST['quote_id'])
+                if adminitem_to_increase.is_discount:
+                    quote.total_price -= adminitem_to_increase.adminitem_on_quote.price
+                else:
+                    quote.total_price += adminitem_to_increase.adminitem_on_quote.price
+                quote.save()
+                return redirect(f"/admin_access/view_quote/{ quote.id }")
+            return redirect("/admin_access")
+    return redirect("/")
+
+
+def decrease_adminitem_quantity(request):
+    if 'user_id' in request.session:
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            if request.method == "POST":  
+                adminitem_to_decrease = QuoteAdminItem.objects.get(id=request.POST['adminitem_id'])
+                adminitem_to_decrease.quantity -= 1 
+                adminitem_to_decrease.combined_price -= adminitem_to_decrease.adminitem_on_quote.price
+                adminitem_to_decrease.save() 
+
+                quote = Quote.objects.get(id=request.POST['quote_id'])
+                if adminitem_to_decrease.is_discount:
+                    quote.total_price += adminitem_to_decrease.adminitem_on_quote.price
+                else:
+                    quote.total_price -= adminitem_to_decrease.adminitem_on_quote.price
+                quote.save()
+                return redirect(f"/admin_access/view_quote/{ quote.id }")
+            return redirect("/admin_access")
+    return redirect("/")
+
+
 def remove_product_from_quote(request):
     if 'user_id' in request.session:    
         logged_user = User.objects.get(id=request.session['user_id'])
@@ -570,6 +616,29 @@ def remove_item_from_quote(request):
                     return redirect(f"/admin_access/view_quote/{ quote.id }")
             return redirect("/admin_access")
     return redirect("/")
+
+
+def remove_adminitem_from_quote(request):
+    if 'user_id' in request.session:    
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            if request.method == "POST":  
+                    adminitem_to_remove = QuoteAdminItem.objects.get(id=request.POST['adminitem_id'])
+                    quote = Quote.objects.get(id=request.POST['quote_id'])
+
+                    if adminitem_to_remove.is_discount:
+                        quote.total_price += adminitem_to_remove.combined_price
+                    else:
+                        quote.total_price -= adminitem_to_remove.combined_price
+                    quote.save()
+                    
+                    adminitem_to_remove.delete() 
+                    return redirect(f"/admin_access/view_quote/{ quote.id }")
+            return redirect("/admin_access")
+    return redirect("/")
+
+
+
 
 def process_add_adminitem_to_quote(request):
     if 'user_id' in request.session:    
