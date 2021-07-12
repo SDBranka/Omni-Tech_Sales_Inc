@@ -33,7 +33,7 @@
                 {% for order in all_active_orders %}
                     <div class="quote_pod">
                         <div class="quote_info">
-                            <h3>Ref #:<a href="/admin_acces/view_order/{{ order.id }}">{{ order.ref_number }}</a></h3>
+                            <h3>Ref #:<a href="/admin_access/view_order/{{ order.id }}">{{ order.ref_number }}</a></h3>
                             <p>Date Placed: {{ order.created_at }}</p>
                             <p>List Price: {{order.total_price }}</p>
                             <p>Name: {{ order.orderd_by.last_name }}, {{ order.orderd_by.first_name }}</p>

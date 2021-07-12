@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Admin Home</title>
+    <title>Admin View Order</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% load static %}
@@ -17,9 +17,9 @@
         <div id="header">
             <h1>Welcome, {{ logged_user.first_name }}</h1>
             <div id="links">
-                <a href="/">Back to Store</a>  |  
+                <a href="/">Back to Store</a> |
                 <a href="/signon/logout">Logout</a>
-            </div>      <!--end links-->            
+            </div>      <!--end links-->
         </div>      <!--end header-->
         <div id="content">
             <div id="quote_head">
@@ -38,43 +38,232 @@
             </div>      <!--end order_info-->
             <table>
                 <tr>
+                    <th>Part Number</th>
                     <th>Name</th>
                     <th>Price</th>
                     <th>Quantity</th>
                     <th>Combined Price</th>
                     <!-- <th>#</th> -->
+                    <!-- <th>#</th> -->
+                    <!--<th>#</th>-->
                     {% if order.status == "in process" %}
-                    <th>Actions</th>
+                        <th>Actions</th>
                     {% endif %}
                 </tr>
                 {% for product in products %}
-                <tr>
-                    <td>{{ product.product_on_order.name }}</td>
-                    <td>${{ product.product_on_order.price }}</td>
-                    <td>{{ product.quantity }}</td>
-                    <td>{{ product.combined_price }}</td>
-                    <!-- <td>#</td> -->
-                </tr>
+                    <tr>
+                        <td>{{ product.product_on_order.part_number }}</td>
+                        <td>{{ product.product_on_order.name }}</td>
+                        <td>${{ product.product_on_order.price }}</td>
+                        <td>
+                            <div class="prod_quant">
+                                <p>{{ product.quantity }}</p>
+                                {% if order.status == "in process" %}
+                                    <div class="quant_btns">
+                                        <form action="/admin_access/increase_product_quantity" method="POST">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="order_id" value="{{ order.id }}">
+                                            <input type="hidden" name="product_id" value="{{ product.id }}">
+                                            <button class="add_btn">&#9650;</button>
+                                        </form>
+                                        {% if product.quantity > 1 %}
+                                            <form action="/admin_access/decrease_product_quantity" method="POST">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="order_id" value="{{ order.id }}">
+                                                <input type="hidden" name="product_id" value="{{ product.id }}">
+                                                <button class="subt_btn">&#9660;</button>
+                                            </form>
+                                        {% endif %}
+                                    </div>      <!--end quant_btns-->
+                                {% endif %}
+                            </div>      <!--end prod_quant-->
+                        </td>
+                        <td>${{ product.combined_price }}</td>
+                        <!-- <td>#</td> -->
+                        <!-- <td>#</td> -->
+                        <!-- <td>#</td> -->
+                        {% if quote.status == "in process" %}
+                            <td class="actions">
+                                <form action="/admin_access/remove_product_from_quote" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="quote_id" value="{{ quote.id }}">
+                                    <input type="hidden" name="product_id" value="{{ product.id }}">
+                                    <button>Remove</button>
+                                </form>
+                            </td>
+                        {% endif %}
+                    </tr>
                 {% endfor %}        <!--#end for product in products-->
                 {% for item in items %}
-                <tr>
-                    <td>{{ item.item_on_order.name }}</td>
-                    <td>${{ item.item_on_order.price }}</td>
-                    <td>{{ item.quantity }}</td>
-                    <td>{{ item.combined_price }}</td>      <!-- <td>#</td> -->
-                    <!-- <td>#</td> -->
-                </tr>
+                    <tr>
+                        <td>{{ item.item_on_order.part_number }}</td>
+                        <td>{{ item.item_on_order.name }}</td>
+                        <td>${{ item.item_on_order.price }}</td>
+                        <td>
+                            <div class="prod_quant">
+                                <p>{{ item.quantity }}</p>
+                                {% if quote.status == "in process" %}
+                                    <div class="quant_btns">
+                                        <form action="/admin_access/increase_item_quantity" method="POST">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="quote_id" value="{{ quote.id }}">
+                                            <input type="hidden" name="item_id" value="{{ item.id }}">
+                                            <button class="add_btn">&#9650;</button>
+                                        </form>
+                                        {% if item.quantity > 1 %}
+                                            <form action="/admin_access/decrease_item_quantity" method="POST">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="quote_id" value="{{ quote.id }}">
+                                                <input type="hidden" name="item_id" value="{{ item.id }}">
+                                                <button class="subt_btn">&#9660;</button>
+                                            </form>
+                                        {% endif %}
+                                    </div>      <!--end quant_btns-->
+                                {% endif %}
+                            </div>      <!--end prod_quant-->
+                        </td>
+                        <td>${{ item.combined_price }}</td>
+                        <!-- <td>#</td> -->
+                        <!-- <td>#</td> -->
+                        <!-- <td>#</td> -->
+                        {% if quote.status == "in process" %}
+                            <td class="actions">
+                                <form action="/admin_access/remove_item_from_quote" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="quote_id" value="{{ quote.id }}">
+                                    <input type="hidden" name="item_id" value="{{ item.id }}">
+                                    <button id="remove_btn">Remove</button>
+                                </form>
+                            </td>
+                        {% endif %}
+                    </tr>
                 {% endfor %}        <!--#end for item in items#-->
+                {% for adminitem in adminitems %}
+                    <tr>
+                        <td>{{ adminitem.adminitem_on_quote.part_number }}</td>
+                        <td>{{ adminitem.adminitem_on_quote.name }}</td>
+                        {% if adminitem.is_discount %}
+                            <td>-${{ adminitem.adminitem_on_quote.price }}</td>
+                        {% else %}
+                            <td>${{ adminitem.adminitem_on_quote.price }}</td>
+                        {% endif %}
+                        <td>
+                            <div class="prod_quant">
+                                <p>{{ adminitem.quantity }}</p>
+                                {% if quote.status == "in process" %}
+                                    <div class="quant_btns">
+                                        <form action="/admin_access/increase_adminitem_quantity" method="POST">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="quote_id" value="{{ quote.id }}">
+                                            <input type="hidden" name="adminitem_id" value="{{ adminitem.id }}">
+                                            <button class="add_btn">&#9650;</button>
+                                        </form>
+                                        {% if adminitem.quantity > 1 %}
+                                            <form action="/admin_access/decrease_adminitem_quantity" method="POST">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="quote_id" value="{{ quote.id }}">
+                                                <input type="hidden" name="adminitem_id" value="{{ adminitem.id }}">
+                                                <button class="subt_btn">&#9660;</button>
+                                            </form>
+                                        {% endif %}
+                                    </div>      <!--end quant_btns-->
+                                {% endif %}
+                            </div>
+                            <!--end prod_quant-->
+                        </td>
+                        {% if adminitem.is_discount%}
+                            <td>-${{ adminitem.combined_price }}</td>
+                        {%else%}
+                            <td>${{ adminitem.combined_price }}</td>
+                        {% endif %}
+                        {% if quote.status == "in process" %}
+                            <td class="actions">
+                                <form action="/admin_access/remove_adminitem_from_quote" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="quote_id" value="{{ quote.id }}">
+                                    <input type="hidden" name="adminitem_id" value="{{ adminitem.id }}">
+                                    <button id="remove_btn">Remove</button>
+                                </form>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}        <!--#end for adminitem in adminitems#-->
             </table>
             <div id="special_instructions">
                 <h4>Special Instructions: </h4>
                 <p>{{ quote.special_instructions }}</p>
             </div>      <!--end special_instructions-->
             <!-- # status choices = {open, pending, in process, completed, archived } -->
-
-
-
-                
+            {% if quote.status == "in process" %}
+                <div id="add_adminitem">
+                    <h2>Add a Product, Service, Discount, or Shipping Cost to the Quote?</h2>
+                    <form action="/admin_access/process_add_adminitem_to_quote" method="POST">
+                        {% csrf_token %}
+                        <p>Name:
+                            <input id="name_input" type="text" name="name">
+                            <span>Part Number:
+                                <input id="part_number_input" type="text" name="part_number"
+                                    placeholder="If no part# anter 0000000">
+                            </span>
+                        </p>
+                        <p>Manufacturer:
+                            <input id="manufacturer_input" type="text" name="manufacturer">
+                            <span>Price:
+                                <input id="price_input" type="text" name="price">
+                            </span>
+                        </p>
+                        <p>Is this a discount or a charge?:
+                            <select name="is_discount">
+                                <option value="charge">Charge</option>
+                                <option value="discount">Discount</option>
+                            </select>
+                        </p>
+                        <p>Quantity: <input id="quantity_input" type="text" name="quantity"></p>
+                        <div id="notes">
+                            <p>Additional Comments:</p>
+                            <textarea id="notes_input" name="notes"></textarea>
+                        </div>      <!--end notes-->
+                        <input type="hidden" name="quote_id" value="{{ quote.id }}">
+                        <button type="submit">Add Product</button>
+                    </form>
+                </div>      <!--end add_adminitem-->
+            {% endif %}
+            <div id="office_notes">
+                <h4>Office Notes: </h4>
+                <form action="/admin_access/edit_off_notes" method="POST">
+                    {% csrf_token %}
+                    <textarea name="office_notes">{{ quote.office_notes }}</textarea>
+                    <input type="hidden" name="quote_id" value="{{ quote.id }}">
+                    <button type="submit">Edit</button>
+                </form>
+            </div>      <!--end office_notes-->
+            <div id="process_quote">
+                {% if quote.status == "pending" %}
+                    <h4>Do You Wish To Begin Working On This Quote?</h4>
+                    <form action="/admin_access/begin_processing_quote" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="quote_id" value="{{ quote.id }}">
+                        <button id="begin_proc_btn" type="submit">Begin Processing</button>
+                    </form>
+                {% elif quote.status == "in process" %}
+                    <h4>Do You Wish To Order This Quote?</h4>
+                    <form action="/admin_access/order_quote" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="quote_id" value="{{ quote.id }}">
+                        <button id="begin_proc_btn" type="submit">Open An Order</button>
+                    </form>
+                {% else %}
+                    <h2>Quote Status: {{ quote.status }}</h2>
+                {% endif %}
+            </div>      <!--end process_quote-->
+            <!-- # status choices = {open, pending, in process, completed, archived } -->
+            <div id="dlt_quote_btn">
+                {% if quote.status == "pending" or quote.status == "in process" %}
+                    <button type="submit">
+                        <a href="/admin_access/confirm_delete_quote/{{ quote.id }}">Delete Quote</a>
+                    </button>
+                {% endif %}
+            </div>      <!--end dlt_quote_btn-->
         </div>      <!--end content-->
     </div>      <!--end wrapper-->
 </body>

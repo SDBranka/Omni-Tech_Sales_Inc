@@ -6,6 +6,7 @@
 
 
 -add filter by to select_product:admin
+-search_by bar for quotes/orders_display:admin
 -add product validations adminstractive:admin
 -fix edit_product:admin validations
 -admin may create order
