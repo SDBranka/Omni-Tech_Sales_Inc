@@ -1,4 +1,3 @@
-*add adminitems to view_order:admin
 *add adminitems to view_quote:store
 *add adminitems to view_order:store
 *view_quote:admin order_by names not displaying
@@ -51,3 +50,5 @@ Corrected:
 *build edit quotes in view_quotes:admin
 *add enter shipping as an EnteredItem to quote processing:admin
 *add discounts as EnteredItem to quote processing:admin
+**ADD ADMINITEMS TO ORDER ON QUOTE COMPLETION!!! 
+*add adminitems to view_order:admin

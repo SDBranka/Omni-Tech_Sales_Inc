@@ -1,7 +1,7 @@
 from decimal import Decimal
 from django.db.models.query_utils import Q
 from django.shortcuts import render, redirect
-from imgfield_app.models import ContactInfo, User, Product, AdminItem, Photo, Quote, QuoteProduct, QuoteItem, QuoteAdminItem, Order, OrderProduct, OrderItem, Category
+from imgfield_app.models import ContactInfo, User, Product, AdminItem, Photo, Quote, QuoteProduct, QuoteItem, QuoteAdminItem, Order, OrderProduct, OrderItem, OrderAdminItem, Category
 from django.contrib import messages
 from decimal import Decimal
 
@@ -313,12 +313,14 @@ def view_order(request, order_id):
             order = Order.objects.get(id=order_id)
             all_orderproducts = OrderProduct.objects.filter(order=order)
             all_orderitems = OrderItem.objects.filter(order=order)
+            all_order_adminitems = OrderAdminItem.objects.filter(order=order)
 
             context = {
                 'logged_user': logged_user,
                 'order': order,
                 'products': all_orderproducts,
                 'items': all_orderitems,
+                'adminitems': all_order_adminitems,
             }
             return render(request, "admin_view_order.html", context)
     return redirect("/")
@@ -388,6 +390,20 @@ def order_quote(request):
                         combined_price = item.combined_price                        
                     )
                     new_order.total_price += new_orderitem.combined_price
+                    new_order.save()
+                for adminitem in quote.quote_adminitem.all():
+                    new_orderadminitem = OrderAdminItem.objects.create(
+                        adminitem_on_order = adminitem.adminitem_on_quote,
+                        order = new_order,
+                        quantity = adminitem.quantity,
+                        combined_price = adminitem.combined_price,                        
+                        is_discount = adminitem.is_discount,
+                    )
+
+                    if adminitem.is_discount:
+                        new_order.total_price -= new_orderitem.combined_price
+                    else:
+                        new_order.total_price += new_orderitem.combined_price
                     new_order.save()
 ######Consider different redirect after changing quote to order
                 return redirect("/admin_access/")
