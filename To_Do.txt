@@ -1,6 +1,10 @@
+*add edit in process order functionality on view_order:admin
+*admin may create order
 *add adminitems to view_quote:store
 *add adminitems to view_order:store
-*view_quote:admin order_by names not displaying
+*in process view_quote:admin start attatched order
+
+
 
 
 
@@ -8,9 +12,12 @@
 -search_by bar for quotes/orders_display:admin
 -add product validations adminstractive:admin
 -fix edit_product:admin validations
--admin may create order
 -admin may create quote using EnteredItem
 -easy of use features
+
+
+
+
 
 
 Questions:
@@ -52,3 +59,4 @@ Corrected:
 *add discounts as EnteredItem to quote processing:admin
 **ADD ADMINITEMS TO ORDER ON QUOTE COMPLETION!!! 
 *add adminitems to view_order:admin
+*view_quote:admin order_by names not displaying

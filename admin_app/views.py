@@ -411,6 +411,255 @@ def order_quote(request):
     return redirect("/")
 
 
+
+
+
+# def begin_processing_order(request):
+
+def order_increase_product_quantity(request):
+    if 'user_id' in request.session:
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            if request.method == "POST":  
+                product_to_increase = OrderProduct.objects.get(id=request.POST['product_id'])
+                product_to_increase.quantity += 1 
+                product_to_increase.combined_price += product_to_increase.product_on_order.price
+                product_to_increase.save() 
+
+                order = Order.objects.get(id=request.POST['order_id'])
+                order.total_price += product_to_increase.product_on_order.price
+                order.save()
+                return redirect(f"/admin_access/view_order/{ order.id }")
+            return redirect("/admin_access")
+    return redirect("/")
+
+
+def order_decrease_product_quantity(request):
+    if 'user_id' in request.session:    
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            if request.method == "POST":  
+                product_to_decrease = OrderProduct.objects.get(id=request.POST['product_id'])
+                if product_to_decrease.quantity > 1:
+                    product_to_decrease.quantity -= 1
+                    product_to_decrease.combined_price -= product_to_decrease.product_on_order.price
+                    product_to_decrease.save() 
+
+                    order = Order.objects.get(id=request.POST['order_id'])
+                    order.total_price -= product_to_decrease.product_on_order.price
+                    order.save()
+                    return redirect(f"/admin_access/view_order/{ order.id }")
+            return redirect("/admin_access")
+    return redirect("/")
+
+def order_remove_product_from_order(request):
+    if 'user_id' in request.session:    
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            if request.method == "POST":  
+                    product_to_remove = OrderProduct.objects.get(id=request.POST['product_id'])
+                    order = Order.objects.get(id=request.POST['order_id'])
+
+                    order.total_price -= product_to_remove.combined_price
+                    order.save()
+                    
+                    product_to_remove.delete() 
+                    return redirect(f"/admin_access/view_order/{ order.id }")
+            return redirect("/admin_access")
+    return redirect("/")
+
+
+def order_increase_item_quantity(request):
+    if 'user_id' in request.session:
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            if request.method == "POST":  
+                item_to_increase = OrderItem.objects.get(id=request.POST['item_id'])
+                item_to_increase.quantity += 1 
+                item_to_increase.combined_price += item_to_increase.item_on_order.price
+                item_to_increase.save() 
+
+                order = Order.objects.get(id=request.POST['order_id'])
+                order.total_price += item_to_increase.item_on_order.price
+                order.save()
+                return redirect(f"/admin_access/view_order/{ order.id }")
+            return redirect("/admin_access")
+    return redirect("/")
+
+
+def order_decrease_item_quantity(request):
+    if 'user_id' in request.session:    
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            if request.method == "POST":  
+                item_to_decrease = OrderItem.objects.get(id=request.POST['item_id'])
+                if item_to_decrease.quantity > 1:
+                    item_to_decrease.quantity -= 1
+                    item_to_decrease.combined_price -= item_to_decrease.item_on_order.price
+                    item_to_decrease.save() 
+
+                    order = Order.objects.get(id=request.POST['order_id'])
+                    order.total_price -= item_to_decrease.item_on_order.price
+                    order.save()
+                    return redirect(f"/admin_access/view_order/{ order.id }")
+            return redirect("/admin_access")
+    return redirect("/")
+
+
+def order_remove_item_from_order(request):
+    if 'user_id' in request.session:    
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            if request.method == "POST":  
+                    item_to_remove = OrderItem.objects.get(id=request.POST['item_id'])
+                    order = Order.objects.get(id=request.POST['order_id'])
+
+                    order.total_price -= item_to_remove.combined_price
+                    order.save()
+                    
+                    item_to_remove.delete() 
+                    return redirect(f"/admin_access/view_order/{ order.id }")
+            return redirect("/admin_access")
+    return redirect("/")
+
+
+def order_increase_adminitem_quantity(request):
+    if 'user_id' in request.session:
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            if request.method == "POST":  
+                adminitem_to_increase = OrderAdminItem.objects.get(id=request.POST['adminitem_id'])
+                adminitem_to_increase.quantity += 1 
+                adminitem_to_increase.combined_price += adminitem_to_increase.adminitem_on_order.price
+                adminitem_to_increase.save() 
+
+                order = Order.objects.get(id=request.POST['order_id'])
+                if adminitem_to_increase.is_discount:
+                    order.total_price -= adminitem_to_increase.adminitem_on_order.price
+                else:
+                    order.total_price += adminitem_to_increase.adminitem_on_order.price
+                order.save()
+                return redirect(f"/admin_access/view_order/{ order.id }")
+            return redirect("/admin_access")
+    return redirect("/")
+
+
+def order_decrease_adminitem_quantity(request):
+    if 'user_id' in request.session:
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            if request.method == "POST":  
+                adminitem_to_decrease = OrderAdminItem.objects.get(id=request.POST['adminitem_id'])
+                adminitem_to_decrease.quantity -= 1 
+                adminitem_to_decrease.combined_price -= adminitem_to_decrease.adminitem_on_order.price
+                adminitem_to_decrease.save() 
+
+                order = Order.objects.get(id=request.POST['order_id'])
+                if adminitem_to_decrease.is_discount:
+                    order.total_price += adminitem_to_decrease.adminitem_on_order.price
+                else:
+                    order.total_price -= adminitem_to_decrease.adminitem_on_order.price
+                order.save()
+                return redirect(f"/admin_access/view_order/{ order.id }")
+            return redirect("/admin_access")
+    return redirect("/")
+
+
+def remove_adminitem_from_order(request):
+    if 'user_id' in request.session:    
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            if request.method == "POST":  
+                    adminitem_to_remove = OrderAdminItem.objects.get(id=request.POST['adminitem_id'])
+                    order = Order.objects.get(id=request.POST['order_id'])
+
+                    if adminitem_to_remove.is_discount:
+                        order.total_price += adminitem_to_remove.combined_price
+                    else:
+                        order.total_price -= adminitem_to_remove.combined_price
+                    order.save()
+                    
+                    adminitem_to_remove.delete() 
+                    return redirect(f"/admin_access/view_order/{ order.id }")
+            return redirect("/admin_access")
+    return redirect("/")
+
+
+def begin_processing_order(request):
+    if 'user_id' in request.session:
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            if request.method == "POST":
+                order_id = request.POST['order_id']
+                order = Order.objects.get(id=order_id)
+                order.status = "in process"
+                order.save()
+                return redirect(f"/admin_access/view_order/{ order_id }")
+        return redirect("/admin_access")
+    return redirect("/")
+
+def process_add_adminitem_to_order(request):
+    if 'user_id' in request.session:    
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            if request.method == "POST":                  
+                # create AdminItem object
+                name = request.POST['name']
+                part_number = request.POST['part_number']
+                manufacturer = request.POST['manufacturer']
+                price = Decimal(request.POST['price'])
+                if request.POST['is_discount'] == "discount":
+                    is_discount = True
+                else:
+                    is_discount = False
+                notes = request.POST['notes']
+
+                new_adminitem = AdminItem.objects.create(
+                    name = name,
+                    part_number = part_number,
+                    manufacturer = manufacturer,
+                    price = price,
+                    is_discount = is_discount,
+                    notes = notes
+                )
+
+                if len(request.POST['quantity']):
+                    quantity = int(request.POST['quantity'])
+                else:
+                    quantity = 1
+                combined_price = new_adminitem.price * quantity
+
+                # get Order
+                order = Order.objects.get(id=request.POST['order_id'])
+
+                # create OrderAdminItem
+                ord_adminitem = OrderAdminItem.objects.create(
+                    adminitem_on_order = new_adminitem,
+                    order = order,
+                    quantity = quantity,
+                    combined_price = combined_price,
+                    is_discount = new_adminitem.is_discount
+                    )
+
+                # checks to see if discount or charge and manipulates order.total_price
+                if ord_adminitem.is_discount:
+                    order.total_price -= ord_adminitem.combined_price
+                else:
+                    order.total_price += ord_adminitem.combined_price
+                order.save()
+                return redirect(f"/admin_access/view_order/{ order.id }")
+            return redirect("/admin_access")
+    return redirect("/")
+
+
+
+
+
+
+
+
+
+
 def quotes_display(request):
     if 'user_id' in request.session:
         logged_user = User.objects.get(id=request.session['user_id'])

@@ -29,7 +29,7 @@
             </div>      <!--end quote_head-->
             <div id="order_info">
                 <p>Date Placed: {{order.created_at }}</p>
-                <p>Placed By: {{ order.orderd_by.last_name }}, {{ order.orderd_by.first_name }}</p>
+                <p>Placed By: {{ order.ordered_by.last_name }}, {{ order.ordered_by.first_name }}</p>
                 <p>Email: {{ order.orderd_by.email }} || Phone: {{ order.contact_info.phone }}</p>
                 <p>Address: {{ order.contact_info.address_1 }}</p>
                 <p id="line2">{{ order.contact_info.address_2 }}</p>
@@ -61,14 +61,14 @@
                                 <p>{{ product.quantity }}</p>
                                 {% if order.status == "in process" %}
                                     <div class="quant_btns">
-                                        <form action="/admin_access/increase_product_quantity" method="POST">
+                                        <form action="/admin_access/order_increase_product_quantity" method="POST">
                                             {% csrf_token %}
                                             <input type="hidden" name="order_id" value="{{ order.id }}">
                                             <input type="hidden" name="product_id" value="{{ product.id }}">
                                             <button class="add_btn">&#9650;</button>
                                         </form>
                                         {% if product.quantity > 1 %}
-                                            <form action="/admin_access/decrease_product_quantity" method="POST">
+                                            <form action="/admin_access/order_decrease_product_quantity" method="POST">
                                                 {% csrf_token %}
                                                 <input type="hidden" name="order_id" value="{{ order.id }}">
                                                 <input type="hidden" name="product_id" value="{{ product.id }}">
@@ -85,7 +85,7 @@
                         <!-- <td>#</td> -->
                         {% if order.status == "in process" %}
                             <td class="actions">
-                                <form action="/admin_access/remove_product_from_order" method="POST">
+                                <form action="/admin_access/order_remove_product_from_order" method="POST">
                                     {% csrf_token %}
                                     <input type="hidden" name="order_id" value="{{ order.id }}">
                                     <input type="hidden" name="product_id" value="{{ product.id }}">
@@ -105,14 +105,14 @@
                                 <p>{{ item.quantity }}</p>
                                 {% if order.status == "in process" %}
                                     <div class="quant_btns">
-                                        <form action="/admin_access/increase_item_quantity" method="POST">
+                                        <form action="/admin_access/order_increase_item_quantity" method="POST">
                                             {% csrf_token %}
                                             <input type="hidden" name="order_id" value="{{ order.id }}">
                                             <input type="hidden" name="item_id" value="{{ item.id }}">
                                             <button class="add_btn">&#9650;</button>
                                         </form>
                                         {% if item.quantity > 1 %}
-                                            <form action="/admin_access/decrease_item_quantity" method="POST">
+                                            <form action="/admin_access/order_decrease_item_quantity" method="POST">
                                                 {% csrf_token %}
                                                 <input type="hidden" name="order_id" value="{{ order.id }}">
                                                 <input type="hidden" name="item_id" value="{{ item.id }}">
@@ -129,7 +129,7 @@
                         <!-- <td>#</td> -->
                         {% if order.status == "in process" %}
                             <td class="actions">
-                                <form action="/admin_access/remove_item_from_order" method="POST">
+                                <form action="/admin_access/order_remove_item_from_order" method="POST">
                                     {% csrf_token %}
                                     <input type="hidden" name="order_id" value="{{ order.id }}">
                                     <input type="hidden" name="item_id" value="{{ item.id }}">
@@ -153,14 +153,14 @@
                                 <p>{{ adminitem.quantity }}</p>
                                 {% if order.status == "in process" %}
                                     <div class="quant_btns">
-                                        <form action="/admin_access/increase_adminitem_quantity" method="POST">
+                                        <form action="/admin_access/order_increase_adminitem_quantity" method="POST">
                                             {% csrf_token %}
                                             <input type="hidden" name="order_id" value="{{ order.id }}">
                                             <input type="hidden" name="adminitem_id" value="{{ adminitem.id }}">
                                             <button class="add_btn">&#9650;</button>
                                         </form>
                                         {% if adminitem.quantity > 1 %}
-                                            <form action="/admin_access/decrease_adminitem_quantity" method="POST">
+                                            <form action="/admin_access/order_decrease_adminitem_quantity" method="POST">
                                                 {% csrf_token %}
                                                 <input type="hidden" name="order_id" value="{{ order.id }}">
                                                 <input type="hidden" name="adminitem_id" value="{{ adminitem.id }}">
@@ -238,6 +238,7 @@
                     <button type="submit">Edit</button>
                 </form>
             </div>      <!--end office_notes-->
+            <a id="new_order" href="/admin_access/new_order">Do you wish to start a new invoice?</a>
             <div id="process_quote">
                 {% if order.status == "pending" %}
                     <h4>Do You Wish To Begin Working On This Order?</h4>
