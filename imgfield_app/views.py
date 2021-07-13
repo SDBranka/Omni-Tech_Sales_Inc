@@ -1,6 +1,6 @@
 from re import U
 from django.shortcuts import render, redirect
-from .models import User, Product, EnteredItem, Photo, Category, Order, OrderProduct, OrderItem, Quote, QuoteProduct, QuoteItem, ContactInfo, Review
+from .models import User, Product, EnteredItem, Photo, Category, Order, OrderProduct, OrderItem, OrderAdminItem, Quote, QuoteProduct, QuoteItem, QuoteAdminItem, ContactInfo, Review
 from django.contrib import messages
 from django.core.paginator import Paginator
 import uuid
@@ -141,7 +141,7 @@ def request_quote(request):
         if not 'open_quote' in request.session:
             
             context = {
-            'logged_user': logged_user,
+                'logged_user': logged_user,
             }
         else:
             open_quote = Quote.objects.get(id=request.session['open_quote'])
@@ -498,12 +498,15 @@ def view_quote(request, quote_id):
         if quote.quoted_by == logged_user:
             all_quoteproducts = QuoteProduct.objects.filter(quote=quote)
             all_quoteitems = QuoteItem.objects.filter(quote=quote)        
-        
+            all_quoteadminitems = QuoteAdminItem.objects.filter(quote=quote)        
+
+
             context = {
                 'logged_user': logged_user,
                 'quote': quote,
                 'products': all_quoteproducts,
                 'items': all_quoteitems,
+                'adminitems': all_quoteadminitems,
             }
             return render(request, "view_quote.html", context)
         return redirect("/user_account")
@@ -517,12 +520,14 @@ def view_order(request, order_id):
         if order.ordered_by == logged_user:
             all_orderproducts = OrderProduct.objects.filter(order=order)
             all_orderitems = OrderItem.objects.filter(order=order)        
+            all_orderadminitems = OrderAdminItem.objects.filter(order=order)        
         
             context = {
                 'logged_user': logged_user,
                 'order': order,
                 'products': all_orderproducts,
                 'items': all_orderitems,
+                'adminitems': all_orderadminitems,
             }
             return render(request, "view_order.html", context)
         return redirect("/user_account")

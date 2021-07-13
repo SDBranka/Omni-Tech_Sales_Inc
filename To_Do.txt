@@ -1,9 +1,8 @@
 *order order processing
-*add adminitems to view_quote:store
-*add adminitems to view_order:store
 *ref# validations on build_attached_quote:admin
-*make sure add attached order visible 
- regardless of order/quote status view_order/quote:admin
+*make sure add_attached_order visible regardless of 
+ order/quote status view_order/quote:admin
+   -(good for "pending" and "in process")
 *make a finished quote and finished order model to store completed
  quotes/orders so that they will not change with 
  any database changes
@@ -11,7 +10,7 @@
 
 
 
-
+-move the iso 17025 badge
 -add filter by to select_product:admin
 -search_by bar for quotes/orders_display:admin
    -Search for a portion of a ref# (or other field)
@@ -70,3 +69,5 @@ Corrected:
    -open in separate window/tab 
 *admin may create quote
 #Admin generated quote won't process to Order
+*add adminitems to view_quote:store
+*add adminitems to view_order:store

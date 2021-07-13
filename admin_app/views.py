@@ -413,11 +413,6 @@ def order_quote(request):
     return redirect("/")
 
 
-
-
-
-# def begin_processing_order(request):
-
 def order_increase_product_quantity(request):
     if 'user_id' in request.session:
         logged_user = User.objects.get(id=request.session['user_id'])
@@ -1166,11 +1161,11 @@ def process_build_quote(request):
                     new_quote.total_price -= new_quoteadminitem.combined_price
                 else:
                     new_quote.total_price += new_quoteadminitem.combined_price
+                
                 new_quote.save()
                 
                 request.session.flush()
-                request.session['user_id'] = logged_user.id
-                
+                request.session['user_id'] = logged_user.id                
                 return redirect(f"/admin_access/view_quote/{ new_quote.id }")
             return redirect("/admin_access")
     return redirect("/")
@@ -1191,21 +1186,6 @@ def process_build_quote(request):
 
 
 
-# 
-#             new_quote = Quote.objects.create(
-#                 quoted_by = orderer,
-#                 ref_number = uuid.uuid4().hex[:9],
-#                 total_price = combined_price,
-#                 status = "pending",
-#                 placed_at = datetime.now()
-#                 )
-
-#                 QuoteProduct.objects.create(
-#                     product_on_quote = product,
-#                     quote = new_quote,
-#                     quantity = quantity,
-#                     combined_price = combined_price
-#                 )
 
 
 

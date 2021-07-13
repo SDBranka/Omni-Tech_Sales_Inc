@@ -67,7 +67,7 @@
                     <h3 id="total">Total: ${{ quote.total_price }}</h3>
                 </div>      <!--end quote_head-->
                 <div id="order_info">
-                    <p>Date Placed: {{quote.placed_at }}</p>
+                    <p>Date Placed: {{quote.placed_at.date }}</p>
                     <p>Placed By: {{ quote.quoted_by.last_name }}, {{ quote.quoted_by.first_name }}</p>
                     <p>Email: {{ quote.quoted_by.email }} || Phone: {{ quote.contact_info.phone }}</p>
                     <p>Address: {{ quote.contact_info.address_1 }}</p>
@@ -102,6 +102,15 @@
                         <!-- <td>#</td> -->
                     </tr>
                     {% endfor %}        <!--#end for item in items#-->
+                    {% for adminitem in adminitems %}
+                    <tr>
+                        <td>{{ adminitem.adminitem_on_quote.name }}</td>
+                        <td>${{ adminitem.adminitem_on_quote.price }}</td>
+                        <td>{{ adminitem.quantity }}</td>
+                        <td>{{ adminitem.combined_price }}</td>      <!-- <td>#</td> -->
+                        <!-- <td>#</td> -->
+                    </tr>
+                    {% endfor %}        <!--#end for adminitem in adminitems#-->
     
     
     
