@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Admin Home</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/admin_main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/build_attached_order.css' %}">
+
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <h1>Welcome, {{ logged_user.first_name }}</h1>
+            <div id="links">
+                <a href="/admin_access">Admin Home</a> |
+                <a href="/">Back to Store</a> |
+                <a href="/signon/logout">Logout</a>
+            </div>      <!--end links-->
+        </div>      <!--end header-->
+        <div id="content">
+            <h2>Create an attached order</h2>
+            <form action="/admin_access/process_attach_order" method="POST">
+                {% csrf_token %}
+                <p>Enter a Ref #: 
+                    <input type="text" name="ref_number" value="{{ parent_order.ref_number }}-">
+                </p>
+                <div id="add_adminitem">
+                    <h3>Add a Product, Service, Discount, or Shipping Cost to Open this Order</h3>
+                    <p>Name:
+                        <input id="name_input" type="text" name="name">
+                        <span>Part Number:
+                            <input id="part_number_input" type="text" name="part_number"
+                                placeholder="If no part# anter 0000000">
+                        </span>
+                    </p>
+                    <p>Manufacturer:
+                        <input id="manufacturer_input" type="text" name="manufacturer">
+                        <span>Price:
+                            <input id="price_input" type="text" name="price">
+                        </span>
+                    </p>
+                    <p>Is this a discount or a charge?:
+                        <select name="is_discount">
+                            <option value="charge">Charge</option>
+                            <option value="discount">Discount</option>
+                        </select>
+                    </p>
+                    <p>Quantity: <input id="quantity_input" type="text" name="quantity"></p>
+                    <div id="notes">
+                        <p>Additional Comments:</p>
+                        <textarea id="notes_input" name="notes"></textarea>
+                    </div>      <!--end notes-->
+                </div>      <!--end add_adminitem-->
+                <input type="hidden" name="parent_order_id" value="{{ parent_order.id }}">
+                <button type="submit">Open This Order</button>
+            </form>    
+        </div>      <!--end content-->
+    </div>      <!--end wrapper-->
+</body>
+
+</html>

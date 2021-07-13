@@ -36,6 +36,16 @@
                 <p id="line3">{{ order.contact_info.city }}, {{ order.contact_info.state }}</p>
                 <p id="line4">{{ order.contact_info.zip_code }}</p>
                 <p id="line5">{{ order.contact_info.country }}</p>
+                <h3> Status: 
+                    <!-- # status choices = {open, pending, in process, completed, archived } -->
+                    {% if order.status == "pending" %}
+                        <span class="red">{{ order.status }}</span>
+                    {% elif order.status == "in process" %}
+                        <span class="green">{{ order.status }}</span>
+                    {% else %}
+                    <span>{{ order.status }}</span>
+                    {% endif %}                    
+                </h3>           
             </div>      <!--end order_info-->
             <table>
                 <tr>
@@ -239,7 +249,12 @@
                 </form>
             </div>      <!--end office_notes-->
             <!-- make this a form to attatch user and connect ref# -->
-            <a id="new_order" href="/admin_access/new_order">Do you wish to start a new invoice?</a>
+            <!-- <a id="new_order" href="/admin_access/attach_new_order" target="_blank" rel="noopener noreferrer">Do you wish to start a new order?</a> -->
+            <form action="/admin_access/attach_new_order" target="display" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="parent_quote_id" value="{{ order.id }}">
+                <button type="submit">Do you wish to start an attached order?</button>
+            </form>
             <div id="process_quote">
                 {% if order.status == "pending" %}
                     <h4>Do You Wish To Begin Working On This Order?</h4>
@@ -249,8 +264,8 @@
                         <button id="begin_proc_btn" type="submit">Begin Processing</button>
                     </form>
                 {% elif order.status == "in process" %}
-                    <h4>Do You Wish To Order This Order?</h4>
-                    <form action="/admin_access/order_order" method="POST">
+                    <h4>Do You Wish To Place This Order?</h4>
+                    <form action="/admin_access/process_order" method="POST">
                         {% csrf_token %}
                         <input type="hidden" name="order_id" value="{{ order.id }}">
                         <button id="begin_proc_btn" type="submit">Open An Order</button>

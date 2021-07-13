@@ -29,11 +29,11 @@ def process_create_product(request):
         logged_user = User.objects.get(id=request.session['user_id'])
         if logged_user.security_level > 4:
             if request.method == "POST":
-                errors = Product.objects.new_item_validator(request.POST)
-                if len(errors) > 0:
-                    for error in errors.values():
-                        messages.error(request, error)
-                    return redirect("/admin_access/administrative")
+                # errors = Product.objects.new_item_validator(request.POST)
+                # if len(errors) > 0:
+                #     for error in errors.values():
+                #         messages.error(request, error)
+                #     return redirect("/admin_access/administrative")
 
                 new_prod = Product.objects.create(
                     name = request.POST['name'],
@@ -661,6 +661,102 @@ def edit_order_off_notes(request):
                 order.save()
                 return redirect(f"/admin_access/view_order/{ order.id }")
     return redirect("/")
+
+
+def attach_new_order(request):
+    if 'user_id' in request.session:
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            if request.method == "POST":
+                request.session['attached_order_id'] = request.POST['parent_quote_id']
+                return redirect("/admin_access/build_attached_order")
+            return redirect("/admin_access")
+    return redirect("/")
+
+
+def build_attached_order(request):
+    if 'user_id' in request.session:
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            if "attached_order_id" in request.session:
+                parent_order = Order.objects.get(id=request.session["attached_order_id"])
+                request.session.flush()
+                request.session['user_id'] = logged_user.id
+
+                context = {
+                    'logged_user': logged_user,
+                    'parent_order': parent_order
+                }
+
+                return render(request, "build_attached_order.html", context)
+            return redirect("/admin_access")
+    return redirect("/")
+
+
+def process_attach_order(request):
+    if 'user_id' in request.session:
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            if request.method == "POST":
+# need ref# validations
+                parent_order = Order.objects.get(id=request.POST['parent_order_id'])
+                ref_num = request.POST['ref_number']
+                if request.POST['is_discount'] == "discount":
+                    is_discount = True
+                else:
+                    is_discount = False
+
+                #create AdminItem
+                new_adminitem = AdminItem.objects.create(
+                    name = request.POST['name'],
+                    part_number = request.POST['part_number'],
+                    manufacturer = request.POST['manufacturer'],
+                    price = Decimal(request.POST['price']),
+                    is_discount = is_discount,
+                    notes = request.POST['notes'],
+                )
+
+                #grab quantity and calculate combined_price
+                if len(request.POST['quantity']):
+                    quantity = int(request.POST['quantity'])
+                else:
+                    quantity = 1
+                combined_price = new_adminitem.price * quantity
+
+                #create Order
+                new_order = Order.objects.create(
+                    ordered_by = parent_order.ordered_by,
+                    contact_info = parent_order.contact_info,
+                    ref_number = ref_num,
+                    total_price = 0,
+                    status = "pending",
+                    special_instructions = parent_order.special_instructions,
+                    office_notes = parent_order.office_notes,
+                )
+
+                #create OrderAdminItem and add to Order
+                new_orderadminitem = OrderAdminItem.objects.create(
+                    adminitem_on_order = new_adminitem,
+                    order = new_order,
+                    quantity = quantity,
+                    combined_price = combined_price,
+                    is_discount = new_adminitem.is_discount
+                    )
+
+                # checks to see if discount or charge and manipulates order.total_price
+                if new_adminitem.is_discount:
+                    new_order.total_price -= new_orderadminitem.combined_price
+                else:
+                    new_order.total_price += new_orderadminitem.combined_price
+                new_order.save()
+                return redirect(f"/admin_access/view_order/{ new_order.id }")
+    return redirect("/")
+
+
+
+
+
+
 
 
 

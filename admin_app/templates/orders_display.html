@@ -36,7 +36,7 @@
                             <h3>Ref #:<a href="/admin_access/view_order/{{ order.id }}">{{ order.ref_number }}</a></h3>
                             <p>Date Placed: {{ order.created_at }}</p>
                             <p>List Price: {{order.total_price }}</p>
-                            <p>Name: {{ order.orderd_by.last_name }}, {{ order.orderd_by.first_name }}</p>
+                            <p>Name: {{ order.ordered_by.last_name }}, {{ order.ordered_by.first_name }}</p>
                             <p>Last Updated: {{ order.updated_at }}</p>                            
                         </div>                    <!--end .order_info-->
                         <div class="quote_status">

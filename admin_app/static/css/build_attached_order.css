@@ -1,0 +1,49 @@
+#special_instructions p {
+    margin: 9px 0px 0px 27px;
+}
+
+form p {
+    margin-bottom: 9px;
+}
+
+#add_adminitem input {
+    width: 27%;
+}
+
+#add_adminitem p span {
+    margin-left: 18px;
+}
+
+
+#name_input {
+    margin-left: 49px;
+}
+
+#price_input {
+    margin-left: 49px;
+}
+
+#notes {
+    display: flex;
+}
+
+#quantity_input {
+    margin-left: 29px;
+}
+
+#add_adminitem textarea {
+    width: 60%;
+}
+
+#add_adminitem form button {
+    margin: 9px 0px 0px 610px;
+}
+
+#office_notes {
+    margin-bottom: 18px;
+}
+
+#office_notes textarea {
+    width: 81%;
+    height: 234px;
+}
