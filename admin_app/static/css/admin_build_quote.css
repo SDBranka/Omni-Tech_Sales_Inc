@@ -1,5 +1,36 @@
-#special_instructions p {
-    margin: 9px 0px 0px 27px;
+#select_email {
+    margin-bottom: 18px;
+}
+
+#select_email form {
+    display: flex;
+}
+
+#select_email form button {
+    margin-left: 9px;
+}
+
+#contact_display {
+    margin-bottom: 18px;
+}
+
+#contact_pods {
+    margin-top: 18px;
+}
+
+#contact_pods {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.contact {
+    text-align: center;
+    justify-content: space-evenly;
+}
+
+#contact button {
+    margin-top: 7px;
 }
 
 form p {
@@ -39,7 +70,6 @@ h3 {
     width: 60%;
     margin-left: 9px;
 }
-
 
 #office_notes {
     margin-bottom: 18px;

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Admin Build Quote</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/admin_main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/admin_build_quote.css' %}">
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <h1>Welcome, {{ logged_user.first_name }}</h1>
+            <div id="links">
+                <a href="/admin_access">Admin Home</a> |
+                <a href="/">Back to Store</a> |
+                <a href="/signon/logout">Logout</a>
+            </div>      <!--end links-->
+        </div>      <!--end header-->
+        <div id="content">
+            <h2>Create a Quote</h2>
+            <div id="select_email">
+                <form action="/admin_access/select_quote_user" method="POST">
+                    {% csrf_token %}
+                    <p>Enter the Customer's Email: 
+                        <input type="text" name="email">
+                    </p>
+                    <button type="submit">Find Customer</button>
+                </form>
+            </div>      <!--end select_email-->
+            {% if "build_quote_user_id" in request.session %}
+                <div id="contact_display">
+                    <h3>Contact Information:</h3>
+                            <p id="customer_name">Customer Name: {{ build_quote_user.last_name }}, {{ build_quote_user.first_name }}</p>
+                        <div id="contact_pods">
+                            {% for contact in quote_user_contacts %}
+                                <div class="contact">
+                                    <p>{{ contact.address_1 }}
+                                        {% if contact.address_2 %}, 
+                                        {{ contact.address_2 }}
+                                        {% endif %}
+                                    </p>
+                                    <p>{{ contact.city }}, {{ contact.state }}</p>
+                                    <p>{{ contact.zip_code }}</p>
+                                    <p>{{ contact.phone_number }}</p>
+                                    <form action="/admin_access/select_quote_contact" method="POST">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="contact_id" value="{{ contact.id }}">
+                                        <button type="submit">Select This Addresss</button>
+                                    </form>
+                                </div>      <!--end contact-->
+                            {% endfor %}
+                        </div>      <!--end contact_pods-->
+                </div>      <!--end contact_display-->
+                {% if "build_quote_contact_id" in request.session %}
+                    <form action="/admin_access/process_build_quote" method="POST">
+                        {% csrf_token %}
+                        <div id="add_adminitem">
+                            <h3>Add a Product, Service, Discount, or Shipping Cost to Open this Order</h3>
+                            <p>Name:
+                                <input id="name_input" type="text" name="name">
+                                <span>Part Number:
+                                    <input id="part_number_input" type="text" name="part_number"
+                                    placeholder="If no part# anter 0000000">
+                                </span>
+                            </p>
+                            <p>Manufacturer:
+                                <input id="manufacturer_input" type="text" name="manufacturer">
+                                <span>Price:
+                                    <input id="price_input" type="text" name="price">
+                                </span>
+                            </p>
+                            <p>Is this a discount or a charge?:
+                                <select name="is_discount">
+                                    <option value="charge">Charge</option>
+                                    <option value="discount">Discount</option>
+                                </select>
+                            </p>
+                            <p>Quantity: <input id="quantity_input" type="text" name="quantity"></p>
+                            <div id="notes">
+                                <p>Additional Comments:</p>
+                                <textarea id="notes_input" name="notes"></textarea>
+                            </div>      <!--end notes-->
+                        </div>      <!--end add_adminitem-->
+                        <input type="hidden" name="parent_order_id" value="{{ parent_order.id }}">
+                        <button type="submit">Open This Order</button>
+                    </form>    
+                {% endif %}
+            {% endif %}
+        </div>      <!--end content-->
+    </div>      <!--end wrapper-->
+</body>
+
+</html>

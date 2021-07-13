@@ -1,12 +1,13 @@
 *order order processing
-*in process view_quote:admin start attatched order
-   -open in separate window/tab 
-*admin may create order
-*admin may create quote
 *add adminitems to view_quote:store
 *add adminitems to view_order:store
 *ref# validations on build_attached_quote:admin
-
+*make sure add attached order visible 
+ regardless of order/quote status view_order/quote:admin
+*make a finished quote and finished order model to store completed
+ quotes/orders so that they will not change with 
+ any database changes
+   -perhaps use CompletedQuote and Invoice
 
 
 
@@ -18,10 +19,6 @@
 -fix edit_product:admin validations
 -admin may create quote using EnteredItem
 -easy of use features
--make a finished quote and finished order model to store completed
- quotes/orders so that they will not change with 
- any database changes
-   -perhaps use CompletedQuote and Invoice
 
 
 
@@ -69,3 +66,7 @@ Corrected:
 *view_quote:admin order_by names not displaying
 *add edit in process order functionality on view_order:admin
 *office notes in process view_quote:admin
+*in process view_quote:admin start attatched order
+   -open in separate window/tab 
+*admin may create quote
+#Admin generated quote won't process to Order

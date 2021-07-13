@@ -198,11 +198,11 @@ def process_add_item_to_quote(request):
 
                 if not 'open_quote' in request.session:
                     new_quote = Quote.objects.create(
-                    quoted_by = orderer,
-                    ref_number = uuid.uuid4().hex[:9],
-                    total_price = combined_price,
-                    status = "open",
-                    placed_at = datetime.now()
+                        quoted_by = orderer,
+                        ref_number = uuid.uuid4().hex[:9],
+                        total_price = combined_price,
+                        status = "open",
+                        placed_at = datetime.now()
                     )
 
                     QuoteItem.objects.create(
