@@ -31,24 +31,24 @@ def process_create_product(request):
         logged_user = User.objects.get(id=request.session['user_id'])
         if logged_user.security_level > 4:
             if request.method == "POST":
-                # errors = Product.objects.new_item_validator(request.POST)
-                # if len(errors) > 0:
-                #     for error in errors.values():
-                #         messages.error(request, error)
-                #     return redirect("/admin_access/administrative")
-
-                new_prod = Product.objects.create(
-                    name = request.POST['name'],
-                    part_number = request.POST['part_number'],
-                    manufacturer = request.POST['manufacturer'],
-                    price = Decimal(request.POST['price']),
-                    desc = request.POST['desc'],
-                    exp_desc = request.POST['exp_desc'],
-                    quantity_in_stock = int(request.POST['quantity_in_stock'])
-                )
-                Photo.objects.create(
-                    photo_of = new_prod,
-                )
+                errors = Product.objects.new_product_validator(request.POST)
+                if len(errors) > 0:
+                    for error in errors.values():
+                        messages.error(request, error)
+                    return redirect("/admin_access/administrative")
+                else:
+                    new_prod = Product.objects.create(
+                        name = request.POST['name'],
+                        part_number = request.POST['part_number'],
+                        manufacturer = request.POST['manufacturer'],
+                        price = Decimal(request.POST['price']),
+                        desc = request.POST['desc'],
+                        exp_desc = request.POST['exp_desc'],
+                        quantity_in_stock = int(request.POST['quantity_in_stock'])
+                    )
+                    Photo.objects.create(
+                        photo_of = new_prod,
+                    )
             return redirect("/admin_access/administrative")
     return redirect("/")
 
