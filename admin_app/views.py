@@ -776,7 +776,6 @@ def quotes_display(request, page_num):
         if logged_user.security_level > 4:
         # status choices = {open, pending, in process, completed, archived }
             all_active_quotes = Quote.objects.exclude(status = "archived").exclude(status="completed").order_by('placed_at')
-            # all_completed_quotes = Quote.objects.exclude(status = "pending").exclude(status = "in process").exclude(status="archived").order_by('placed_at')
             
             p = Paginator(all_active_quotes, 15)
             page = p.page(page_num)
@@ -786,7 +785,6 @@ def quotes_display(request, page_num):
                 'logged_user': logged_user,
                 'all_active_quotes': page,
                 'num_of_pages': num_of_pages,
-                # 'all_completed_quotes': all_completed_quotes,
             }
             return render(request, "quotes_display.html", context)
     return redirect("/")
@@ -857,11 +855,17 @@ def find_quote(request):
         logged_user = User.objects.get(id=request.session['user_id'])
         if logged_user.security_level > 4:
             if request.method == "POST":
-                quote_ref_num = request.POST['quote_ref_num']
-#add validation here in case ref number doesn't exist
+                redirect_to = request.POST['redirect_to']
+                errors = Quote.objects.ref_number_validator(request.POST)
+                if len(errors) > 0:
+                    for error in errors.values():
+                        messages.error(request, error)
+                    return redirect(f"/admin_access/{ redirect_to }")
+                else:
+                    quote_ref_num = request.POST['quote_ref_num']
 
-                quote = Quote.objects.get(ref_number=quote_ref_num)
-                return redirect(f"/admin_access/view_quote/{ quote.id }")
+                    quote = Quote.objects.get(ref_number=quote_ref_num)
+                    return redirect(f"/admin_access/view_quote/{ quote.id }")
             return redirect("/admin_access")        
     return redirect("/")
 

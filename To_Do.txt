@@ -1,3 +1,6 @@
+**find_quote:admin validations
+
+
 *order order processing
 *make a finished quote and finished order model to store completed
  quotes/orders so that they will not change with 

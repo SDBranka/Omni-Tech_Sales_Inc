@@ -10,6 +10,7 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/admin_main.css' %}">
     <link rel="stylesheet" href="{% static 'css/quotes_display.css' %}">
+    <link rel="stylesheet" href="{% static 'css/completed_quotes_display.css' %}">
 </head>
 
 <body>
@@ -24,12 +25,23 @@
         </div>      <!--end header-->
         <div id="content">
             <h2>Quotes</h2>
+            <div id="errors">
+                {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                    <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>      <!--end errors-->    
             <form action="/admin_access/find_quote" method="POST">
                 {% csrf_token %}
                 <p>View a Quote By Ref#: <input type="text" name="quote_ref_num"></p>
+                <input type="hidden" name="redirect_to" value="completed_quotes_display/1">
                 <button type="submit">Search</button>
             </form>
             <div id="quotes">
+                <a href="/admin_access/quotes_display/1">Back to Active Quotes</a>
                 <h3>All Completed Quotes</h3>
                 {% for quote in all_completed_quotes %}
                     <div class="quote_pod">

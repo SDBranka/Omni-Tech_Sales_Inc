@@ -24,9 +24,19 @@
         </div>      <!--end header-->
         <div id="content">
             <h2>Quotes</h2>
+            <div id="errors">
+                {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                    <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>      <!--end errors-->    
             <form action="/admin_access/find_quote" method="POST">
                 {% csrf_token %}
                 <p>View a Quote By Ref#: <input type="text" name="quote_ref_num"></p>
+                <input type="hidden" name="redirect_to" value="quotes_display/1">
                 <button type="submit">Search</button>
             </form>
             <div id="quotes">

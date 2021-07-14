@@ -251,7 +251,7 @@ class AdminItem(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = AdminItemManager()
-    
+
 
 class Photo(models.Model):
     photo_of = models.ForeignKey(
@@ -378,6 +378,18 @@ class OrderAdminItem(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
+class QuoteManager(models.Manager):
+    def ref_number_validator(self, postData):
+        errors = {}
+
+        if len(postData['quote_ref_num']) < 2:
+            errors['ref_number'] = "Please enter a valid product ref_number"
+        ref_number_in_db = self.filter(ref_number = postData['quote_ref_num'])        #ensure no duplicate ref_number exists
+        if not ref_number_in_db:
+            errors["ref_number"] = "This reference number does not exist in the database"
+        return errors
+
+
 class Quote(models.Model):
     # quote_product
     # quote_item
@@ -402,7 +414,7 @@ class Quote(models.Model):
     placed_at = models.DateTimeField(auto_now_add=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    objects = QuoteManager()
 
 class QuoteProduct(models.Model):
     product_on_quote = models.ForeignKey(
