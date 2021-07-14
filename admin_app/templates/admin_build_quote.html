@@ -72,14 +72,14 @@
                         <div id="add_adminitem">
                             <h3>Add a Product, Service, Discount, or Shipping Cost to Open this Order</h3>
                             <p>Name:
-                                <input id="name_input" type="text" name="name">
+                                <input id="name_input" type="text" name="name" required>
                                 <span>Part Number:
                                     <input id="part_number_input" type="text" name="part_number"
                                     placeholder="If no part# anter 0000000">
                                 </span>
                             </p>
                             <p>Manufacturer:
-                                <input id="manufacturer_input" type="text" name="manufacturer">
+                                <input id="manufacturer_input" type="text" name="manufacturer" required>
                                 <span>Price:
                                     <input id="price_input" type="text" name="price">
                                 </span>
@@ -90,7 +90,7 @@
                                     <option value="discount">Discount</option>
                                 </select>
                             </p>
-                            <p>Quantity: <input id="quantity_input" type="text" name="quantity"></p>
+                            <p>Quantity: <input id="quantity_input" type="text" name="quantity" required></p>
                             <div id="notes">
                                 <p>Additional Comments:</p>
                                 <textarea id="notes_input" name="notes"></textarea>

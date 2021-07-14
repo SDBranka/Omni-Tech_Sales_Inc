@@ -1095,7 +1095,6 @@ def select_quote_user(request):
         logged_user = User.objects.get(id=request.session['user_id'])
         if logged_user.security_level > 4:
             if request.method == "POST":                  
-# add email validations
                 errors = User.objects.email_validator(request.POST)
                 if len(errors) > 0:
                     for error in errors.values():
@@ -1124,63 +1123,75 @@ def process_build_quote(request):
         logged_user = User.objects.get(id=request.session['user_id'])
         if logged_user.security_level > 4:
             if request.method == "POST":
-                if request.POST['is_discount'] == "discount":
-                    is_discount = True
+                errors = AdminItem.objects.item_validator(request.POST)
+                if len(errors) > 0:
+                    for error in errors.values():
+                        messages.error(request, error)
+                    return redirect("/admin_access/build_quote")
                 else:
-                    is_discount = False
+                    if request.POST['is_discount'] == "discount":
+                        is_discount = True
+                    else:
+                        is_discount = False
 
-                #create AdminItem
-                new_adminitem = AdminItem.objects.create(
-                    name = request.POST['name'],
-                    part_number = request.POST['part_number'],
-                    manufacturer = request.POST['manufacturer'],
-                    price = Decimal(request.POST['price']),
-                    is_discount = is_discount,
-                    notes = request.POST['notes'],
-                )
-
-                #grab quantity and calculate combined_price
-                if len(request.POST['quantity']):
-                    quantity = int(request.POST['quantity'])
-                else:
-                    quantity = 1
-                combined_price = new_adminitem.price * quantity
-
-
-                build_quote_user = User.objects.get(id=request.session['build_quote_user_id'])
-                build_quote_contact = ContactInfo.objects.get(id=request.session['build_quote_contact_id'])
-                #create Quote
-                new_quote = Quote.objects.create(
-                    quoted_by = build_quote_user,
-                    contact_info = build_quote_contact,
-                    ref_number = uuid.uuid4().hex[:9],
-                    total_price = 0,
-                    status = "pending",
-                    placed_at = datetime.now()                
-                )
-
-                #create quoteAdminItem and add to quote
-                new_quoteadminitem = QuoteAdminItem.objects.create(
-                    adminitem_on_quote = new_adminitem,
-                    quote = new_quote,
-                    quantity = quantity,
-                    combined_price = combined_price,
-                    is_discount = new_adminitem.is_discount
+                    #create AdminItem
+                    new_adminitem = AdminItem.objects.create(
+                        name = request.POST['name'],
+                        part_number = request.POST['part_number'],
+                        manufacturer = request.POST['manufacturer'],
+                        price = Decimal(request.POST['price']),
+                        is_discount = is_discount,
+                        notes = request.POST['notes'],
                     )
 
-                # checks to see if discount or charge and manipulates quote.total_price
-                if new_adminitem.is_discount:
-                    new_quote.total_price -= new_quoteadminitem.combined_price
-                else:
-                    new_quote.total_price += new_quoteadminitem.combined_price
-                
-                new_quote.save()
-                
-                request.session.flush()
-                request.session['user_id'] = logged_user.id                
-                return redirect(f"/admin_access/view_quote/{ new_quote.id }")
+                    #grab quantity and calculate combined_price
+                    if len(request.POST['quantity']):
+                        quantity = int(request.POST['quantity'])
+                    else:
+                        quantity = 1
+                    combined_price = new_adminitem.price * quantity
+
+                    build_quote_user = User.objects.get(id=request.session['build_quote_user_id'])
+                    build_quote_contact = ContactInfo.objects.get(id=request.session['build_quote_contact_id'])
+                    #create Quote
+                    new_quote = Quote.objects.create(
+                        quoted_by = build_quote_user,
+                        contact_info = build_quote_contact,
+                        ref_number = uuid.uuid4().hex[:9],
+                        total_price = 0,
+                        status = "pending",
+                        placed_at = datetime.now()                
+                    )
+
+                    #create quoteAdminItem and add to quote
+                    new_quoteadminitem = QuoteAdminItem.objects.create(
+                        adminitem_on_quote = new_adminitem,
+                        quote = new_quote,
+                        quantity = quantity,
+                        combined_price = combined_price,
+                        is_discount = new_adminitem.is_discount
+                        )
+
+                    # checks to see if discount or charge and manipulates quote.total_price
+                    if new_adminitem.is_discount:
+                        new_quote.total_price -= new_quoteadminitem.combined_price
+                    else:
+                        new_quote.total_price += new_quoteadminitem.combined_price
+                    
+                    new_quote.save()
+                    
+                    request.session.flush()
+                    request.session['user_id'] = logged_user.id                
+                    return redirect(f"/admin_access/view_quote/{ new_quote.id }")
             return redirect("/admin_access")
     return redirect("/")
+
+
+
+
+
+
+
 
 
 

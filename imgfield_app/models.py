@@ -218,6 +218,27 @@ class EnteredItem(models.Model):
     objects = EnteredItemManager()
 
 
+class AdminItemManager(models.Manager):
+    def item_validator(self, postData):
+        errors = {}
+
+        if len(postData['name']) < 5:
+            errors['name'] = "Please enter a valid product name"
+        if len(postData['part_number']) > 0 and len(postData['part_number']) < 3:
+            errors['part_number'] = "Please enter a valid product part number"        
+        if len(postData['manufacturer']) > 0 and len(postData['manufacturer']) < 3:
+            errors['manufacturer'] = "Please enter a valid product"      
+        if len(postData['price']) < 2:
+            errors['price'] = "Please enter a valid price"
+        elif not PRICE_REGEX.match(postData['price']):
+            errors['price'] = "Please enter a valid price in ###.## format"
+        if len(postData['quantity']) < 1:
+            errors['quantity'] = "Please enter a valid quantity"            
+        elif not NUMBER_REGEX.match(postData['quantity']):
+            errors['quantity'] = "Please enter a numeric quantity"
+        return errors
+
+
 class AdminItem(models.Model):
     # order_of_adminitem
     # quote_of_adminitem
@@ -229,7 +250,8 @@ class AdminItem(models.Model):
     notes = models.TextField(null=True, blank= True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    objects = AdminItemManager()
+    
 
 class Photo(models.Model):
     photo_of = models.ForeignKey(
