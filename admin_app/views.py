@@ -788,8 +788,31 @@ def quotes_display(request, page_num):
                 'num_of_pages': num_of_pages,
                 # 'all_completed_quotes': all_completed_quotes,
             }
-        return render(request, "quotes_display.html", context)
+            return render(request, "quotes_display.html", context)
     return redirect("/")
+
+
+def completed_quotes_display(request, page_num):
+    if 'user_id' in request.session:
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+        # status choices = {open, pending, in process, completed, archived }
+            all_completed_quotes = Quote.objects.exclude(status = "pending").exclude(status = "in process").exclude(status="archived").order_by('placed_at')
+            
+            p = Paginator(all_completed_quotes, 15)
+            page = p.page(page_num)
+            num_of_pages = "a" * p.num_pages
+
+            context = {
+                'logged_user': logged_user,
+                'all_completed_quotes': page,
+                'num_of_pages': num_of_pages,
+            }
+            return render(request, "completed_quotes_display.html", context)
+    return redirect("/")
+
+
+
 
 
 def orders_display(request):

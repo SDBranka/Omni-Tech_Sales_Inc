@@ -61,7 +61,7 @@ urlpatterns = [
     # path('logout', views.logout),
     path('edit_off_notes', views.edit_off_notes),
     path('quotes_display/<int:page_num>', views.quotes_display),
-    path('completed_quotes_display/<int:page_num>', views.quotes_display),
+    path('completed_quotes_display/<int:page_num>', views.completed_quotes_display),
     path('orders_display', views.orders_display),
     path('confirm_delete_quote/<int:quote_id>', views.confirm_delete_quote),
     path('delete_quote', views.delete_quote),

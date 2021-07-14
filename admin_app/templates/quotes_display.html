@@ -41,25 +41,29 @@
                             <p>Last Updated: {{ quote.updated_at }}</p>                            
                         </div>                    <!--end .quote_info-->
                         <div class="quote_status">
-                            <h3 class="status">{{ quote.status }}</h3>
+                            {% if quote.status == "pending" %}
+                                <h3 class="status red">{{ quote.status }}</h3>
+                            {% elif quote.status == "in process" %}
+                                <h3 class="status green">{{ quote.status }}</h3>
+                            {% endif %}
                         </div>      <!--end .quote_status-->                
                     </div>      <!--end .quote_pod-->
                 {% endfor%}
-                <a href="admin_access/completed_quotes_display/1">View Completed Quotes</a>
+                <a href="/admin_access/completed_quotes_display/1">View Completed Quotes</a>
                 <div id="page_nav">
                     {% if all_active_quotes.has_previous %}
                         <button>
-                            <a href="/admin_access/quotes_display/{{ all_active_quotes.previous_page_number }}">&laquo;</a>
+                            <a href="/admin_access/completed_quotes_display/{{ all_active_quotes.previous_page_number }}">&laquo;</a>
                         </button>
                     {% endif %}
                     {% for i in num_of_pages %}
                         <button>
-                            <a href="/admin_access/quotes_display/{{ forloop.counter }}">{{ forloop.counter }}</a>
+                            <a href="/admin_access/completed_quotes_display/{{ forloop.counter }}">{{ forloop.counter }}</a>
                         </button>
                     {% endfor %}
                     {% if all_active_quotes.has_next %}
                         <button>
-                            <a href="/admin_access/quotes_display/{{ all_active_quotes.next_page_number }}">&raquo;</a>
+                            <a href="/admin_access/completed_quotes_display/{{ all_active_quotes.next_page_number }}">&raquo;</a>
                         </button>
                     {% endif %}
                 </div>      <!--page_nav-->            

@@ -46,6 +46,23 @@
                     </div>      <!--end .quote_pod-->
                 {% endfor%}
             </div>      <!--end quotes-->
+            <div id="page_nav">
+                {% if all_completed_quotes.has_previous %}
+                    <button>
+                        <a href="/admin_access/completed_quotes_display/{{ all_completed_quotes.previous_page_number }}">&laquo;</a>
+                    </button>
+                {% endif %}
+                {% for i in num_of_pages %}
+                    <button>
+                        <a href="/admin_access/completed_quotes_display/{{ forloop.counter }}">{{ forloop.counter }}</a>
+                    </button>
+                {% endfor %}
+                {% if all_completed_quotes.has_next %}
+                    <button>
+                        <a href="/admin_access/completed_quotes_display/{{ all_completed_quotes.next_page_number }}">&raquo;</a>
+                    </button>
+                {% endif %}
+            </div>      <!--page_nav-->            
         </div>      <!--end content-->
     </div>      <!--end wrapper-->
 </body>
