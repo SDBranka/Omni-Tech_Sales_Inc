@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.db import models
 import re
 import bcrypt
@@ -121,8 +122,8 @@ class ProductManager(models.Manager):
             errors["part_number"] = "This part number already exists in the database"
         if len(postData['manufacturer']) < 2:
             errors['manufacturer'] = "Please enter a valid product"      
-        if len(postData['price']) < 2:
-            errors['price'] = "Please enter a valid price"
+        if len(postData['price']) < 2 or not PRICE_REGEX.match(postData['price']):
+            errors['price'] = "Please enter a valid price in ###.## format"
         if len(postData['desc']) < 10:
             errors["desc"] = "Please enter a valid description"
         if len(postData['quantity_in_stock']) < 1:
@@ -175,10 +176,14 @@ class EnteredItemManager(models.Manager):
             errors['part_number'] = "Please enter a valid product part number"        
         if len(postData['manufacturer']) > 0 and len(postData['manufacturer']) < 3:
             errors['manufacturer'] = "Please enter a valid product"      
-        if len(postData['price']) < 2 or not PRICE_REGEX.match(postData['price']):
+        if len(postData['price']) < 2:
+            errors['price'] = "Please enter a valid price"
+        elif not PRICE_REGEX.match(postData['price']):
             errors['price'] = "Please enter a valid price in ###.## format"
-        if len(postData['quantity']) < 1 or not NUMBER_REGEX.match(postData['quantity']):
-            errors['quantity'] = "Please enter a valid quantity"
+        if len(postData['quantity']) < 1:
+            errors['quantity'] = "Please enter a valid quantity"            
+        elif not NUMBER_REGEX.match(postData['quantity']):
+            errors['quantity'] = "Please enter a numeric quantity"
         return errors
 
 
@@ -207,9 +212,6 @@ class AdminItem(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    # maybe tie in?
-    # objects = EnteredItemManager()
-
 
 class Photo(models.Model):
     photo_of = models.ForeignKey(
@@ -231,6 +233,31 @@ class Category(models.Model):
     name = models.CharField(max_length=27)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+class OrderManager(models.Manager):
+    def attached_quote_validator(self, postData):
+        errors = {}
+
+        if len(postData['ref_number']) < 9:
+            errors["ref_number"] = "A reference number must be at least 9 characters long"
+        ref_number_in_db = self.filter(ref_number = postData['ref_number'])        #ensure no duplicate ref_number exists
+        if ref_number_in_db:
+            errors["ref_number"] = "This ref_number already exists in the database. Attached orders should increment by '-1'"
+        if len(postData['name']) < 5:
+            errors['name'] = "A valid product name should be longer than 5 characters"
+        if len(postData['part_number']) > 0 and len(postData['part_number']) < 4:
+            errors['part_number'] = "If there is a part number, it should be longer than 4 characters"
+        if len(postData['manufacturer']) > 0 and len(postData['manufacturer']) < 3:
+            errors['manufacturer'] = "If there is a manufacturer, it should be longer than 3 characters"
+        if len(postData['price']) < 2:
+            errors['price'] = "Please enter a valid price"
+        elif not PRICE_REGEX.match(postData['price']):
+            errors['price'] = "Please enter a valid price in ###.## format"
+        if len(postData['quantity']) < 1:
+            errors['quantity'] = "Please enter a valid quantity"        
+        elif not NUMBER_REGEX.match(postData['quantity']):
+            errors['quantity'] = "Please enter only digits in quantity"
+        return errors
 
 
 class Order(models.Model):
@@ -257,7 +284,7 @@ class Order(models.Model):
     office_notes = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    objects = OrderManager()
 
 class OrderProduct(models.Model):
     product_on_order = models.ForeignKey(

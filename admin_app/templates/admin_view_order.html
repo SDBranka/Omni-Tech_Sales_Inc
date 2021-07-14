@@ -250,7 +250,7 @@
             </div>      <!--end office_notes-->
             <!-- make this a form to attatch user and connect ref# -->
             <!-- <a id="new_order" href="/admin_access/attach_new_order" target="_blank" rel="noopener noreferrer">Do you wish to start a new order?</a> -->
-            <form action="/admin_access/attach_new_order" target="display" method="POST">
+            <form action="/admin_access/attach_new_order" target="_blank" method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="parent_quote_id" value="{{ order.id }}">
                 <button type="submit">Do you wish to start an attached order?</button>

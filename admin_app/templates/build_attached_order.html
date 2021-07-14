@@ -23,12 +23,21 @@
                 <a href="/signon/logout">Logout</a>
             </div>      <!--end links-->
         </div>      <!--end header-->
+        <div id="errors">
+            {% if messages %}
+            <ul>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>      <!--end errors-->
         <div id="content">
             <h2>Create an attached order</h2>
             <form action="/admin_access/process_attach_order" method="POST">
                 {% csrf_token %}
                 <p>Enter a Ref #: 
-                    <input type="text" name="ref_number" value="{{ parent_order.ref_number }}-">
+                    <input type="text" name="ref_number" value="{{ parent_order.ref_number }}">
                 </p>
                 <div id="add_adminitem">
                     <h3>Add a Product, Service, Discount, or Shipping Cost to Open this Order</h3>

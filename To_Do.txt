@@ -1,13 +1,11 @@
 *order order processing
-*ref# validations on build_attached_quote:admin
-*make sure add_attached_order visible regardless of 
- order/quote status view_order/quote:admin
-   -(good for "pending" and "in process")
 *make a finished quote and finished order model to store completed
  quotes/orders so that they will not change with 
  any database changes
    -perhaps use CompletedQuote and Invoice
-
+*make sure add_attached_order visible regardless of 
+ order/quote status view_order/quote:admin
+   -(good for "pending" and "in process")
 
 
 -move the iso 17025 badge
@@ -71,3 +69,6 @@ Corrected:
 #Admin generated quote won't process to Order
 *add adminitems to view_quote:store
 *add adminitems to view_order:store
+*ref# validations on build_attached_quote:admin
+*price and quantity numeric regex fail 
+ in build_attached_order:admin

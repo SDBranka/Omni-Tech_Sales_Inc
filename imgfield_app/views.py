@@ -163,16 +163,10 @@ def process_add_item_to_quote(request):
         if request.method == "POST":
             # errors handling
             errors = EnteredItem.objects.item_validator(request.POST)
-            # qerrors = QuoteItem.objects.quoteitem_validator(request.POST)
             if len(errors) > 0:
                 for error in errors.values():
                     messages.error(request, error)
                 return redirect("/request_quote")
-            # if len(qerrors) > 0:
-            #     for error in errors.values():
-            #         messages.error(request, error)
-            #     return redirect("/request_quote")
-
             else:
                 orderer = User.objects.get(id=request.session['user_id'])
                 
