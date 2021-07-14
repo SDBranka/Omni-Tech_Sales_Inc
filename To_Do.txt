@@ -8,6 +8,8 @@
    -(good for "pending" and "in process")
 
 
+
+
 -move the iso 17025 badge
 -add filter by to select_product:admin
 -search_by bar for quotes/orders_display:admin
@@ -72,3 +74,4 @@ Corrected:
 *ref# validations on build_attached_quote:admin
 *price and quantity numeric regex fail 
  in build_attached_order:admin
+*edit_product:admin validations not displaying in page

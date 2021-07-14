@@ -1096,9 +1096,15 @@ def select_quote_user(request):
         if logged_user.security_level > 4:
             if request.method == "POST":                  
 # add email validations
-                quote_user = User.objects.get(email=request.POST['email'])
-                request.session['build_quote_user_id'] = quote_user.id
-                return redirect("/admin_access/build_quote")            
+                errors = User.objects.email_validator(request.POST)
+                if len(errors) > 0:
+                    for error in errors.values():
+                        messages.error(request, error)
+                    return redirect("/admin_access/build_quote")
+                else:
+                    quote_user = User.objects.get(email=request.POST['email'])
+                    request.session['build_quote_user_id'] = quote_user.id
+                    return redirect("/admin_access/build_quote")            
             return redirect("/admin_access")
     return redirect("/")
 

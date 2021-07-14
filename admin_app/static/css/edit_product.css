@@ -26,6 +26,13 @@
     padding-top: 10px;
 }
 
+#errors {
+    color: red;
+    text-align: center;
+    margin-bottom: 9px;
+}
+
+
 #content p {
     margin-bottom: 5px;
 }

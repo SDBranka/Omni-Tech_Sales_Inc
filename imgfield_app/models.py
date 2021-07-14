@@ -52,6 +52,20 @@ class UserManager(models.Manager):
                 errors['email'] = "Incorrect password entered"
         return errors
 
+    def email_validator(self, postData):
+        errors = {}
+
+        if len(postData['email']) < 2 or not EMAIL_REGEX.match(postData['email']):
+            errors["email"] = "Please enter a valid email"
+        email_in_db = self.filter(email = postData['email'])
+        if not email_in_db:
+            errors['email'] = "This email is not registered"
+        return errors
+
+
+
+
+
 
 class User(models.Model):
     # user_reviews
@@ -128,6 +142,8 @@ class ProductManager(models.Manager):
             errors["desc"] = "Please enter a valid description"
         if len(postData['quantity_in_stock']) < 1:
             errors["quantity_in_stock"] = "Please enter a valid quantity"
+        elif not NUMBER_REGEX.match(postData['quantity_in_stock']):
+            errors['quantity_in_stock'] = "Please enter a numeric quantity"
         return errors
 
     def edit_product_validator(self, postData):
@@ -143,8 +159,10 @@ class ProductManager(models.Manager):
             errors['price'] = "Please enter a valid price in ###.## format"
         if len(postData['desc']) < 10:
             errors["desc"] = "Please enter a valid description"
-        # if len(postData['quantity_in_stock']) < 1 or postData['quantity_in_stock'] <1:
-        #     errors["quantity_in_stock"] = "Please enter a valid quantity"
+        if len(postData['quantity_in_stock']) < 1:
+            errors["quantity_in_stock"] = "Please enter a valid quantity"
+        elif not NUMBER_REGEX.match(postData['quantity_in_stock']):
+            errors['quantity_in_stock'] = "Please enter a numeric quantity"
         return errors
         
 
