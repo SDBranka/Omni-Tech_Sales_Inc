@@ -11,7 +11,7 @@
 
 
 -move the iso 17025 badge
--add delete category to administrative:admin
+-add delete category to administrative:admin 
 -add filter by to select_product:admin
 -search_by bar for quotes/orders_display:admin
    -Search for a portion of a ref# (or other field)

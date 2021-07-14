@@ -39,3 +39,18 @@ button {
     padding: 3px;
     border-radius: 3px;
 }
+
+#page_nav {
+    text-align: center;
+    margin-top: 18px;
+}
+
+#page_nav button {
+    width: 40px;
+}
+
+#page_nav button a {
+    text-decoration: none;
+    color: #372588;
+    font-size: 20px;
+}

@@ -3,6 +3,7 @@ from django.db.models.query_utils import Q
 from django.shortcuts import render, redirect
 from imgfield_app.models import ContactInfo, User, Product, AdminItem, Photo, Quote, QuoteProduct, QuoteItem, QuoteAdminItem, Order, OrderProduct, OrderItem, OrderAdminItem, Category
 from django.contrib import messages
+from django.core.paginator import Paginator
 import uuid
 from datetime import datetime
 from decimal import Decimal
@@ -769,16 +770,23 @@ def process_attach_order(request):
 
 
 
-def quotes_display(request):
+def quotes_display(request, page_num):
     if 'user_id' in request.session:
         logged_user = User.objects.get(id=request.session['user_id'])
         if logged_user.security_level > 4:
         # status choices = {open, pending, in process, completed, archived }
-            all_active_quotes= Quote.objects.exclude(status = "archived").order_by('-placed_at')
+            all_active_quotes = Quote.objects.exclude(status = "archived").exclude(status="completed").order_by('placed_at')
+            # all_completed_quotes = Quote.objects.exclude(status = "pending").exclude(status = "in process").exclude(status="archived").order_by('placed_at')
+            
+            p = Paginator(all_active_quotes, 15)
+            page = p.page(page_num)
+            num_of_pages = "a" * p.num_pages
 
             context = {
                 'logged_user': logged_user,
-                'all_active_quotes': all_active_quotes
+                'all_active_quotes': page,
+                'num_of_pages': num_of_pages,
+                # 'all_completed_quotes': all_completed_quotes,
             }
         return render(request, "quotes_display.html", context)
     return redirect("/")

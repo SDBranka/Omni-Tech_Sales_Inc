@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Admin Quotes Display</title>
+    <title>Admin Completed Quotes Display</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% load static %}
@@ -30,8 +30,8 @@
                 <button type="submit">Search</button>
             </form>
             <div id="quotes">
-                <h3>All Active Quotes</h3>
-                {% for quote in all_active_quotes %}
+                <h3>All Completed Quotes</h3>
+                {% for quote in all_completed_quotes %}
                     <div class="quote_pod">
                         <!-- view_quote/{{ quote_id }} -->
                         <div class="quote_info">
@@ -45,24 +45,6 @@
                         </div>      <!--end .quote_status-->                
                     </div>      <!--end .quote_pod-->
                 {% endfor%}
-                <a href="admin_access/completed_quotes_display/1">View Completed Quotes</a>
-                <div id="page_nav">
-                    {% if all_active_quotes.has_previous %}
-                        <button>
-                            <a href="/admin_access/quotes_display/{{ all_active_quotes.previous_page_number }}">&laquo;</a>
-                        </button>
-                    {% endif %}
-                    {% for i in num_of_pages %}
-                        <button>
-                            <a href="/admin_access/quotes_display/{{ forloop.counter }}">{{ forloop.counter }}</a>
-                        </button>
-                    {% endfor %}
-                    {% if all_active_quotes.has_next %}
-                        <button>
-                            <a href="/admin_access/quotes_display/{{ all_active_quotes.next_page_number }}">&raquo;</a>
-                        </button>
-                    {% endif %}
-                </div>      <!--page_nav-->            
             </div>      <!--end quotes-->
         </div>      <!--end content-->
     </div>      <!--end wrapper-->
