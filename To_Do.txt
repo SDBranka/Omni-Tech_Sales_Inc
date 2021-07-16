@@ -1,19 +1,18 @@
-**find_quote:admin validations
+ *Delete an order
 
 
 *order order processing
-*make a finished quote and finished order model to store completed
- quotes/orders so that they will not change with 
- any database changes
-   -perhaps use CompletedQuote and Invoice
+   *make a finished quote and finished order model to store completed
+   quotes/orders so that they will not change with 
+   any database changes
+      -perhaps use CompletedQuote and Invoice
 *make sure add_attached_order visible regardless of 
  order/quote status view_order/quote:admin
    -(good for "pending" and "in process")
+* paginate edit_product:admin
 
 
 
-
--move the iso 17025 badge
 -add delete category to administrative:admin 
 -add filter by to select_product:admin
 -search_by bar for quotes/orders_display:admin
@@ -33,6 +32,8 @@ Questions:
 -The way I hid my secret key won't allow me to deploy
 -Is it preferable to have more smaller files or less but large ones
 -Search for a portion of a ref# (or other field)
+
+
 
 Look Into:
 _automate the boring stuff with python
@@ -80,3 +81,5 @@ Corrected:
  in build_attached_order:admin
 *edit_product:admin validations not displaying in page
 *administrative:admin validations
+**find_quote:admin validations
+-move the iso 17025 badge
