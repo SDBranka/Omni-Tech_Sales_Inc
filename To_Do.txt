@@ -1,4 +1,4 @@
- *Delete an order
+ *Delete an order view_order:admin
 
 
 *order order processing
@@ -9,11 +9,7 @@
 *make sure add_attached_order visible regardless of 
  order/quote status view_order/quote:admin
    -(good for "pending" and "in process")
-* paginate edit_product:admin
--add product validations adminstractive:admin
--fix edit_product:admin validations
--admin may create quote using AdminItem
-
+*process_add_prod_photo:admin validations
 
 
 -add delete category to administrative:admin 
@@ -83,3 +79,7 @@ Corrected:
 *administrative:admin validations
 **find_quote:admin validations
 -move the iso 17025 badge
+-fix edit_product:admin validations
+-add product validations adminstractive:admin
+-admin may create quote using AdminItem
+* paginate select_product:admin

@@ -56,6 +56,23 @@
                     {% endfor %}
                 </table>
             </div>      <!--end display_products-->
+            <div id="page_nav">
+                {% if all_products.has_previous %}
+                    <button>
+                        <a href="/admin_access/select_product/{{ all_products.previous_page_number }}">&laquo;</a>
+                    </button>
+                {% endif %}
+                {% for i in num_of_pages %}
+                    <button>
+                        <a href="/admin_access/select_product/{{ forloop.counter }}">{{ forloop.counter }}</a>
+                    </button>
+                {% endfor %}
+                {% if all_products.has_next %}
+                    <button>
+                        <a href="/admin_access/select_product/{{ all_products.next_page_number }}">&raquo;</a>
+                    </button>
+                {% endif %}
+            </div>      <!--page_nav-->
         </div>      <!--end content-->
     </div>      <!--end wrapper-->
 </body>

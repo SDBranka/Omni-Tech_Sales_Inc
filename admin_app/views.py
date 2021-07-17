@@ -54,13 +54,20 @@ def process_create_product(request):
     return redirect("/")
 
 
-def select_product(request):
+def select_product(request, page_num):
     if 'user_id' in request.session:
         logged_user = User.objects.get(id=request.session['user_id'])
         if logged_user.security_level > 4:
+            all_products = Product.objects.all()
+
+            p = Paginator(all_products, 10)
+            page = p.page(page_num)
+            num_of_pages = "a" * p.num_pages
+
             context = {
                 'logged_user' : logged_user,
-                'all_products': Product.objects.all(),
+                'all_products': page,
+                'num_of_pages': num_of_pages,
             }
             return render(request, "select_product.html", context)
     return redirect("/")
@@ -107,7 +114,7 @@ def delete_product(request, product_id):
         if logged_user.security_level > 4:
             product_to_delete = Product.objects.get(id=product_id)
             product_to_delete.delete()
-            return redirect("/admin_access/select_product")
+            return redirect("/admin_access/select_product/1")
     return redirect("/")
 
 

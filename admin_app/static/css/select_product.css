@@ -55,3 +55,23 @@ th {
 #actions p {
     margin-bottom: 5px;
 }
+
+#page_nav {
+    text-align: center;
+}
+
+/* button {
+    padding: 3px;
+    border-radius: 3px;
+} */
+
+#page_nav button {
+    width: 40px;
+}
+
+#page_nav button a {
+    text-decoration: none;
+    color: #372588;
+    font-size: 20px;
+}
+
