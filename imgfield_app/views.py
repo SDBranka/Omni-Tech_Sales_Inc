@@ -476,7 +476,7 @@ def process_edit_contact(request):
     return redirect("/")
 
 
-def proces_edit_profile(request):
+def process_edit_profile(request):
     if 'user_id' in request.session:
         if request.method == "POST":
             # errors handling

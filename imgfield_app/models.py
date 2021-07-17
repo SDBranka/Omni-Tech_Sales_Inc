@@ -76,9 +76,6 @@ class UserManager(models.Manager):
         return errors
 
 
-
-
-
 class User(models.Model):
     # user_reviews
     # user_orders

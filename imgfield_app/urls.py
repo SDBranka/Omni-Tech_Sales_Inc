@@ -24,7 +24,7 @@ urlpatterns = [
     path('delete_contact', views.delete_contact),
     path('edit_contact/<str:redirect_reference>/<int:contact_id>', views.edit_contact),
     path('process_edit_contact', views.process_edit_contact),
-    path('proces_edit_profile', views.proces_edit_profile),
+    path('process_edit_profile', views.process_edit_profile),
     path('view_quote/<int:quote_id>', views.view_quote),
     path('view_order/<int:order_id>', views.view_order),
     path('industries', views.industries),

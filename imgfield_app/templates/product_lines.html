@@ -17,12 +17,15 @@
         <h1>Welcome {% if logged_user %}{{ logged_user.first_name }}{% endif %}</h1>
         <div id="links">
             {% if logged_user.security_level > 4 %}
-                <a href="/admin_access">Go to Admin</a>  |  
+                <a class="link" href="/admin_access">Go to Admin</a>  |  
+            {% endif %}
+            {% if 'open_quote' in request.session %}
+                <a href="/request_quote">View Your Quote</a>  |  
             {% endif %}
             {% if logged_user %}
-                <a href="/signon/logout">Logout</a>
+                <a class="link" href="/signon/logout">Logout</a>
             {% else %}
-                <a href="/signon">Log In/Register</a>
+                <a class="link" href="/signon">Log In/Register</a>
             {% endif %}                  
         </div>      <!--end links-->
     </div>      <!--end header-->
