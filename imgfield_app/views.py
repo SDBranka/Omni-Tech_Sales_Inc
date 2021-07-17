@@ -367,7 +367,7 @@ def add_new_contact(request):
             if len(errors) > 0:
                 for error in errors.values():
                     messages.error(request, error)
-                if confirm_quote:
+                if "confirm_quote" in request.session:
                     return redirect("/select_contact_info")
                 return redirect("/user_account")    
             else:
@@ -480,18 +480,17 @@ def proces_edit_profile(request):
     if 'user_id' in request.session:
         if request.method == "POST":
             # errors handling
-            # errors = Wish.objects.wish_validator(request.POST)
-            # if len(errors) > 0:
-            #     for error in errors.values():
-            #         messages.error(request, error)
-            #     return redirect(f"/wishes/edit_wish/{ wish_id }")
-            # else:
-
-            logged_user = User.objects.get(id=request.session['user_id'])
-            logged_user.first_name = request.POST['first_name']
-            logged_user.last_name = request.POST['last_name']
-            logged_user.email = request.POST['email']
-            logged_user.save()
+            errors = User.objects.edit_profile_validator(request.POST)
+            if len(errors) > 0:
+                for error in errors.values():
+                    messages.error(request, error)
+                return redirect("/user_account")
+            else:
+                logged_user = User.objects.get(id=request.session['user_id'])
+                logged_user.first_name = request.POST['first_name']
+                logged_user.last_name = request.POST['last_name']
+                logged_user.email = request.POST['email']
+                logged_user.save()
         return redirect("/user_account")
     return redirect("/")
 

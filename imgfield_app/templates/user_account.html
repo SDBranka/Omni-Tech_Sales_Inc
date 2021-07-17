@@ -68,24 +68,6 @@
                             <div class="quote">
                                 <p>Ref #: <a href="/view_quote/{{ quote.id }}">{{ quote.ref_number }}</a></p>
                                 <p>Last Processed: {{ quote.updated_at.date }}</p>
-                                <!-- <p>Products:</p> -->
-                                {% for product in quote.quote_product.all %}
-                                    <!-- <ul>
-                                        <li>
-                                            <p>Product Name: {{ product.product_on_quote.name }}</p>
-                                            <p>Quantity: {{ product.quantity }}</p>
-                                        </li>   
-                                    </ul> -->
-                                {% endfor %}
-                                <!-- <p>Items:</p> -->
-                                {% for item in quote.quote_item.all %}
-                                <!-- <ul>
-                                    <li>
-                                        <p>Item Name: {{ item.item_on_quote.name }}</p>
-                                        <p>Quantity: {{ item.quantity }}</p>
-                                    </li>   
-                                </ul> -->
-                                {% endfor %}
                                 <p>Status: {{ quote.status }}</p>  
                             </div>      <!--end quote-->
                         {% endfor %}                      
@@ -121,7 +103,7 @@
                         {% endfor %}
                     </ul>
                     {% endif %}
-                </div>      <!--end errors-->
+                </div>      <!--end errors-->    
                 <div id="contact_display">
                     {% if my_contacts %}
                         <h3>My Stored Contact Information:</h3>
@@ -242,6 +224,7 @@
                         <p>First Name: <input id="fname_input" type="text" name="first_name" value="{{ logged_user.first_name }}"></p>
                         <p>Last Name: <input id="lname_input" type="text" name="last_name" value="{{ logged_user.last_name }}"></p>
                         <p>Email: <input id="email_input" type="email" name="email" value="{{ logged_user.email }}"></p>
+                        <input type="hidden" name="user_id" value="{{ logged_user.id }}">
                         <button type="submit">Edit This Information</button>
                     </form>      
                 </div>      <!--end edit_info-->
