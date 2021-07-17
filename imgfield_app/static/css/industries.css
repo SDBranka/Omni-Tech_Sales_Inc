@@ -1,0 +1,25 @@
+h2 {
+    margin-bottom: 18px;
+    border-bottom: 2px solid #372588;
+}
+
+#industry_display {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.indust_pod{
+    display: block;
+    text-align: center;
+    border: 2px solid #372588;
+    margin: 9px;
+    background-color: #372588;
+    color: white;
+}
+
+.indust_pod img {
+    width: 180px;
+    height: 180px;
+}
+

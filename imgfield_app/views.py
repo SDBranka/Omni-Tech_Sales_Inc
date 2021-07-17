@@ -17,7 +17,6 @@ def index(request):
     }
     return render(request, "store_index.html", context)
 
-
 def product_lines(request):
     if not 'user_id' in request.session:
         return render(request, "product_lines.html")
@@ -26,6 +25,18 @@ def product_lines(request):
         'logged_user' : logged_user,
     }
     return render(request, "product_lines.html", context)
+
+
+def industries(request):
+    if 'user_id' in request.session:
+        logged_user = User.objects.get(id=request.session['user_id'])
+        context = {
+            'logged_user' : logged_user,
+        }
+        return render(request, "industries.html", context)
+    return render(request, "industries.html")
+
+
 
 
 def services(request, page_num):
