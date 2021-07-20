@@ -1,4 +1,4 @@
-*add adminitem to quote in process validations
+
 
 *order order processing
    *make a finished quote and finished order model to store completed
@@ -86,3 +86,5 @@ Corrected:
  or "completed"
 *find_order:admin ref# validations
 *paginate orders_display:admin
+*add adminitem to order in process validations
+*add adminitem to quote in process validations

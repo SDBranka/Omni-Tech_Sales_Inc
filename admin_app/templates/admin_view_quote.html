@@ -201,6 +201,15 @@
             {% if quote.status == "in process" %}
                 <div id="add_adminitem">
                     <h2>Add a Product, Service, Discount, or Shipping Cost to the Quote?</h2>
+                    <div id="errors">
+                        {% if messages %}
+                        <ul>
+                            {% for message in messages %}
+                            <li>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>      <!--end errors-->            
                     <form action="/admin_access/process_add_adminitem_to_quote" method="POST">
                         {% csrf_token %}
                         <p>Name: 

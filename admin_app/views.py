@@ -607,52 +607,57 @@ def process_add_adminitem_to_order(request):
     if 'user_id' in request.session:    
         logged_user = User.objects.get(id=request.session['user_id'])
         if logged_user.security_level > 4:
-            if request.method == "POST":                  
-                # create AdminItem object
-                name = request.POST['name']
-                part_number = request.POST['part_number']
-                manufacturer = request.POST['manufacturer']
-                price = Decimal(request.POST['price'])
-                if request.POST['is_discount'] == "discount":
-                    is_discount = True
-                else:
-                    is_discount = False
-                notes = request.POST['notes']
-
-                new_adminitem = AdminItem.objects.create(
-                    name = name,
-                    part_number = part_number,
-                    manufacturer = manufacturer,
-                    price = price,
-                    is_discount = is_discount,
-                    notes = notes
-                )
-
-                if len(request.POST['quantity']):
-                    quantity = int(request.POST['quantity'])
-                else:
-                    quantity = 1
-                combined_price = new_adminitem.price * quantity
-
+            if request.method == "POST":
                 # get Order
                 order = Order.objects.get(id=request.POST['order_id'])
 
-                # create OrderAdminItem
-                ord_adminitem = OrderAdminItem.objects.create(
-                    adminitem_on_order = new_adminitem,
-                    order = order,
-                    quantity = quantity,
-                    combined_price = combined_price,
-                    is_discount = new_adminitem.is_discount
-                    )
-
-                # checks to see if discount or charge and manipulates order.total_price
-                if ord_adminitem.is_discount:
-                    order.total_price -= ord_adminitem.combined_price
+                errors = AdminItem.objects.item_validator(request.POST)
+                if len(errors) > 0:
+                    for error in errors.values():
+                        messages.error(request, error)
+                    return redirect(f"/admin_access/view_order/{ order.id }")
                 else:
-                    order.total_price += ord_adminitem.combined_price
-                order.save()
-                return redirect(f"/admin_access/view_order/{ order.id }")
+                    # create AdminItem object
+                    name = request.POST['name']
+                    part_number = request.POST['part_number']
+                    manufacturer = request.POST['manufacturer']
+                    price = Decimal(request.POST['price'])
+                    if request.POST['is_discount'] == "discount":
+                        is_discount = True
+                    else:
+                        is_discount = False
+                    notes = request.POST['notes']
+
+                    new_adminitem = AdminItem.objects.create(
+                        name = name,
+                        part_number = part_number,
+                        manufacturer = manufacturer,
+                        price = price,
+                        is_discount = is_discount,
+                        notes = notes
+                    )
+                    if len(request.POST['quantity']):
+                        quantity = int(request.POST['quantity'])
+                    else:
+                        quantity = 1
+                    combined_price = new_adminitem.price * quantity
+
+                    # create OrderAdminItem
+                    ord_adminitem = OrderAdminItem.objects.create(
+                        adminitem_on_order = new_adminitem,
+                        order = order,
+                        quantity = quantity,
+                        combined_price = combined_price,
+                        is_discount = new_adminitem.is_discount
+                        )
+
+                    # checks to see if discount or charge and manipulates order.total_price
+                    if ord_adminitem.is_discount:
+                        order.total_price -= ord_adminitem.combined_price
+                    else:
+                        order.total_price += ord_adminitem.combined_price
+                    order.save()
+                    return redirect(f"/admin_access/view_order/{ order.id }")
             return redirect("/admin_access")
     return redirect("/")
 
@@ -1098,52 +1103,58 @@ def process_add_adminitem_to_quote(request):
     if 'user_id' in request.session:    
         logged_user = User.objects.get(id=request.session['user_id'])
         if logged_user.security_level > 4:
-            if request.method == "POST":                  
-                # create AdminItem object
-                name = request.POST['name']
-                part_number = request.POST['part_number']
-                manufacturer = request.POST['manufacturer']
-                price = Decimal(request.POST['price'])
-                if request.POST['is_discount'] == "discount":
-                    is_discount = True
-                else:
-                    is_discount = False
-                notes = request.POST['notes']
-
-                new_adminitem = AdminItem.objects.create(
-                    name = name,
-                    part_number = part_number,
-                    manufacturer = manufacturer,
-                    price = price,
-                    is_discount = is_discount,
-                    notes = notes
-                )
-
-                if len(request.POST['quantity']):
-                    quantity = int(request.POST['quantity'])
-                else:
-                    quantity = 1
-                combined_price = new_adminitem.price * quantity
-
+            if request.method == "POST":    
                 # get quote
                 quote = Quote.objects.get(id=request.POST['quote_id'])
 
-                # create QuoteAdminItem
-                qt_adminitem = QuoteAdminItem.objects.create(
-                    adminitem_on_quote = new_adminitem,
-                    quote = quote,
-                    quantity = quantity,
-                    combined_price = combined_price,
-                    is_discount = new_adminitem.is_discount
+                errors = AdminItem.objects.item_validator(request.POST)
+                if len(errors) > 0:
+                    for error in errors.values():
+                        messages.error(request, error)
+                    return redirect(f"/admin_access/view_quote/{ quote.id }")
+                else:
+                    # create AdminItem object
+                    name = request.POST['name']
+                    part_number = request.POST['part_number']
+                    manufacturer = request.POST['manufacturer']
+                    price = Decimal(request.POST['price'])
+                    if request.POST['is_discount'] == "discount":
+                        is_discount = True
+                    else:
+                        is_discount = False
+                    notes = request.POST['notes']
+
+                    new_adminitem = AdminItem.objects.create(
+                        name = name,
+                        part_number = part_number,
+                        manufacturer = manufacturer,
+                        price = price,
+                        is_discount = is_discount,
+                        notes = notes
                     )
 
-                # checks to see if discount or charge and manipulates quote.total_price
-                if qt_adminitem.is_discount:
-                    quote.total_price -= qt_adminitem.combined_price
-                else:
-                    quote.total_price += qt_adminitem.combined_price
-                quote.save()
-                return redirect(f"/admin_access/view_quote/{ quote.id }")
+                    if len(request.POST['quantity']):
+                        quantity = int(request.POST['quantity'])
+                    else:
+                        quantity = 1
+                    combined_price = new_adminitem.price * quantity
+
+                    # create QuoteAdminItem
+                    qt_adminitem = QuoteAdminItem.objects.create(
+                        adminitem_on_quote = new_adminitem,
+                        quote = quote,
+                        quantity = quantity,
+                        combined_price = combined_price,
+                        is_discount = new_adminitem.is_discount
+                        )
+
+                    # checks to see if discount or charge and manipulates quote.total_price
+                    if qt_adminitem.is_discount:
+                        quote.total_price -= qt_adminitem.combined_price
+                    else:
+                        quote.total_price += qt_adminitem.combined_price
+                    quote.save()
+                    return redirect(f"/admin_access/view_quote/{ quote.id }")
             return redirect("/admin_access")
     return redirect("/")
 

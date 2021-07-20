@@ -237,7 +237,7 @@ class AdminItemManager(models.Manager):
             errors['part_number'] = "Please enter a valid product part number"        
         if len(postData['manufacturer']) > 0 and len(postData['manufacturer']) < 3:
             errors['manufacturer'] = "Please enter a valid product"      
-        if len(postData['price']) < 2:
+        if len(postData['price']) < 1:
             errors['price'] = "Please enter a valid price"
         elif not PRICE_REGEX.match(postData['price']):
             errors['price'] = "Please enter a valid price in ###.## format"
@@ -319,7 +319,6 @@ class OrderManager(models.Manager):
         return errors
 
 
-
 class Order(models.Model):
     # order_product
     # order_item
@@ -345,6 +344,7 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = OrderManager()
+
 
 class OrderProduct(models.Model):
     product_on_order = models.ForeignKey(

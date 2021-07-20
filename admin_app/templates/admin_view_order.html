@@ -208,6 +208,15 @@
             {% if order.status == "in process" %}
                 <div id="add_adminitem">
                     <h2>Add a Product, Service, Discount, or Shipping Cost to the order?</h2>
+                    <div id="errors">
+                        {% if messages %}
+                        <ul>
+                            {% for message in messages %}
+                            <li>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>      <!--end errors-->            
                     <form action="/admin_access/process_add_adminitem_to_order" method="POST">
                         {% csrf_token %}
                         <p>Name:
