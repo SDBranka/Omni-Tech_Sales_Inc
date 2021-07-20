@@ -37,8 +37,6 @@ def industries(request):
     return render(request, "industries.html")
 
 
-
-
 def services(request, page_num):
     service_cat = Category.objects.get(name="Services")
     products_in_service = service_cat.product_in_category.all()
@@ -67,18 +65,18 @@ def services(request, page_num):
 
 
 # Build to display individual product pages
-# def view_product(request, product_id):
-#     product = Product.objects.get(id=product_id)
-#     if 'user_id' in request.session:    
-#         logged_user = User.objects.get(id=request.session['user_id'])
-#         context = {
-#             'logged_user' : logged_user,
-#             'product': product
-#         }
-#     context = {
-#         'product': product
-#     }
-#     return render(request, "services.html", context)
+def view_product(request, product_id):
+    product = Product.objects.get(id=product_id)
+    if 'user_id' in request.session:    
+        logged_user = User.objects.get(id=request.session['user_id'])
+        context = {
+            'logged_user' : logged_user,
+            'product': product
+        }
+    context = {
+        'product': product
+    }
+    return render(request, "view_product.html", context)
 
 
 def process_add_service_to_quote(request):

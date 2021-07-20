@@ -1,0 +1,29 @@
+#img_display {
+    text-align: center;
+}
+
+#img_display img {
+    height: 270px;
+}
+
+#extra_imgs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+#extra_imgs img {
+    height: 180px;
+}
+
+#product_info {
+    margin: 9px 0px;
+}
+
+p {
+    margin: 0px 0px 9px 27px;
+}
+
+#exp_desc {
+    margin-top: 63px;
+}

@@ -1,4 +1,4 @@
-
+*build view_product:store page
 
 *order order processing
    *make a finished quote and finished order model to store completed
