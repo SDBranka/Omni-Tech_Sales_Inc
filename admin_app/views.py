@@ -857,6 +857,30 @@ def delete_quote(request):
     return redirect("/")
 
 
+def confirm_delete_order(request, order_id):
+    if 'user_id' in request.session:
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            context = {
+                'logged_user': logged_user,
+                'order': Order.objects.get(id=order_id),
+            }
+            return render(request, "confirm_delete_order.html", context)
+    return redirect("/")
+
+
+def delete_order(request):
+    if 'user_id' in request.session:
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            if request.method == "POST":
+                order = Order.objects.get(id=request.POST['order_id'])
+                order.delete()
+        return redirect("/admin_access")        
+    return redirect("/")
+
+
+
 def find_quote(request):
     if 'user_id' in request.session:
         logged_user = User.objects.get(id=request.session['user_id'])

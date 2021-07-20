@@ -1,6 +1,6 @@
- *Delete an order view_order:admin
+ *add adminitem to quote in process validations
 
-
+*find_order:admin ref# validations
 *order order processing
    *make a finished quote and finished order model to store completed
    quotes/orders so that they will not change with 
@@ -10,6 +10,8 @@
  order/quote status view_order/quote:admin
    -(good for "pending" and "in process")
 *process_add_prod_photo:admin validations
+*paginate edit_user:admin
+*paginate orders_display:admin
 
 
 -add delete category to administrative:admin 
@@ -17,7 +19,7 @@
 -search_by bar for quotes/orders_display:admin
    -Search for a portion of a ref# (or other field)
 -easy of use features
-
+-add formtracer link store_index:store
 
 
 
@@ -83,3 +85,4 @@ Corrected:
 -add product validations adminstractive:admin
 -admin may create quote using AdminItem
 * paginate select_product:admin
+ *Delete an order view_order:admin

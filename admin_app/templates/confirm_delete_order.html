@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Confirm Order Delete:Admin Home</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/admin_main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/confirm_delete_order.css' %}">
+
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <h1>Welcome, {{ logged_user.first_name }}</h1>
+            <div id="links">
+                <a href="/">Back to Store</a> |
+                <a href="/signon/logout">Logout</a>
+            </div>      <!--end links-->
+        </div>      <!--end header-->
+        <div id="content">
+            <h2>Are you sure you want to delete the following order?</h2>
+            <div id="order_head">
+                <h3>Order Reference Number: {{ order.ref_number }} </h3>
+                <h3 id="total">Total: ${{ order.total_price }}</h3>
+            </div>      <!--end order_head-->
+            <div id="order_info">
+                <p>Date Placed: {{order.created_at }}</p>
+                <p>Placed By: {{ order.orderd_by.last_name }}, {{ order.orderd_by.first_name }}</p>
+                <p>Email: {{ order.orderd_by.email }} || Phone: {{ order.contact_info.phone }}</p>
+                <p>Address: {{ order.contact_info.address_1 }}</p>
+                <p id="line2">{{ order.contact_info.address_2 }}</p>
+                <p id="line3">{{ order.contact_info.city }}, {{ order.contact_info.state }}</p>
+                <p id="line4">{{ order.contact_info.zip_code }}</p>
+                <p id="line5">{{ order.contact_info.country }}</p>
+            </div>      <!--end order_info-->
+            <div id="buttons">
+                <button id="no"><a href="/admin_access/view_order/{{ order.id }}">Go Back</a></button>
+                <form action="/admin_access/delete_order" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="order_id" value="{{ order.id }}">
+                    <button id="destroy">Delete Order</button>
+                </form>
+            </div>      <!--end buttons-->
+        </div>      <!--end content-->
+    </div>      <!--end wrapper-->
+</body>
+
+</html>

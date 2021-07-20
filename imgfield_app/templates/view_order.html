@@ -110,7 +110,11 @@
                         <td>{{ adminitem.adminitem_on_order.name }}</td>
                         <td>${{ adminitem.adminitem_on_order.price }}</td>
                         <td>{{ adminitem.quantity }}</td>
-                        <td>{{ adminitem.combined_price }}</td>      <!-- <td>#</td> -->
+                        {% if adminitem.is_discount%}
+                            <td class="green">-${{ adminitem.combined_price }}</td>
+                        {%else%}
+                            <td>${{ adminitem.combined_price }}</td>
+                        {% endif %}
                         <!-- <td>#</td> -->
                     </tr>
                     {% endfor %}        <!--#end for adminitem in adminitems#-->
