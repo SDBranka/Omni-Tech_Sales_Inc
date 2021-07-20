@@ -765,18 +765,6 @@ def process_attach_order(request):
     return redirect("/")
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 def quotes_display(request, page_num):
     if 'user_id' in request.session:
         logged_user = User.objects.get(id=request.session['user_id'])
@@ -817,20 +805,43 @@ def completed_quotes_display(request, page_num):
     return redirect("/")
 
 
-
-
-
-def orders_display(request):
+def orders_display(request, page_num):
     if 'user_id' in request.session:
         logged_user = User.objects.get(id=request.session['user_id'])
         if logged_user.security_level > 4:
         # status choices = {pending, in process, completed, archived }
-            all_active_orders= Order.objects.exclude(status = "archived").order_by('-created_at')
+            all_active_orders= Order.objects.exclude(status = "archived").exclude(status="completed").order_by('created_at')
+
+            p = Paginator(all_active_orders, 15)
+            page = p.page(page_num)
+            num_of_pages = "a" * p.num_pages
+
             context = {
                 'logged_user': logged_user,
-                'all_active_orders': all_active_orders
+                'all_active_orders': page,
+                'num_of_pages': num_of_pages,               
             }
         return render(request, "orders_display.html", context)
+    return redirect("/")
+
+
+def completed_orders_display(request, page_num):
+    if 'user_id' in request.session:
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+        # status choices = {open, pending, in process, completed, archived }
+            all_completed_orders = Order.objects.exclude(status = "pending").exclude(status = "in process").exclude(status="archived").order_by('created_at')
+            
+            p = Paginator(all_completed_orders, 15)
+            page = p.page(page_num)
+            num_of_pages = "a" * p.num_pages
+
+            context = {
+                'logged_user': logged_user,
+                'all_completed_orders': page,
+                'num_of_pages': num_of_pages,
+            }
+            return render(request, "completed_orders_display.html", context)
     return redirect("/")
 
 
@@ -880,7 +891,6 @@ def delete_order(request):
     return redirect("/")
 
 
-
 def find_quote(request):
     if 'user_id' in request.session:
         logged_user = User.objects.get(id=request.session['user_id'])
@@ -905,6 +915,18 @@ def find_order(request):
         logged_user = User.objects.get(id=request.session['user_id'])
         if logged_user.security_level > 4:
             if request.method == "POST":
+                redirect_to = request.POST['redirect_to']
+                # errors = Quote.objects.ref_number_validator(request.POST)
+                # if len(errors) > 0:
+                #     for error in errors.values():
+                #         messages.error(request, error)
+                #     return redirect(f"/admin_access/{ redirect_to }")
+                # else:
+
+
+
+
+
                 order_ref_num = request.POST['order_ref_num']
 #add validation here in case ref number doesn't exist
                 order = Order.objects.get(ref_number=order_ref_num)

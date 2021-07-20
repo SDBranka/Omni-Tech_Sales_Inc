@@ -4,12 +4,13 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Admin Orders Display</title>
+    <title>Completed Orders Display:Admin</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/admin_main.css' %}">
     <link rel="stylesheet" href="{% static 'css/quotes_display.css' %}">
+    <link rel="stylesheet" href="{% static 'css/completed_quotes_display.css' %}">
 </head>
 
 <body>
@@ -33,46 +34,47 @@
                 </ul>
                 {% endif %}
             </div>      <!--end errors-->    
-            <form action="/admin_access/find_order" method="POST">
+            <form action="/admin_access/find_quote" method="POST">
                 {% csrf_token %}
                 <p>View a Order By Ref#: <input type="text" name="order_ref_num"></p>
-                <input type="hidden" name="redirect_to" value="orders_display/1">
+                <input type="hidden" name="redirect_to" value="completed_orders_display/1">
                 <button type="submit">Search</button>
             </form>
             <div id="quotes">
-                {% for order in all_active_orders %}
+                <a href="/admin_access/orders_display/1">Back to Active Orders</a>
+                <h3>All Completed Orders</h3>
+                {% for order in all_completed_orders %}
                     <div class="quote_pod">
+                        <!-- view_order/{{ order_id }} -->
                         <div class="quote_info">
                             <h3>Ref #:<a href="/admin_access/view_order/{{ order.id }}">{{ order.ref_number }}</a></h3>
-                            <p>Date Placed: {{ order.created_at }}</p>
-                            <p>List Price: {{order.total_price }}</p>
-                            <p>Name: {{ order.ordered_by.last_name }}, {{ order.ordered_by.first_name }}</p>
+                            <p>Date Placed: {{ order.created_at }} <span class="quote_price">List Price: {{order.total_price }}</span></p>
+                            <p>Name: {{ order.orderd_by.last_name }}, {{ order.orderd_by.first_name }}</p>
                             <p>Last Updated: {{ order.updated_at }}</p>                            
-                        </div>                    <!--end .order_info-->
+                        </div>                    <!--end .quote_info-->
                         <div class="quote_status">
                             <h3 class="status">{{ order.status }}</h3>
                         </div>      <!--end .quote_status-->                
                     </div>      <!--end .quote_pod-->
                 {% endfor%}
-                <a href="/admin_access/completed_orders_display/1">View Completed orders</a>
-                <div id="page_nav">
-                    {% if all_active_orders.has_previous %}
-                        <button>
-                            <a href="/admin_access/orders_display/{{ all_active_orders.previous_page_number }}">&laquo;</a>
-                        </button>
-                    {% endif %}
-                    {% for i in num_of_pages %}
-                        <button>
-                            <a href="/admin_access/orders_display/{{ forloop.counter }}">{{ forloop.counter }}</a>
-                        </button>
-                    {% endfor %}
-                    {% if all_active_orders.has_next %}
-                        <button>
-                            <a href="/admin_access/orders_display/{{ all_active_quotes.next_page_number }}">&raquo;</a>
-                        </button>
-                    {% endif %}
-                </div>      <!--page_nav-->            
             </div>      <!--end quotes-->
+            <div id="page_nav">
+                {% if all_completed_orders.has_previous %}
+                    <button>
+                        <a href="/admin_access/completed_orders_display/{{ all_completed_orders.previous_page_number }}">&laquo;</a>
+                    </button>
+                {% endif %}
+                {% for i in num_of_pages %}
+                    <button>
+                        <a href="/admin_access/completed_orders_display/{{ forloop.counter }}">{{ forloop.counter }}</a>
+                    </button>
+                {% endfor %}
+                {% if all_completed_orders.has_next %}
+                    <button>
+                        <a href="/admin_access/completed_orders_display/{{ all_completed_orders.next_page_number }}">&raquo;</a>
+                    </button>
+                {% endif %}
+            </div>      <!--page_nav-->            
         </div>      <!--end content-->
     </div>      <!--end wrapper-->
 </body>
