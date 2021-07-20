@@ -34,7 +34,7 @@
                 </ul>
                 {% endif %}
             </div>      <!--end errors-->    
-            <form action="/admin_access/find_quote" method="POST">
+            <form action="/admin_access/find_order" method="POST">
                 {% csrf_token %}
                 <p>View a Order By Ref#: <input type="text" name="order_ref_num"></p>
                 <input type="hidden" name="redirect_to" value="completed_orders_display/1">

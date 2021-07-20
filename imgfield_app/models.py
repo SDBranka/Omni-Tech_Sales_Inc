@@ -311,9 +311,9 @@ class OrderManager(models.Manager):
     def ref_number_validator(self, postData):
         errors = {}
 
-        if len(postData['quote_ref_num']) < 2:
+        if len(postData['order_ref_num']) < 2:
             errors['ref_number'] = "Please enter a valid product ref_number"
-        ref_number_in_db = self.filter(ref_number = postData['quote_ref_num'])        #ensure no duplicate ref_number exists
+        ref_number_in_db = self.filter(ref_number = postData['order_ref_num'])        #ensure ref_number exists
         if not ref_number_in_db:
             errors["ref_number"] = "This order reference number does not exist in the database"
         return errors

@@ -916,21 +916,15 @@ def find_order(request):
         if logged_user.security_level > 4:
             if request.method == "POST":
                 redirect_to = request.POST['redirect_to']
-                # errors = Quote.objects.ref_number_validator(request.POST)
-                # if len(errors) > 0:
-                #     for error in errors.values():
-                #         messages.error(request, error)
-                #     return redirect(f"/admin_access/{ redirect_to }")
-                # else:
-
-
-
-
-
-                order_ref_num = request.POST['order_ref_num']
-#add validation here in case ref number doesn't exist
-                order = Order.objects.get(ref_number=order_ref_num)
-                return redirect(f"/admin_access/view_order/{ order.id }")
+                errors = Order.objects.ref_number_validator(request.POST)
+                if len(errors) > 0:
+                    for error in errors.values():
+                        messages.error(request, error)
+                    return redirect(f"/admin_access/{ redirect_to }")
+                else:
+                    order_ref_num = request.POST['order_ref_num']
+                    order = Order.objects.get(ref_number=order_ref_num)
+                    return redirect(f"/admin_access/view_order/{ order.id }")
             return redirect("/admin_access")        
     return redirect("/")
 

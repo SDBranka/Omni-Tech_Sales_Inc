@@ -1,6 +1,5 @@
- *add adminitem to quote in process validations
+*add adminitem to quote in process validations
 
-*find_order:admin ref# validations
 *order order processing
    *make a finished quote and finished order model to store completed
    quotes/orders so that they will not change with 
@@ -11,7 +10,6 @@
    -(good for "pending" and "in process")
 *process_add_prod_photo:admin validations
 *paginate edit_user:admin
-*paginate orders_display:admin
 
 
 -add delete category to administrative:admin 
@@ -55,8 +53,6 @@ Corrected:
 *display ordered_by and contact info in orders/quotes_display
 * on request_quote:store limit add item to users
 *build individual view page for quote/order:store
--Admin can delete any Quote that is not status "archived"
- or "completed"
 -Add exp_desc to new/edit product creation
 -Admin can delete any quote not completed or archived
 -add part/item $ to view_quote:admin
@@ -86,3 +82,7 @@ Corrected:
 -admin may create quote using AdminItem
 * paginate select_product:admin
  *Delete an order view_order:admin
+-Admin can delete any Quote that is not status "archived"
+ or "completed"
+*find_order:admin ref# validations
+*paginate orders_display:admin
