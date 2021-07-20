@@ -12,7 +12,6 @@
 *paginate edit_user:admin
 
 
--add delete category to administrative:admin 
 -add filter by to select_product:admin
 -search_by bar for quotes/orders_display:admin
    -Search for a portion of a ref# (or other field)
@@ -88,3 +87,5 @@ Corrected:
 *paginate orders_display:admin
 *add adminitem to order in process validations
 *add adminitem to quote in process validations
+-add delete category to administrative:admin 
+*add category:admin validations

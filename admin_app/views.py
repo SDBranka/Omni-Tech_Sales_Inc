@@ -172,7 +172,8 @@ def administrative(request):
         logged_user = User.objects.get(id=request.session['user_id'])
         if logged_user.security_level > 4:
             context = {
-                'logged_user': logged_user
+                'logged_user': logged_user,
+                'all_categories': Category.objects.all(),
             }
             return render(request, "administrative.html", context)
     return redirect("/")
@@ -229,16 +230,26 @@ def process_add_category(request):
         logged_user = User.objects.get(id=request.session['user_id'])
         if logged_user.security_level > 4:
             if request.method == "POST":
-                # errors = Product.objects.new_item_validator(request.POST)
-                # if len(errors) > 0:
-                #     for error in errors.values():
-                #         messages.error(request, error)
-                #     return redirect("/admin_access/create_product")
+                errors = Category.objects.category_validator(request.POST)
+                if len(errors) > 0:
+                    for error in errors.values():
+                        messages.error(request, error)
+                else:
+                    Category.objects.create(
+                        name = request.POST['name'],
+                    )
+            return redirect("/admin_access/administrative")
+    return redirect("/")
 
-                Category.objects.create(
-                    name = request.POST['name'],
-                )
-        return redirect("/admin_access/administrative")
+
+def process_delete_category(request):
+    if 'user_id' in request.session:
+        logged_user = User.objects.get(id=request.session['user_id'])
+        if logged_user.security_level > 4:
+            if request.method == "POST":
+                category_to_delete = Category.objects.get(id=request.POST['category_id'])
+                category_to_delete.delete()
+            return redirect("/admin_access/administrative")
     return redirect("/")
 
 
@@ -263,12 +274,6 @@ def process_add_product_to_category(request):
         if logged_user.security_level > 4:
             product = Product.objects.get(id=request.POST['product_id'])
             if request.method == "POST":
-                # errors = Product.objects.new_item_validator(request.POST)
-                # if len(errors) > 0:
-                #     for error in errors.values():
-                #         messages.error(request, error)
-                #     return redirect("/admin_access/create_product")
-
                 category = Category.objects.get(id=request.POST['category_id'])
                 category.product_in_category.add(product)
             return redirect(f"/admin_access/edit_product_category/{ product.id }")
@@ -281,14 +286,6 @@ def process_remove_product_to_category(request):
         if logged_user.security_level > 4:
             product = Product.objects.get(id=request.POST['product_id'])
             if request.method == "POST":
-                # errors handling
-                # errors = Wish.objects.wish_validator(request.POST)
-                # if len(errors) > 0:
-                #     for error in errors.values():
-                #         messages.error(request, error)
-                #     return redirect(f"/wishes/edit_wish/{ wish_id }")
-                # else:
-
                 category = Category.objects.get(id=request.POST['category_id'])
                 category.product_in_category.remove(product)
             return redirect(f"/admin_access/edit_product_category/{ product.id }")

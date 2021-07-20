@@ -52,14 +52,31 @@
                         <button type="submit">Add Product</button>
                     </form>
                 </div>      <!--end add_product-->
-                <div id="add_category">
-                    <h2>Add a Category:</h2>
-                    <form action="/admin_access/process_add_category" method="POST">
-                        {% csrf_token %}
-                        <p>Category Name: <input type="text" name="name"></p>
-                        <button type="submit">Add Category</button>
-                    </form>
-                </div>      <!--end add_category-->
+                <div id="category_handling">
+                    <div id="add_category">
+                        <h2>Add a Category:</h2>
+                        <form action="/admin_access/process_add_category" method="POST">
+                            {% csrf_token %}
+                            <p>Category Name: <input type="text" name="name"></p>
+                            <button type="submit">Add Category</button>
+                        </form>
+                    </div>      <!--end add_category-->
+                    <div id="remove_category">
+                        <h2>Delete a Category:</h2>
+                        <form action="/admin_access/process_delete_category" method="POST">
+                            {% csrf_token %}
+                            <p>Categories:
+                                <select name="category_id">
+                                    {% for category in all_categories %}
+                                        <option value="{{ category.id }}">{{ category.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </p>
+                            <button type="submit">Delete This Category</button>
+                        </form>
+                    </div>      <!--end add_category-->
+    
+                </div>
             </div>      <!--end row_1-->
         </div>      <!--end content-->
     </div>      <!--end wrapper-->

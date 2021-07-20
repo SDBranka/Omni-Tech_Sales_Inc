@@ -274,6 +274,18 @@ class Photo(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
+class CategoryManager(models.Manager):
+    def category_validator(self, postData):
+        errors = {}
+
+        if len(postData['name']) < 3 or len(postData['name']) > 25:
+            errors['name'] = "Please enter a valid category name"
+        category_in_db = self.filter(name = postData['name'])        #ensure no duplicate category exists
+        if category_in_db:
+            errors["name"] = "This category already exists in the database"
+        return errors
+
+
 class Category(models.Model):
     product_in_category = models.ManyToManyField(
         Product,
@@ -282,6 +294,8 @@ class Category(models.Model):
     name = models.CharField(max_length=27)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    objects = CategoryManager()
+
 
 class OrderManager(models.Manager):
     def attached_quote_validator(self, postData):
