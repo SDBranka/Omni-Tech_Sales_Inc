@@ -1,4 +1,3 @@
-*build view_product:store page
 
 *order order processing
    *make a finished quote and finished order model to store completed
@@ -88,4 +87,5 @@ Corrected:
 *add adminitem to order in process validations
 *add adminitem to quote in process validations
 -add delete category to administrative:admin 
+*build view_product:store page
 *add category:admin validations

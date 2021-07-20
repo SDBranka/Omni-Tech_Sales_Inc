@@ -1,35 +1,3 @@
-* {
-    margin: 0;
-    padding: 0;
-    /* border: 1px solid red; */
-}
-
-#wrapper {
-    width: 900px;
-    margin: 100px auto;
-    border: 3px solid rgb(23, 73, 211);
-    padding: 10px;
-    background-color: #F7F7F7;
-}
-
-#header {
-    display: flex;
-    margin-bottom: 20px;
-}
-
-#header h1 {
-    flex: 2;
-}
-
-#links {
-    flex: 1;
-    padding-top: 10px;
-}
-
-#logout {
-    margin-left: 5px;
-}
-
 table {
     width: 100%;
     border-collapse: collapse;

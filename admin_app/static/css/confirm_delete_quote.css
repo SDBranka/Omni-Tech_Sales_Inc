@@ -1,7 +1,6 @@
-* {
+/* * {
     margin: 0;
     padding: 0;
-    /* border: 1px solid red; */
 }
 
 #wrapper {
@@ -9,10 +8,10 @@
     margin: 100px auto;
     padding: 10px;
     border: 3px solid rgb(90, 32, 90);
-}
+} */
 
 h2 {
-    margin-bottom: 20px;
+    margin-bottom: 11px;
 }
 
 p {
@@ -27,8 +26,6 @@ p {
 #total {
     margin-left: 279px;
 }
-
-
 
 #name_output {
     margin-left: 48px;

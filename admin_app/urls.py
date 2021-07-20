@@ -11,7 +11,7 @@ urlpatterns = [
     path('process_add_prod_photo', views.process_add_prod_photo),
     path('delete_photo/<int:photo_id>', views.delete_photo),
     path('administrative', views.administrative),
-    path('edit_user', views.edit_user),
+    path('edit_user/<int:page_num>', views.edit_user),
     path('edit_user_security/<int:user_id>', views.edit_user_security),
     path('process_edit_security/<int:user_to_edit_id>', views.process_edit_security),
     path('delete_user/<int:user_id>', views.delete_user),

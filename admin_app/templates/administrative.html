@@ -8,6 +8,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% load static %}
+    <link rel="stylesheet" href="{% static 'css/admin_main.css' %}">
     <link rel="stylesheet" href="{% static 'css/administrative.css' %}">
 </head>
 
@@ -58,7 +59,7 @@
                         <form action="/admin_access/process_add_category" method="POST">
                             {% csrf_token %}
                             <p>Category Name: <input type="text" name="name"></p>
-                            <button type="submit">Add Category</button>
+                            <button type="submit">Add This Category</button>
                         </form>
                     </div>      <!--end add_category-->
                     <div id="remove_category">

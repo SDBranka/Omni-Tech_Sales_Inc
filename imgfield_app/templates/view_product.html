@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Biew Product:Omni-Tech Sales Inc.</title>
+    <title>View Product:Omni-Tech Sales Inc.</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% load static %}
@@ -66,7 +66,9 @@
                 <h2>{{ product.name }}</h2>
                 <div id="img_display">
                     {% for photo in product.product_photos.all %}
-                        <img src="{{ photo.img.url }}" alt="{{ photo.img_alt}}">
+                        {% if forloop.counter == 1 %}
+                            <img src="{{ photo.img.url }}" alt="{{ photo.img_alt}}">
+                        {% endif %}
                         <div id="extra_imgs">
                             {% if forloop.counter > 1 %}
                                 <img class="sml_imgs" src="{{ photo.img.url }}" alt="{{ photo.img_alt}}">
@@ -84,10 +86,12 @@
                     <h5>Description:</h5>
                     <p>{{ product.desc }}</p>
                 </div>      <!--end product_info-->
-                <div id="exp_desc">
-                    <h5>More Information</h5>
-                    <p>{{ product.exp_desc }}</p>
-                </div>      <!--end exp_desc-->
+                {% if product.exp_desc != "None" %}
+                    <div id="exp_desc">
+                        <h5>More Information</h5>
+                        <p>{{ product.exp_desc }}</p>
+                    </div>      <!--end exp_desc-->
+                {% endif %}
             </div>      <!--end .display_box-->
 
 

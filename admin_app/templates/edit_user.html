@@ -4,10 +4,11 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Edit Users</title>
+    <title>Edit Users:Admin</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% load static %}
+    <link rel="stylesheet" href="{% static 'css/admin_main.css' %}">
     <link rel="stylesheet" href="{% static 'css/edit_user.css' %}">
 </head>
 
@@ -49,6 +50,23 @@
                     {% endfor %}
                 </table>
             </div>      <!--end display_users-->
+            <div id="page_nav">
+                {% if all_users.has_previous %}
+                    <button>
+                        <a href="/admin_access/edit_user/{{ all_users.previous_page_number }}">&laquo;</a>
+                    </button>
+                {% endif %}
+                {% for i in num_of_pages %}
+                    <button>
+                        <a href="/admin_access/edit_user/{{ forloop.counter }}">{{ forloop.counter }}</a>
+                    </button>
+                {% endfor %}
+                {% if all_users.has_next %}
+                    <button>
+                        <a href="/admin_access/edit_user/{{ all_users.next_page_number }}">&raquo;</a>
+                    </button>
+                {% endif %}
+            </div>      <!--page_nav-->
         </div>      <!--end content-->
     </div>      <!--end wrapper-->
 </body>

@@ -179,13 +179,21 @@ def administrative(request):
     return redirect("/")
 
 
-def edit_user(request):
+def edit_user(request, page_num):
     if 'user_id' in request.session:
         logged_user = User.objects.get(id=request.session['user_id'])
         if logged_user.security_level > 4:
+            
+            all_users = User.objects.all()
+            
+            p = Paginator(all_users, 15)
+            page = p.page(page_num)
+            num_of_pages = "a" * p.num_pages
+
             context = {
                 'logged_user' : logged_user,
-                'all_users': User.objects.all(),
+                'all_users': page,
+                'num_of_pages': num_of_pages,
             }
             return render(request, "edit_user.html", context)
     return redirect("/")
@@ -454,6 +462,7 @@ def order_decrease_product_quantity(request):
             return redirect("/admin_access")
     return redirect("/")
 
+
 def order_remove_product_from_order(request):
     if 'user_id' in request.session:    
         logged_user = User.objects.get(id=request.session['user_id'])
@@ -600,6 +609,7 @@ def begin_processing_order(request):
         return redirect("/admin_access")
     return redirect("/")
 
+
 def process_add_adminitem_to_order(request):
     if 'user_id' in request.session:    
         logged_user = User.objects.get(id=request.session['user_id'])
@@ -657,6 +667,7 @@ def process_add_adminitem_to_order(request):
                     return redirect(f"/admin_access/view_order/{ order.id }")
             return redirect("/admin_access")
     return redirect("/")
+
 
 def edit_order_off_notes(request):
     if 'user_id' in request.session:

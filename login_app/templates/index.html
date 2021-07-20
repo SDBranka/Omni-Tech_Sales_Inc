@@ -31,7 +31,7 @@
         <div id="l_sidebar">
             <div id="menu">
                 <h3>Menu</h3>
-                <a id="active" href="/">Home</a>
+                <a href="/">Home</a>
                 <a href="/product_lines">Product Lines</a>
                 <!-- <a href="/PRODUCTS">Products</a> -->
                 <a href="/services/1">Services</a>
@@ -40,7 +40,7 @@
                 <!-- <a href="/ABOUTUS">About Us</a> -->
                 <!-- <a href="/CONTACTUS">Contact Us</a> -->
                 {% if logged_user %}
-                <a href="/user_account">My Account</a>
+                    <a href="/user_account">My Account</a>
                 {% endif %}
             </div>      <!--end menu-->
             <div id="contact_us">
@@ -62,14 +62,14 @@
             <div id="wrapper">
                 <div id="errors">
                     {% if messages %}
-                    <ul>
-                        {% for message in messages %}
-                        <li>{{ message }}</li>
-                        {% endfor %}
-                    </ul>
+                        <ul>
+                            {% for message in messages %}
+                                <li>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
                     {% endif %}
                 </div>      <!--end errors-->
-                <div id="content">
+                <div id="content" class="display_box">
                     <div id="registration_form">
                         <h2>Registration</h2>
                         <form action="/signon/register" method="POST">

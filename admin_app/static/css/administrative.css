@@ -1,42 +1,9 @@
-* {
-    margin: 0;
-    padding: 0;
-    /* border: 1px solid red; */
-}
-
-#wrapper {
-    width: 900px;
-    margin: 100px auto;
-    border: 3px solid rgb(23, 73, 211);
-    padding: 10px;
-    background-color: #F7F7F7;
-}
-
-#header {
-    display: flex;
-    margin-bottom: 20px;
-}
-
-#header h1 {
-    flex: 5;
-}
-
-#links {
-    flex: 2;
-    padding-top: 10px;
-}
-
-#errors {
-    color: red;
-    text-align: center;
-}
-
 #row_1 {
     display: flex;
 }
 
 h2 {
-    margin-bottom: 18px;
+    margin-bottom: 9px;
 }
 
 #add_product {
@@ -71,7 +38,6 @@ h2 {
 #description textarea {
     margin: 0px 9px 9px 91px;
     width: 370px;
-
 }
 
 #exp_description textarea {
@@ -89,6 +55,16 @@ h2 {
 }
 
 #add_product p,
-#add_category p {
+#add_category p,
+#remove_category p {
     margin-bottom: 5px;
+}
+
+#remove_category {
+    margin-top: 27px;
+}
+
+#add_category button,
+#remove_category button {
+    margin: 9px 0px 0px 171px;
 }
