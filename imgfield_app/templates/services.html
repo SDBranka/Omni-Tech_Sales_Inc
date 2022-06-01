@@ -70,7 +70,7 @@
                             <h3><a href="/view_product/{{ service.id }}">{{ service.name }}</a></h3>
                             <p>Part#: {{ service.part_number }}</p>
                             <p class="price">${{ service.price }}</p>
-                        </div>                    <!--end service_info-->
+                        </div>      <!--end service_info-->
                         <p class="desc">{{ service.desc }}</p>
                         <img src="{{ service.product_photos.first.img.url }}"
                             alt="{{ service.product_photos.first.img_alt}}">
@@ -79,7 +79,7 @@
                                 <div class="add_to_quote">
                                     <p>Add to Quote</p>
                                     <form action="/process_add_service_to_quote" method="POST">
-                                        {% csrf_token%}
+                                        {% csrf_token %}
                                         <input type="hidden" name="product_id" value="{{ service.id }}">                               
                                         <input type="hidden" name="page_num" value="{{ current_page }}">                               
                                         <p>Quantity:

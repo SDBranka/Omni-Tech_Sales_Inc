@@ -1,4 +1,4 @@
-from re import U
+# from re import U
 from django.shortcuts import render, redirect
 from .models import User, Product, EnteredItem, Photo, Category, Order, OrderProduct, OrderItem, OrderAdminItem, Quote, QuoteProduct, QuoteItem, QuoteAdminItem, ContactInfo, Review
 from django.contrib import messages
@@ -16,6 +16,7 @@ def index(request):
         'logged_user' : logged_user,
     }
     return render(request, "store_index.html", context)
+
 
 def product_lines(request):
     if not 'user_id' in request.session:
@@ -229,6 +230,7 @@ def process_add_item_to_quote(request):
                     quote.save()
         return redirect("/request_quote")
     return redirect("/")
+
 
 def increase_product_quantity(request):
     if 'user_id' in request.session:

@@ -1,4 +1,3 @@
-
 *order order processing
    *make a finished quote and finished order model to store completed
    quotes/orders so that they will not change with 
@@ -8,7 +7,7 @@
  order/quote status view_order/quote:admin
    -(good for "pending" and "in process")
 *process_add_prod_photo:admin validations
-*paginate edit_user:admin
+
 
 
 -add filter by to select_product:admin
@@ -88,4 +87,5 @@ Corrected:
 *add adminitem to quote in process validations
 -add delete category to administrative:admin 
 *build view_product:store page
+*paginate edit_user:admin
 *add category:admin validations
