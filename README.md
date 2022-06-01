@@ -1,5 +1,4 @@
-# Omni-Tech Sales Inc
-    - Invoicing web application
+# Omni-Tech Sales Inc ##### - Invoicing web application
 
 ##### Table of Contents
 
