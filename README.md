@@ -2,7 +2,7 @@
 ### Invoicing web application
 
 \
-\
+
 ##### Table of Contents
 
 - [Description](#description)
