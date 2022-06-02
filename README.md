@@ -32,7 +32,7 @@ The customer facing portion of the application allows a customer to register the
     <img src="https://github.com/SDBranka/Omni-Tech_Sales_Inc/blob/main/_imgs_for_README/adminScreenshot0.png" width=18% alt="home screen" />
     <img src="https://github.com/SDBranka/Omni-Tech_Sales_Inc/blob/main/_imgs_for_README/adminScreenshot1.png" width=18% alt="home screen" />
     <img src="https://github.com/SDBranka/Omni-Tech_Sales_Inc/blob/main/_imgs_for_README/adminScreenshot2.png" width=18% alt="home screen" />
-    <img src="https://github.com/SDBranka/Omni-Tech_Sales_Inc/blob/main/_imgs_for_README/https://github.com/SDBranka/Omni-Tech_Sales_Inc/blob/main/_imgs_for_README/adminScreenshot3.png" width=18% alt="home screen" />
+    <img src="https://github.com/SDBranka/Omni-Tech_Sales_Inc/blob/main/_imgs_for_README/adminScreenshot3.png" width=18% alt="home screen" />
 </p>
 
 Logged in individuals with a high enough security clearance are provided a link at the upper right corner of the customer facing pages by which they may access the adminstrative portion of the app. Such individuals (workers/admins) can convert quotes to orders for purchase, modify users and their security clearancs, and add/delete catalog options.
