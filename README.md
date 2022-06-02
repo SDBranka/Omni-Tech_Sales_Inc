@@ -51,8 +51,8 @@ Logged in individuals with a high enough security clearance are provided a link 
 Download or clone this repository to your desktop. Open a live server within an appropriate environment (see requirements.txt).
 
 Immediate basic user access is given. You may register an account via the login/registration page to interact with the site as a customer. You may login to the site using creditials:<br>
-Email: aaaaa@aaa.aaa
-Password: aaaaaaaa
+Email: aaaaa@aaa.aaa<br>
+Password: aaaaaaaa<br>
 to interact with the site as a worker/administrator.
 
 
