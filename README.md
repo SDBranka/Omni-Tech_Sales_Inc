@@ -13,17 +13,31 @@
 
 
 ## Description
-
+##### Customer Facing
 
 <p float="center">
-    <img src="https://github.com/SDBranka/PW_Generator_with_Recall/blob/main/Pw_Generator_Screenshot0.png" width=30% alt="app pic two" />
-    <img src="https://github.com/SDBranka/PW_Generator_with_Recall/blob/main/Pw_Generator_Screenshot1.png" width=31% alt="app pic two" />
-    <img src="https://github.com/SDBranka/PW_Generator_with_Recall/blob/main/Pw_Generator_Screenshot2.png" width=30% alt="app pic two" />
-
+    <img src="https://github.com/SDBranka/Omni-Tech_Sales_Inc/blob/main/_imgs_for_README/Screenshot0.png" width=18% alt="home screen" />
+    <img src="https://github.com/SDBranka/Omni-Tech_Sales_Inc/blob/main/_imgs_for_README/Screenshot6.png" width=18% alt="login page" />
+    <img src="https://github.com/SDBranka/Omni-Tech_Sales_Inc/blob/main/_imgs_for_README/Screenshot1.png" width=18% alt="product lines page" />
+    <img src="https://github.com/SDBranka/Omni-Tech_Sales_Inc/blob/main/_imgs_for_README/Screenshot3.png" width=18% alt="order services page" />
+    <img src="https://github.com/SDBranka/Omni-Tech_Sales_Inc/blob/main/_imgs_for_README/Screenshot4.png" width=18% alt="request quote page" />
+    <img src="https://github.com/SDBranka/Omni-Tech_Sales_Inc/blob/main/_imgs_for_README/Screenshot5.png" width=18% alt="customer my account page" />
 </p>
 
+The customer facing portion of the application allows a customer to register their account, store their personal information, request quotes for goods and services, and monitor the orders they have placed.
 
-This app allows a user to generate a password for and store login information to an external file for various accounts. A user may also enter a website and retrieve stored login information if it exists
+##### Administrative Facing
+<p float="center">
+    <img src="https://github.com/SDBranka/Omni-Tech_Sales_Inc/blob/main/_imgs_for_README/Screenshot2.png" width=18% alt="admin login link on page" />
+    <img src="https://github.com/SDBranka/Omni-Tech_Sales_Inc/blob/main/_imgs_for_README/adminScreenshot0.png" width=18% alt="home screen" />
+    <img src="https://github.com/SDBranka/Omni-Tech_Sales_Inc/blob/main/_imgs_for_README/adminScreenshot1.png" width=18% alt="home screen" />
+    <img src="https://github.com/SDBranka/Omni-Tech_Sales_Inc/blob/main/_imgs_for_README/adminScreenshot2.png" width=18% alt="home screen" />
+    <img src="https://github.com/SDBranka/Omni-Tech_Sales_Inc/blob/main/_imgs_for_README/https://github.com/SDBranka/Omni-Tech_Sales_Inc/blob/main/_imgs_for_README/adminScreenshot3.png" width=18% alt="home screen" />
+</p>
+
+Logged in individuals with a high enough security clearance are provided a link at the upper right corner of the customer facing pages by which they may access the adminstrative portion of the app. Such individuals (workers/admins) can convert quotes to orders for purchase, modify users and their security clearancs, and add/delete catalog options.
+
+
 
 ##### Controls
 
