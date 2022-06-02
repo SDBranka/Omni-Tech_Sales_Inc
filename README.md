@@ -13,7 +13,7 @@
 
 
 ## Description
-##### Customer Facing
+#### Customer Facing
 
 <p float="center">
     <img src="https://github.com/SDBranka/Omni-Tech_Sales_Inc/blob/main/_imgs_for_README/Screenshot0.png" width=18% alt="home screen" />
@@ -26,7 +26,7 @@
 
 The customer facing portion of the application allows a customer to register their account, store their personal information, request quotes for goods and services, and monitor the orders they have placed.
 
-##### Administrative Facing
+#### Administrative Facing
 <p float="center">
     <img src="https://github.com/SDBranka/Omni-Tech_Sales_Inc/blob/main/_imgs_for_README/Screenshot2.png" width=18% alt="admin login link on page" />
     <img src="https://github.com/SDBranka/Omni-Tech_Sales_Inc/blob/main/_imgs_for_README/adminScreenshot0.png" width=18% alt="home screen" />
