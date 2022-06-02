@@ -7,7 +7,7 @@
 
 - [Description](#description)
 - [How To Use](#how-to-use)
-- [Technologies](#####technologies)
+- [Technologies](#technologies)
 
 ---
 
