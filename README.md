@@ -37,35 +37,24 @@ The customer facing portion of the application allows a customer to register the
 
 Logged in individuals with a high enough security clearance are provided a link at the upper right corner of the customer facing pages by which they may access the adminstrative portion of the app. Such individuals (workers/admins) can convert quotes to orders for purchase, modify users and their security clearancs, and add/delete catalog options.
 
-
-
-##### Controls
-
-- Click the Generate Password button to generate a password
-    - Clicking the Generate Password button also copies the generated password to the clipboard so that the user may paste it into their browser
-- Click the Add button to save the login information to an external file named data.txt
-- Enter a website and click the Search button to retrieve stored login information should it exist
-
 ##### Technologies
 
 - Python
-- Tkinter
-- Pyperclip
+- Django
+- Pillow
+- MySQL
 - Visual Studio
 
 ---
 
 ## How To Use
 
-Download or clone this repository to your desktop. Click on the file Password_Generator.exe or run main.py in an appropriate Python environment.
+Download or clone this repository to your desktop. Open a live server within an appropriate environment (see requirements.txt).
 
----
+Immediate basic user access is given. You may register an account via the login/registration page to interact with the site as a customer. You may login to the site using creditials:
+Email: aaaaa@aaa.aaa
+Password: aaaaaaaa
+to interact with the site as a worker/administrator
 
-## References
 
-##### Continuing Work on
-
-- https://github.com/SDBranka/_100DOP_Exercises
-
-\
-[Back To The Top](#password-generator)
+[Back To The Top](#omni-tech-sales-inc )
